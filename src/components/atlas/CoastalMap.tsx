@@ -36,6 +36,7 @@ export const CoastalMap = ({ state, onSelect }: CoastalMapProps) => {
         className="absolute inset-0"
         style={{ background: "hsl(195, 80%, 92%)" }}
         worldCopyJump
+        attributionControl={false}
       >
         <TileLayer
           attribution='Tiles © Esri — Source: Esri, USGS, NOAA · Atlas dataset © Climate Intelligence Lab'
@@ -157,6 +158,13 @@ export const CoastalMap = ({ state, onSelect }: CoastalMapProps) => {
             {active.riskLabel} · {fmt.score(active.riskScore)}
           </div>
         </div>
+      </div>
+
+      {/* Attribution — compact, non-overlapping */}
+      <div className="pointer-events-none absolute bottom-1 right-2 z-[400] hidden md:block">
+        <span className="rounded-md bg-white/75 px-1.5 py-0.5 text-[9px] text-muted-foreground backdrop-blur-sm">
+          Tiles © Esri · Leaflet
+        </span>
       </div>
     </div>
   );

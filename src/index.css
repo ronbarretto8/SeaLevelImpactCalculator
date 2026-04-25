@@ -190,11 +190,6 @@
   font-family: inherit;
   border-radius: calc(var(--radius) + 4px);
 }
-.leaflet-control-attribution {
-  background: hsl(0 0% 100% / 0.7) !important;
-  font-size: 10px !important;
-  border-radius: 6px !important;
-}
 .region-marker {
   display: flex;
   align-items: center;
