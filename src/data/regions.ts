@@ -21,7 +21,7 @@ export const REGIONS: Region[] = [
   { id: "kerala",     name: "Kerala Backwaters",    shortName: "Kerala",     basePopulation: 245, baseArea: 8.3,  lat: 9.9312,  lng: 76.2673, state: "Kerala",       highlight: "Brackish backwaters and Kuttanad below sea level." },
   { id: "sundarbans", name: "Sundarbans",           shortName: "Sundarbans", basePopulation: 960, baseArea: 4.7,  lat: 21.9497, lng: 88.9101, state: "West Bengal",  highlight: "World's largest mangrove — biodiversity hotspot." },
   { id: "odisha",     name: "Odisha Coast",         shortName: "Odisha",     basePopulation: 380, baseArea: 9.1,  lat: 19.8135, lng: 85.8312, state: "Odisha",       highlight: "Cyclone-prone, repeated landfall corridor." },
-  { id: "gujarat",    name: "Gujarat Gulf",         shortName: "Gujarat",    basePopulation: 510, baseArea: 7.6,  lat: 22.3072, lng: 70.8022, state: "Gujarat",      highlight: "Gulf of Khambhat — industrial coastal belt." },
+  { id: "gujarat",    name: "Gujarat Gulf",         shortName: "Gujarat",    basePopulation: 510, baseArea: 7.6,  lat: 21.666, lng: 72.383, state: "Gujarat",      highlight: "Gulf of Khambhat — industrial coastal belt." },
 ];
 
 export const SCENARIOS = {
