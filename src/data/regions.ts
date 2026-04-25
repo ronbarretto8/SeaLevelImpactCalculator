@@ -16,8 +16,8 @@ export type Region = {
 export const REGIONS: Region[] = [
   { id: "mumbai",     name: "Mumbai Coastline",     shortName: "Mumbai",     basePopulation: 420, baseArea: 20.4, lat: 19.0760, lng: 72.8777, state: "Maharashtra", highlight: "India's financial capital, dense low-lying reclaimed land." },
   { id: "chennai",    name: "Chennai Coast",        shortName: "Chennai",    basePopulation: 310, baseArea: 11.0, lat: 13.0827, lng: 80.2707, state: "Tamil Nadu",   highlight: "Marina belt and IT corridor exposed to surge." },
-  { id: "kolkata",    name: "Kolkata Delta",        shortName: "Kolkata",    basePopulation: 580, baseArea: 15.2, lat: 22.5726, lng: 88.3639, state: "West Bengal",  highlight: "Hooghly delta — riverine + tidal compounded risk." },
-  { id: "goa",        name: "Goa Shoreline",        shortName: "Goa",        basePopulation: 105, baseArea: 1.5,  lat: 15.2993, lng: 74.1240, state: "Goa",          highlight: "Tourism-dependent beaches and estuaries." },
+  { id: "kolkata",    name: "Kolkata Delta",        shortName: "Kolkata",    basePopulation: 580, baseArea: 15.2, lat: 21.6805, lng: 87.9563, state: "West Bengal",  highlight: "Hooghly delta — riverine + tidal compounded risk." },
+  { id: "goa",        name: "Goa Shoreline",        shortName: "Goa",        basePopulation: 105, baseArea: 1.5,  lat: 15.4909, lng: 73.8278, state: "Goa",          highlight: "Tourism-dependent beaches and estuaries." },
   { id: "kerala",     name: "Kerala Backwaters",    shortName: "Kerala",     basePopulation: 245, baseArea: 8.3,  lat: 9.9312,  lng: 76.2673, state: "Kerala",       highlight: "Brackish backwaters and Kuttanad below sea level." },
   { id: "sundarbans", name: "Sundarbans",           shortName: "Sundarbans", basePopulation: 960, baseArea: 4.7,  lat: 21.9497, lng: 88.9101, state: "West Bengal",  highlight: "World's largest mangrove — biodiversity hotspot." },
   { id: "odisha",     name: "Odisha Coast",         shortName: "Odisha",     basePopulation: 380, baseArea: 9.1,  lat: 19.8135, lng: 85.8312, state: "Odisha",       highlight: "Cyclone-prone, repeated landfall corridor." },
