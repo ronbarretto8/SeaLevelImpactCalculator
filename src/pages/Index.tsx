@@ -1,274 +1,331 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useRef, useMemo, useState, useCallback } from "react";
 import {
-  Waves, Globe2, Activity, ChevronDown, MapPinned, Sparkles, Building2, Users, ArrowDown,
+  Waves, Globe2, Activity, MapPinned, Sparkles,
+  Building2, Users, ArrowDown, TrendingUp, Shield, Zap,
 } from "lucide-react";
 import { AtlasState, DEFAULT_STATE, calculateImpact, fmt } from "@/utils/calculateImpact";
-import { ControlsPanel } from "@/components/atlas/ControlsPanel";
-import { MetricCards } from "@/components/atlas/MetricCards";
-import { RiskBar } from "@/components/atlas/RiskBar";
-import { ImpactChart } from "@/components/atlas/ImpactChart";
+import { ControlsPanel }   from "@/components/atlas/ControlsPanel";
+import { MetricCards }     from "@/components/atlas/MetricCards";
+import { RiskBar }         from "@/components/atlas/RiskBar";
+import { ImpactChart }     from "@/components/atlas/ImpactChart";
 import { ComparisonTable } from "@/components/atlas/ComparisonTable";
-import { DecisionEngine } from "@/components/atlas/DecisionEngine";
-import { CoastalMap } from "@/components/atlas/CoastalMap";
-import { WaveBackground } from "@/components/atlas/WaveBackground";
-import { CursorRipple } from "@/components/atlas/CursorRipple";
-import mumbaiCoast from "@/assets/mumbai-coast.jpg";
+import { DecisionEngine }  from "@/components/atlas/DecisionEngine";
+import { CoastalMap }      from "@/components/atlas/CoastalMap";
+import { WaveBackground }  from "@/components/atlas/WaveBackground";
+import { HeroBackground }  from "@/components/atlas/HeroBackground";
+import { Navbar }          from "@/components/atlas/Navbar";
+import { useTheme }        from "@/hooks/useTheme";
 import heroOcean from "@/assets/hero-ocean.jpg";
 
-const Index = () => {
-  const [state, setState] = useState<AtlasState>(DEFAULT_STATE);
-  const result = useMemo(() => calculateImpact(state), [state]);
-
+/* ── Scroll-reveal ── */
+function useScrollReveal() {
   useEffect(() => {
-    document.title = "Sea Level Rise Impact Atlas — India Coastal Intelligence";
-    const meta = document.querySelector('meta[name="description"]');
-    const desc = "Cinematic climate intelligence atlas modelling sea-level rise impact across 8 Indian coastal regions — area, population, economic loss and risk.";
-    if (meta) meta.setAttribute("content", desc);
-    else {
-      const m = document.createElement("meta");
-      m.name = "description"; m.content = desc;
-      document.head.appendChild(m);
-    }
+    const els = document.querySelectorAll(".reveal");
+    if (!els.length) return;
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => {
+        if (e.isIntersecting) { e.target.classList.add("visible"); io.unobserve(e.target); }
+      }),
+      { threshold: 0.1, rootMargin: "0px 0px -30px 0px" }
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+}
+
+const Index = () => {
+  const { theme, toggle, isDark } = useTheme();
+  const [state, setState]         = useState<AtlasState>(DEFAULT_STATE);
+  const result                    = useMemo(() => calculateImpact(state), [state]);
+
+  /* Parallax and Cursor Tracking */
+  const [mouse, setMouse] = useState({ x: 0, y: 0 });
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    const cx = window.innerWidth / 2;
+    const cy = window.innerHeight / 2;
+    setMouse({ x: e.clientX - cx, y: e.clientY - cy });
   }, []);
 
+  useEffect(() => {
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [handleMouseMove]);
+
+  useScrollReveal();
+
+  useEffect(() => {
+    document.title = "Sea Level Rise Impact — India Coastal Intelligence";
+  }, []);
+
+  /* Section divider style adapts to theme */
+  const dividerColor = isDark
+    ? "hsl(214 50% 10%)"
+    : "hsl(210 40% 92%)";
+
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-background">
-      <CursorRipple />
+    <div
+      className="relative min-h-screen overflow-x-hidden"
+      style={{ background: isDark ? "hsl(214 60% 6%)" : "hsl(210 35% 95%)", transition: "background 0.4s ease" }}
+    >
+      <Navbar theme={theme} onToggleTheme={toggle} />
 
-      {/* ============ NAV ============ */}
-      <header className="sticky top-0 z-50 border-b border-border/40 bg-background/70 backdrop-blur-xl">
-        <div className="section-padding mx-auto flex h-16 max-w-[1480px] items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-ocean-blue to-ocean-deep text-white shadow-md">
-              <Waves className="h-4 w-4" />
+      {/* ════════════════════════════════════════
+          HERO — full-viewport, image background
+          ════════════════════════════════════════ */}
+      <section id="overview" className="relative flex min-h-screen items-center justify-center overflow-hidden">
+        <HeroBackground imageUrl={heroOcean} parallaxX={mouse.x} parallaxY={mouse.y} />
+
+        <div className="section-padding relative z-10 mx-auto w-full max-w-[1520px] pb-28 pt-24 text-center">
+          <div className="mx-auto max-w-4xl animate-fade-up">
+            {/* Eyebrow */}
+            <div
+              className="inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold mb-7"
+              style={{
+                background: "rgba(0,229,255,0.08)",
+                borderColor: "rgba(0,229,255,0.22)",
+                color: "hsl(188 100% 75%)",
+                backdropFilter: "blur(8px)",
+              }}
+            >
+              <Sparkles className="h-3 w-3" />
+              Climate Intelligence Platform · India 2026
             </div>
-            <div>
-              <p className="font-display text-sm leading-none text-primary">SLR Atlas</p>
-              <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">India · v2.4</p>
+
+            <h1
+              className="font-display mb-6 text-[2.8rem] leading-[1.02] sm:text-6xl md:text-7xl lg:text-[5.5rem] xl:text-[6.5rem]"
+              style={{ color: "hsl(200 30% 96%)", textShadow: "0 2px 20px rgba(0,0,0,0.4)" }}
+            >
+              Sea Level Rise
+              <br />
+              <span className="shimmer-text-hero">Impact.</span>
+            </h1>
+
+            <p
+              className="mx-auto mb-10 max-w-2xl text-base leading-7 sm:text-lg lg:text-xl"
+              style={{ color: "hsl(210 25% 78%)", textShadow: "0 1px 8px rgba(0,0,0,0.5)" }}
+            >
+              A decision-grade atlas modelling sea-level rise across India's 8 most
+              exposed coastal regions — built for cabinet briefings, resilience
+              planning &amp; long-horizon capital allocation.
+            </p>
+
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              <a href="#scenarios" className="btn-primary">
+                Explore scenarios <ArrowDown className="h-4 w-4" />
+              </a>
+              <a
+                href="#atlas"
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: "0.5rem",
+                  padding: "0.75rem 1.625rem", borderRadius: "9999px",
+                  background: "rgba(4,10,24,0.50)", color: "hsl(200 20% 90%)",
+                  border: "1px solid rgba(200,230,255,0.25)", backdropFilter: "blur(12px)",
+                  fontSize: "0.875rem", fontWeight: 600,
+                  transition: "all 0.25s ease",
+                }}
+              >
+                Open the atlas <Globe2 className="h-4 w-4" />
+              </a>
+            </div>
+
+            {/* Stats */}
+            <div className="mt-16 flex flex-wrap items-center justify-center gap-8 sm:gap-14">
+              {[["8","Coastal regions"],["3","IPCC scenarios"],["100%","Reproducible"]].map(([big, small], i) => (
+                <div key={i} className="text-center">
+                  <p className="font-mono-num font-display text-3xl font-bold sm:text-4xl" style={{ color: "hsl(188 100% 62%)", textShadow: "0 0 24px hsl(188 100% 50%/0.4)" }}>
+                    {big}
+                  </p>
+                  <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.16em]" style={{ color: "hsl(210 20% 60%)" }}>
+                    {small}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
-          <nav className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
-            <a href="#overview" className="transition-colors hover:text-primary">Overview</a>
-            <a href="#scenarios" className="transition-colors hover:text-primary">Scenarios</a>
-            <a href="#atlas" className="transition-colors hover:text-primary">Atlas</a>
-          </nav>
-          <div className="hidden items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1.5 text-[11px] text-muted-foreground md:flex">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
-            Live model · IPCC AR6
-          </div>
-        </div>
-      </header>
 
-      {/* ============ SECTION 1 — HERO ============ */}
-      <section id="overview" className="relative">
-        {/* Hero background */}
-        <div className="absolute inset-0 -z-10" style={{ background: "var(--gradient-hero)" }} />
-        <div
-          className="absolute inset-0 -z-10 opacity-50"
-          style={{
-            backgroundImage: `url(${heroOcean})`,
-            backgroundSize: "cover",
-            backgroundPosition: "right center",
-            maskImage: "linear-gradient(to left, black 0%, transparent 70%)",
-            WebkitMaskImage: "linear-gradient(to left, black 0%, transparent 70%)",
-          }}
-        />
-        <WaveBackground variant="hero" className="-z-0" />
-
-        <div className="section-padding relative mx-auto max-w-[1480px] pt-10 pb-24 sm:pt-16 sm:pb-32 lg:pt-24 lg:pb-48">
-          <div className="grid items-end gap-8 sm:gap-12 lg:grid-cols-[1.15fr_1fr]">
-            {/* Hero copy */}
-            <div className="animate-fade-up">
-              <span className="chip">
-                <Sparkles className="h-3 w-3" />
-                Climate Intelligence Platform · 2026
-              </span>
-              <h1 className="font-display mt-5 text-[2.5rem] leading-[1.05] text-primary sm:text-5xl md:text-6xl lg:text-[5.25rem]">
-                The rising tide,{" "}
-                <span className="shimmer-text">measured.</span>
-              </h1>
-              <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg lg:text-xl">
-                A decision-grade atlas modelling sea-level rise across India's 8 most exposed
-                coastal regions — calibrated for cabinet briefings, resilience planning and
-                long-horizon capital allocation.
-              </p>
-              <div className="mt-6 flex flex-wrap items-center gap-3 sm:mt-8">
-                <a
-                  href="#scenarios"
-                  className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-ocean-blue to-ocean-deep px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-ocean-blue/30 transition-all hover:scale-[1.02] hover:shadow-xl sm:px-6"
-                >
-                  Explore scenarios <ArrowDown className="h-4 w-4" />
-                </a>
-                <a
-                  href="#atlas"
-                  className="inline-flex items-center gap-2 rounded-full border border-ocean-bright/30 bg-white/80 px-5 py-3 text-sm font-semibold text-primary backdrop-blur-sm transition-all hover:border-accent hover:bg-ocean-foam/60 hover:text-accent sm:px-6"
-                >
-                  Open the atlas <Globe2 className="h-4 w-4" />
-                </a>
-              </div>
-
-              <div className="mt-10 grid max-w-xl grid-cols-3 gap-3 sm:gap-6 sm:mt-12">
-                <Stat big="8" small="coastal regions modelled" />
-                <Stat big="3" small="climate scenarios (IPCC)" />
-                <Stat big="100%" small="reproducible methodology" />
-              </div>
-            </div>
-
-            {/* Executive summary card */}
-            <div className="animate-fade-up" style={{ animationDelay: "120ms" }}>
-              <div className="premium-card p-5 sm:p-7 lg:p-8">
-                <div className="flex items-center justify-between">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">Executive Summary</p>
-                  <span className="chip">India · {result.region.shortName}</span>
-                </div>
-                <p className="mt-4 font-display text-xl leading-snug text-primary sm:text-2xl">
-                  Under your active scenario, <span className="shimmer-text">{fmt.km2(result.areaKm2)} km²</span> of coastline could be inundated, displacing {fmt.pop(result.population * 1000)} residents.
-                </p>
-                <div className="mt-6 grid grid-cols-2 gap-3">
-                  <SummaryStat label="Composite risk" value={fmt.score(result.riskScore)} unit="/ 100" tone={result.riskLabel} />
-                  <SummaryStat label="Economic exposure" value={fmt.usd(result.economic)} unit="USD est." />
-                </div>
-                <div className="mt-5 border-t border-border/60 pt-4 text-xs leading-relaxed text-muted-foreground">
-                  Model blends inundation area (40%), population displacement (35%) and
-                  infrastructure sensitivity (25%) into a single 0–100 composite.
-                </div>
-              </div>
-            </div>
+          {/* Scroll cue */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2" style={{ opacity: 0.45 }}>
+            <span className="text-[10px] uppercase tracking-[0.22em]" style={{ color: "hsl(200 20% 68%)" }}>Scroll</span>
+            <div className="h-8 w-px" style={{ background: "linear-gradient(to bottom, hsl(188 100% 50%/0.55), transparent)" }} />
           </div>
         </div>
       </section>
 
-      {/* ============ SECTION 2 — SCENARIOS + MUMBAI STORY ============ */}
-      <section id="scenarios" className="relative overflow-hidden">
-        {/* Mumbai background */}
-        <div className="absolute inset-0 -z-10">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `url(${mumbaiCoast})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-background/85 to-background/95" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/40 to-background/95" />
+      {/* ════════════════════════════════════════
+          FEATURE STRIP
+          ════════════════════════════════════════ */}
+      <section className="relative z-10 section-padding mx-auto max-w-[1520px] pb-8 pt-6">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          {[
+            { icon: <TrendingUp className="h-4 w-4" />, title: "Real-time modelling", body: "Sliders update all 8 regions instantly under any scenario.", delay: "0ms" },
+            { icon: <Shield className="h-4 w-4" />,     title: "IPCC AR6 aligned",   body: "RCP 2.6, 4.5 and 8.5 — calibrated for policy use.",        delay: "70ms" },
+            { icon: <Zap className="h-4 w-4" />,        title: "Decision-ready",     body: "Auto-generated strategic response playbooks per region.",    delay: "140ms" },
+          ].map((f) => (
+            <div
+              key={f.title}
+              className="reveal flex items-start gap-4 rounded-2xl p-4 sm:p-5 transition-all duration-300 hover:-translate-y-1"
+              style={{
+                background: isDark ? "hsl(214 50% 9%/0.8)" : "hsl(0 0% 100%/0.85)",
+                border: `1px solid ${isDark ? "hsl(214 30% 20%)" : "hsl(210 35% 85%)"}`,
+                backdropFilter: "blur(8px)",
+                boxShadow: isDark ? "var(--shadow-sm)" : "0 2px 12px hsl(210 40% 70%/0.2)",
+                transitionDelay: f.delay,
+              }}
+            >
+              <div
+                className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
+                style={{ background: "hsl(var(--primary)/0.12)", color: "hsl(var(--primary))" }}
+              >
+                {f.icon}
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-foreground">{f.title}</p>
+                <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{f.body}</p>
+              </div>
+            </div>
+          ))}
         </div>
+      </section>
 
-        <div className="section-padding relative mx-auto max-w-[1480px] py-16 sm:py-24 lg:py-32">
-          <div className="grid gap-8 sm:gap-12 lg:grid-cols-[1.4fr_1fr] lg:items-start">
-            <div>
-              <span className="chip">
-                <MapPinned className="h-3 w-3" /> Coastal storytelling · Mumbai
-              </span>
-              <h2 className="font-display mt-4 text-3xl leading-[1.05] text-primary sm:text-4xl md:text-5xl lg:text-6xl">
-                When the sea writes the next chapter,
+      {/* ════════════════════════════════════════
+          SCENARIOS + CONTROLS
+          ════════════════════════════════════════ */}
+      <section id="scenarios" className="relative py-16 sm:py-24 lg:py-28">
+        <div className="section-padding relative z-10 mx-auto max-w-[1520px]">
+          <div className="mb-10 grid gap-8 sm:mb-12 lg:grid-cols-[1.3fr_1fr] lg:items-start">
+            <div className="reveal">
+              <div className="chip mb-4">
+                <MapPinned className="h-3 w-3" />
+                Coastal Scenario Engine
+              </div>
+              <h2 className="font-display text-3xl text-foreground sm:text-4xl md:text-5xl lg:text-[3.25rem]">
+                When the sea writes,
                 <br />
                 <span className="shimmer-text">cities listen.</span>
               </h2>
-              <p className="mt-5 max-w-2xl text-sm text-muted-foreground sm:text-base lg:text-lg">
-                Mumbai sits on reclaimed land barely above mean sea level. Each centimetre of
-                rise compounds with monsoon surge and subsidence. Below, every Indian coastline
-                modelled in real time against your active scenario.
+              <p className="mt-5 max-w-xl text-sm leading-7 text-muted-foreground sm:text-base lg:text-lg">
+                Mumbai sits on reclaimed land barely above mean sea level.
+                Model every Indian coastline in real time against your active scenario.
               </p>
+
+              {/* Added info boxes to balance the layout */}
+              <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:max-w-xl">
+                <div className="group rounded-2xl p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg" style={{ border: "1px solid hsl(var(--border) / 0.5)", background: "hsl(var(--muted) / 0.2)" }}>
+                  <div className="mb-2 flex items-center gap-2">
+                    <div className="flex h-6 w-6 items-center justify-center rounded-lg transition-transform duration-300 group-hover:scale-110" style={{ background: "hsl(var(--primary) / 0.1)", color: "hsl(var(--primary))" }}>
+                      <Activity className="h-3 w-3" />
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-foreground">Dynamic Engine</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed transition-colors duration-300 group-hover:text-foreground/80">
+                    Adjust environmental variables to instantly recalibrate economic and demographic risk models.
+                  </p>
+                </div>
+                
+                <div className="group rounded-2xl p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg" style={{ border: "1px solid hsl(var(--border) / 0.5)", background: "hsl(var(--muted) / 0.2)" }}>
+                  <div className="mb-2 flex items-center gap-2">
+                    <div className="flex h-6 w-6 items-center justify-center rounded-lg transition-transform duration-300 group-hover:scale-110" style={{ background: "hsl(var(--primary) / 0.1)", color: "hsl(var(--primary))" }}>
+                      <Zap className="h-3 w-3" />
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-foreground">Non-Linear Risk</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed transition-colors duration-300 group-hover:text-foreground/80">
+                    Vulnerability scores scale exponentially once critical coastal infrastructure thresholds are breached.
+                  </p>
+                </div>
+              </div>
             </div>
-
-            <ControlsPanel state={state} onChange={setState} />
+            <div className="reveal reveal-delay-2">
+              <ControlsPanel state={state} onChange={setState} />
+            </div>
           </div>
 
-          <div className="mt-8 sm:mt-10">
-            <MetricCards result={result} />
-          </div>
+          <div className="reveal mt-2"><MetricCards result={result} /></div>
+          <div className="reveal reveal-delay-1 mt-5"><RiskBar result={result} /></div>
+          <div className="reveal reveal-delay-1 mt-5"><ImpactChart state={state} /></div>
 
-          <div className="mt-8">
-            <RiskBar result={result} />
-          </div>
-
-          <div className="mt-8">
-            <ImpactChart state={state} />
-          </div>
-
-          <div className="mt-8 grid gap-6 sm:gap-8 lg:grid-cols-[1.05fr_1fr]">
-            <ComparisonTable state={state} />
-            <DecisionEngine result={result} />
+          <div className="mt-5 grid gap-5 lg:grid-cols-[1.05fr_1fr]">
+            <div className="reveal"><ComparisonTable state={state} /></div>
+            <div className="reveal reveal-delay-2"><DecisionEngine result={result} /></div>
           </div>
         </div>
 
-        <WaveBackground variant="section" className="-z-0 opacity-90" />
+        {/* Only show waves in dark mode — in light mode the section bg is sufficient */}
+        {isDark && <WaveBackground variant="section" className="z-0 opacity-50" />}
       </section>
 
-      {/* ============ SECTION 3 — INTERACTIVE MAP ============ */}
-      <section id="atlas" className="relative overflow-hidden bg-gradient-to-b from-background to-ocean-foam/40">
-        <div className="section-padding relative mx-auto max-w-[1600px] pt-16 pb-24 sm:pt-24 sm:pb-32 lg:pt-32">
-          <div className="mx-auto max-w-3xl text-center">
-            <span className="chip mx-auto">
-              <Globe2 className="h-3 w-3" /> Interactive Coastal Atlas
-            </span>
-            <h2 className="font-display mt-4 text-3xl leading-[1.05] text-primary sm:text-4xl md:text-5xl lg:text-[4rem]">
+      {/* ════════════════════════════════════════
+          INTERACTIVE MAP
+          ════════════════════════════════════════ */}
+      <section
+        id="atlas"
+        className="relative py-16 sm:py-24 lg:py-28"
+        style={{ borderTop: `1px solid ${dividerColor}` }}
+      >
+        <div className="section-padding relative z-10 mx-auto max-w-[1600px]">
+          <div className="reveal mx-auto mb-10 max-w-2xl text-center sm:mb-12">
+            <div className="chip mx-auto mb-4">
+              <Globe2 className="h-3 w-3" />
+              Interactive Coastal Atlas
+            </div>
+            <h2 className="font-display text-3xl text-foreground sm:text-4xl md:text-5xl lg:text-[3.25rem]">
               The full <span className="shimmer-text">coastal arc</span> of India.
             </h2>
-            <p className="mt-5 text-sm text-muted-foreground sm:text-base lg:text-lg">
-              Eight regions. One ocean. Click any marker to recalibrate the dashboard for that
-              coastline. Halo size and colour reflect live composite risk under your scenario.
+            <p className="mt-5 text-sm leading-7 text-muted-foreground sm:text-base">
+              Eight regions. One ocean. Click any marker to recalibrate the dashboard.
             </p>
           </div>
 
-          <div className="mt-8 overflow-hidden rounded-[1.25rem] border border-ocean-bright/20 bg-card shadow-2xl sm:mt-12 sm:rounded-[2rem]">
-            <CoastalMap
-              state={state}
-              onSelect={(name) => setState((s) => ({ ...s, region: name }))}
-            />
+          <div
+            className="reveal overflow-hidden rounded-2xl"
+            style={{
+              border: `1px solid hsl(var(--primary)/0.14)`,
+              boxShadow: isDark ? "0 24px 80px hsl(214 80% 3%/0.5)" : "0 8px 40px hsl(210 50% 50%/0.15)",
+            }}
+          >
+            <CoastalMap state={state} onSelect={(name) => setState((s) => ({ ...s, region: name }))} isDark={isDark} />
           </div>
 
-          <div className="mt-8 grid gap-3 sm:mt-10 md:grid-cols-2 lg:grid-cols-4">
-            <InsightCard icon={<Activity className="h-4 w-4" />} label="Highest exposure" value="Sundarbans · Kolkata Delta" />
-            <InsightCard icon={<Users className="h-4 w-4" />} label="Largest population at risk" value="Sundarbans · 960k baseline" />
-            <InsightCard icon={<Building2 className="h-4 w-4" />} label="Greatest economic stake" value="Mumbai · Gujarat Gulf" />
-            <InsightCard icon={<Waves className="h-4 w-4" />} label="Methodology" value="IPCC AR6 · RCP scenarios" />
+          <div className="mt-5 grid gap-3 sm:mt-6 md:grid-cols-2 lg:grid-cols-4">
+            {[
+              { icon: <Activity className="h-4 w-4" />,  label: "Highest exposure",      value: "Sundarbans · Kolkata Delta", delay: "0ms"   },
+              { icon: <Users className="h-4 w-4" />,     label: "Largest at-risk pop.",  value: "Sundarbans · 960k baseline", delay: "70ms"  },
+              { icon: <Building2 className="h-4 w-4" />, label: "Greatest economic stake", value: "Mumbai · Gujarat Gulf",   delay: "140ms" },
+              { icon: <Waves className="h-4 w-4" />,     label: "Methodology",           value: "IPCC AR6 · RCP scenarios",  delay: "210ms" },
+            ].map((c) => (
+              <div key={c.label} className="reveal premium-card p-5" style={{ transitionDelay: c.delay }}>
+                <div className="mb-3 flex items-center gap-2" style={{ color: "hsl(var(--primary))" }}>
+                  {c.icon}
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em]">{c.label}</p>
+                </div>
+                <p className="font-display text-sm text-foreground">{c.value}</p>
+              </div>
+            ))}
           </div>
         </div>
 
-        <WaveBackground variant="footer" className="-z-0" />
+        {isDark && <WaveBackground variant="footer" className="z-0 opacity-60" />}
 
-        <footer className="section-padding relative mx-auto max-w-[1480px] border-t border-border/40 pb-10 pt-16 text-xs text-muted-foreground">
+        <footer
+          className="section-padding relative z-10 mx-auto max-w-[1520px] border-t pb-8 pt-10 text-xs text-muted-foreground"
+          style={{ borderColor: dividerColor }}
+        >
           <div className="flex flex-wrap items-center justify-between gap-4">
-            <p>
-              © 2026 Sea Level Rise Impact Atlas. Synthetic dataset for educational and
-              decision-modelling use only.
-            </p>
-            <p>Built with React · Recharts · Leaflet · Local JSON.</p>
+            <div className="flex items-center gap-2.5">
+              <div
+                className="flex h-7 w-7 items-center justify-center rounded-lg"
+                style={{ background: "hsl(var(--primary)/0.12)", border: "1px solid hsl(var(--primary)/0.2)" }}
+              >
+                <Waves className="h-3.5 w-3.5" style={{ color: "hsl(var(--primary))" }} />
+              </div>
+              <p>© 2026 Sea Level Rise Impact Atlas. Synthetic dataset — educational use only.</p>
+            </div>
+            <p className="text-muted-foreground/50">React · Recharts · Leaflet · TypeScript</p>
           </div>
         </footer>
       </section>
     </div>
   );
 };
-
-const Stat = ({ big, small }: { big: string; small: string }) => (
-  <div>
-    <p className="font-display font-mono-num text-2xl text-primary sm:text-3xl lg:text-4xl">{big}</p>
-    <p className="mt-1 text-[10px] font-medium uppercase tracking-[0.12em] text-muted-foreground sm:text-[11px]">{small}</p>
-  </div>
-);
-
-const SummaryStat = ({ label, value, unit, tone }: { label: string; value: string; unit: string; tone?: string }) => {
-  const c = tone === "High" ? "text-risk-high" : tone === "Moderate" ? "text-[hsl(38_85%_38%)]" : tone === "Low" ? "text-risk-low" : "text-primary";
-  return (
-    <div className="rounded-2xl border border-border/70 bg-secondary/40 p-4">
-      <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">{label}</p>
-      <p className={`font-mono-num font-display mt-1 text-3xl ${c}`}>{value}</p>
-      <p className="mt-0.5 text-[11px] text-muted-foreground">{unit}</p>
-    </div>
-  );
-};
-
-const InsightCard = ({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) => (
-  <div className="premium-card p-5">
-    <div className="flex items-center gap-2 text-accent">
-      {icon}
-      <p className="text-[10px] font-semibold uppercase tracking-[0.18em]">{label}</p>
-    </div>
-    <p className="mt-2 font-display text-base text-primary">{value}</p>
-  </div>
-);
 
 export default Index;
