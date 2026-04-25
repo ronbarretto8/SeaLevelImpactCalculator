@@ -18,7 +18,19 @@ export const Navbar = ({ theme, onToggleTheme }: NavbarProps) => {
   const [menuOpen, setMenuOpen]   = useState(false);
   const [activeLink, setActive]   = useState("#overview");
   const menuRef = useRef<HTMLDivElement>(null);
+  const isClickScrolling = useRef(false);
+  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
   const isDark = theme === "dark";
+
+  const handleNavClick = (href: string) => {
+    setActive(href);
+    isClickScrolling.current = true;
+    if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+    scrollTimeout.current = setTimeout(() => {
+      isClickScrolling.current = false;
+    }, 1000);
+    setMenuOpen(false);
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -43,6 +55,7 @@ export const Navbar = ({ theme, onToggleTheme }: NavbarProps) => {
     const ids = NAV_LINKS.map((l) => l.href.replace("#", ""));
     const observer = new IntersectionObserver(
       (entries) => {
+        if (isClickScrolling.current) return;
         entries.forEach((e) => {
           if (e.isIntersecting) setActive(`#${e.target.id}`);
         });
@@ -126,7 +139,7 @@ export const Navbar = ({ theme, onToggleTheme }: NavbarProps) => {
                 <a
                   key={href}
                   href={href}
-                  onClick={() => setActive(href)}
+                  onClick={() => handleNavClick(href)}
                   className="relative rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-200"
                   style={{
                     color: isActive
@@ -239,7 +252,7 @@ export const Navbar = ({ theme, onToggleTheme }: NavbarProps) => {
                 <a
                   key={href}
                   href={href}
-                  onClick={() => setMenuOpen(false)}
+                  onClick={() => handleNavClick(href)}
                   className="rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200"
                   style={{
                     color: isActive ? "hsl(188 100% 60%)" : isDark ? "hsl(210 15% 60%)" : "hsl(210 40% 40%)",
