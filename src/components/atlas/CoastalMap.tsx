@@ -26,7 +26,7 @@ export const CoastalMap = ({ state, onSelect }: CoastalMapProps) => {
   const active = all.find((r) => r.region.name === state.region) ?? all[0];
 
   return (
-    <div className="relative h-[640px] w-full overflow-hidden lg:h-[760px]">
+    <div className="relative h-[480px] w-full overflow-hidden sm:h-[600px] lg:h-[760px]">
       <MapContainer
         center={[active.region.lat, active.region.lng]}
         zoom={5}
@@ -112,35 +112,49 @@ export const CoastalMap = ({ state, onSelect }: CoastalMapProps) => {
         })}
       </MapContainer>
 
-      {/* Floating legend */}
-      <div className="pointer-events-none absolute left-5 top-5 z-[400]">
-        <div className="glass-card pointer-events-auto p-4">
+      {/* Floating legend — hidden on mobile, shown md+ */}
+      <div className="pointer-events-none absolute left-3 top-3 z-[400] hidden md:block lg:left-5 lg:top-5">
+        <div className="glass-card pointer-events-auto p-3 lg:p-4">
           <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-accent">Legend</p>
           <div className="mt-2 space-y-1.5 text-xs">
-            <LegendDot color="hsl(158, 70%, 42%)" label="Low risk · 0–30" />
+            <LegendDot color="hsl(158, 70%, 42%)" label="Low · 0–30" />
             <LegendDot color="hsl(38, 95%, 55%)" label="Moderate · 30–70" />
             <LegendDot color="hsl(8, 85%, 58%)" label="High · 70–100" />
           </div>
-          <div className="mt-3 border-t border-border/60 pt-2 text-[10px] text-muted-foreground">
-            Halo size scales with composite risk score.
+          <div className="mt-2 border-t border-border/60 pt-2 text-[10px] text-muted-foreground">
+            Halo scales with risk.
           </div>
         </div>
       </div>
 
-      {/* Floating active card */}
-      <div className="pointer-events-none absolute right-5 top-5 z-[400] max-w-xs">
-        <div className="glass-card pointer-events-auto p-5">
+      {/* Floating active card — hidden on mobile, shown md+ */}
+      <div className="pointer-events-none absolute right-3 top-3 z-[400] hidden max-w-[260px] md:block lg:right-5 lg:top-5 lg:max-w-xs">
+        <div className="glass-card pointer-events-auto p-4 lg:p-5">
           <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-accent">Now viewing</p>
-          <p className="font-display mt-1 text-xl text-primary">{active.region.name}</p>
+          <p className="font-display mt-1 text-lg text-primary lg:text-xl">{active.region.name}</p>
           <p className="text-xs text-muted-foreground">{active.region.state}</p>
-          <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+          <p className="mt-2 line-clamp-3 text-xs leading-relaxed text-muted-foreground lg:mt-3 lg:line-clamp-none">
             {active.region.highlight}
           </p>
-          <div className="mt-4 grid grid-cols-2 gap-2 text-[11px]">
+          <div className="mt-3 grid grid-cols-2 gap-2 text-[11px] lg:mt-4">
             <Stat label="Risk" value={`${fmt.score(active.riskScore)} · ${active.riskLabel}`} color={RISK_COLOR(active.riskLabel)} />
             <Stat label="People" value={fmt.pop(active.population * 1000)} />
             <Stat label="Area" value={`${fmt.km2(active.areaKm2)} km²`} />
             <Stat label="USD loss" value={fmt.usd(active.economic)} />
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile compact strip — replaces stacked floating cards */}
+      <div className="pointer-events-none absolute inset-x-2 bottom-2 z-[400] md:hidden">
+        <div className="glass-card pointer-events-auto flex items-center justify-between gap-3 px-3 py-2.5">
+          <div className="min-w-0 flex-1">
+            <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-accent">Now viewing</p>
+            <p className="font-display truncate text-sm text-primary">{active.region.name}</p>
+          </div>
+          <div className="flex items-center gap-1.5 rounded-full px-2 py-1 text-[10px] font-semibold text-white" style={{ background: RISK_COLOR(active.riskLabel) }}>
+            <span className="h-1.5 w-1.5 rounded-full bg-white/90" />
+            {active.riskLabel} · {fmt.score(active.riskScore)}
           </div>
         </div>
       </div>
