@@ -47,7 +47,7 @@ export const Navbar = ({ theme, onToggleTheme }: NavbarProps) => {
           if (e.isIntersecting) setActive(`#${e.target.id}`);
         });
       },
-      { threshold: 0.35 }
+      { rootMargin: "-40% 0px -40% 0px", threshold: 0 }
     );
     ids.forEach((id) => {
       const el = document.getElementById(id);
@@ -119,14 +119,15 @@ export const Navbar = ({ theme, onToggleTheme }: NavbarProps) => {
           </a>
 
           {/* ── Desktop nav ── */}
-          <nav className="hidden items-center gap-1 md:flex">
+          <nav className="hidden items-center md:flex gap-1">
             {NAV_LINKS.map(({ href, label }) => {
               const isActive = activeLink === href;
               return (
                 <a
                   key={href}
                   href={href}
-                  className="relative rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200"
+                  onClick={() => setActive(href)}
+                  className="relative rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-200"
                   style={{
                     color: isActive
                       ? "hsl(188 100% 60%)"
@@ -143,15 +144,14 @@ export const Navbar = ({ theme, onToggleTheme }: NavbarProps) => {
                   }}
                 >
                   {label}
-                  {isActive && (
-                    <span
-                      className="absolute inset-x-3 bottom-1 h-0.5 rounded-full"
-                      style={{
-                        background: "linear-gradient(90deg, hsl(188 100% 50%), hsl(210 90% 52%))",
-                        boxShadow: "0 0 8px hsl(188 100% 50% / 0.6)",
-                      }}
-                    />
-                  )}
+                  <span
+                    className="absolute inset-x-3 bottom-1 h-0.5 rounded-full transition-opacity duration-200"
+                    style={{
+                      background: "linear-gradient(90deg, hsl(188 100% 50%), hsl(210 90% 52%))",
+                      boxShadow: "0 0 8px hsl(188 100% 50% / 0.6)",
+                      opacity: isActive ? 1 : 0,
+                    }}
+                  />
                 </a>
               );
             })}
