@@ -3,14 +3,26 @@ import { memo } from "react";
 interface WaveBackgroundProps {
   variant?: "hero" | "section" | "footer";
   className?: string;
+  isDark?: boolean;
 }
 
 /**
- * Layered animated SVG ocean waves — dark ocean palette.
- * Deep navy → midnight blue, visible against dark background.
+ * Layered animated SVG ocean waves — adaptive palette.
  */
-export const WaveBackground = memo(({ variant = "hero", className = "" }: WaveBackgroundProps) => {
+export const WaveBackground = memo(({ variant = "hero", className = "", isDark = true }: WaveBackgroundProps) => {
   const opacity = variant === "hero" ? 1 : variant === "section" ? 0.8 : 0.9;
+  
+  // Adaptive color palette based on theme
+  const colors = {
+    sky: isDark ? ["hsl(210, 60%, 18%)", "hsl(216, 70%, 10%)"] : ["hsl(205, 50%, 85%)", "hsl(210, 60%, 75%)"],
+    back: isDark ? ["hsl(210, 70%, 16%)", "hsl(216, 75%, 9%)"] : ["hsl(205, 60%, 80%)", "hsl(210, 65%, 70%)"],
+    azure: isDark ? ["hsl(200, 80%, 20%)", "hsl(210, 80%, 12%)"] : ["hsl(200, 70%, 75%)", "hsl(205, 75%, 65%)"],
+    mid: isDark ? ["hsl(205, 75%, 16%)", "hsl(215, 80%, 8%)"] : ["hsl(205, 70%, 70%)", "hsl(210, 75%, 60%)"],
+    front: isDark ? ["hsl(214, 65%, 10%)", "hsl(216, 70%, 6%)"] : ["hsl(210, 65%, 65%)", "hsl(214, 70%, 55%)"],
+    navy: isDark ? ["hsl(216, 72%, 7%)", "hsl(218, 75%, 5%)"] : ["hsl(214, 70%, 60%)", "hsl(216, 75%, 50%)"],
+    foam: isDark ? ["hsl(188, 100%, 50%)", "hsl(188, 100%, 50%)"] : ["hsl(188, 80%, 90%)", "hsl(188, 80%, 90%)"],
+  };
+
   return (
     <div
       aria-hidden
@@ -27,8 +39,8 @@ export const WaveBackground = memo(({ variant = "hero", className = "" }: WaveBa
         >
           <defs>
             <linearGradient id="wv-sky" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor="hsl(210, 60%, 18%)" stopOpacity="0.3" />
-              <stop offset="100%" stopColor="hsl(216, 70%, 10%)" stopOpacity="0.6" />
+              <stop offset="0%" stopColor={colors.sky[0]} stopOpacity="0.3" />
+              <stop offset="100%" stopColor={colors.sky[1]} stopOpacity="0.6" />
             </linearGradient>
           </defs>
           <path fill="url(#wv-sky)"
@@ -44,8 +56,8 @@ export const WaveBackground = memo(({ variant = "hero", className = "" }: WaveBa
         >
           <defs>
             <linearGradient id="wv-back" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor="hsl(210, 70%, 16%)" stopOpacity="0.55" />
-              <stop offset="100%" stopColor="hsl(216, 75%, 9%)" stopOpacity="0.85" />
+              <stop offset="0%" stopColor={colors.back[0]} stopOpacity="0.55" />
+              <stop offset="100%" stopColor={colors.back[1]} stopOpacity="0.85" />
             </linearGradient>
           </defs>
           <path fill="url(#wv-back)"
@@ -61,8 +73,8 @@ export const WaveBackground = memo(({ variant = "hero", className = "" }: WaveBa
         >
           <defs>
             <linearGradient id="wv-azure" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor="hsl(200, 80%, 20%)" stopOpacity="0.6" />
-              <stop offset="100%" stopColor="hsl(210, 80%, 12%)" stopOpacity="0.9" />
+              <stop offset="0%" stopColor={colors.azure[0]} stopOpacity="0.6" />
+              <stop offset="100%" stopColor={colors.azure[1]} stopOpacity="0.9" />
             </linearGradient>
           </defs>
           <path fill="url(#wv-azure)"
@@ -78,8 +90,8 @@ export const WaveBackground = memo(({ variant = "hero", className = "" }: WaveBa
         >
           <defs>
             <linearGradient id="wv-mid" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor="hsl(205, 75%, 16%)" stopOpacity="0.75" />
-              <stop offset="100%" stopColor="hsl(215, 80%, 8%)" stopOpacity="1" />
+              <stop offset="0%" stopColor={colors.mid[0]} stopOpacity="0.75" />
+              <stop offset="100%" stopColor={colors.mid[1]} stopOpacity="1" />
             </linearGradient>
           </defs>
           <path fill="url(#wv-mid)"
@@ -95,13 +107,13 @@ export const WaveBackground = memo(({ variant = "hero", className = "" }: WaveBa
         >
           <defs>
             <linearGradient id="wv-front" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor="hsl(214, 65%, 10%)" stopOpacity="0.95" />
-              <stop offset="100%" stopColor="hsl(216, 70%, 6%)" stopOpacity="1" />
+              <stop offset="0%" stopColor={colors.front[0]} stopOpacity="0.95" />
+              <stop offset="100%" stopColor={colors.front[1]} stopOpacity="1" />
             </linearGradient>
             {/* Subtle cyan crest foam */}
             <linearGradient id="wv-foam" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor="hsl(188, 100%, 50%)" stopOpacity="0.15" />
-              <stop offset="100%" stopColor="hsl(188, 100%, 50%)" stopOpacity="0" />
+              <stop offset="0%" stopColor={colors.foam[0]} stopOpacity="0.15" />
+              <stop offset="100%" stopColor={colors.foam[1]} stopOpacity="0" />
             </linearGradient>
           </defs>
           <path fill="url(#wv-front)"
@@ -121,8 +133,8 @@ export const WaveBackground = memo(({ variant = "hero", className = "" }: WaveBa
         >
           <defs>
             <linearGradient id="wv-navy" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor="hsl(216, 72%, 7%)" stopOpacity="0.98" />
-              <stop offset="100%" stopColor="hsl(218, 75%, 5%)" stopOpacity="1" />
+              <stop offset="0%" stopColor={colors.navy[0]} stopOpacity="0.98" />
+              <stop offset="100%" stopColor={colors.navy[1]} stopOpacity="1" />
             </linearGradient>
           </defs>
           <path fill="url(#wv-navy)"

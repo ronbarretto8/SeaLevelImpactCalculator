@@ -250,8 +250,8 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Only show waves in dark mode — in light mode the section bg is sufficient */}
-        {isDark && <WaveBackground variant="section" className="z-0 opacity-50" />}
+        {/* Show waves in both modes now, WaveBackground handles the theme */}
+        <WaveBackground variant="section" className="z-0 opacity-50" isDark={isDark} />
       </section>
 
       {/* ════════════════════════════════════════
@@ -304,7 +304,7 @@ const Index = () => {
           </div>
         </div>
 
-        {isDark && <WaveBackground variant="footer" className="z-0 opacity-60" />}
+        <WaveBackground variant="footer" className="z-0 opacity-60" isDark={isDark} />
 
         <footer
           className="section-padding relative z-10 mx-auto max-w-[1520px] border-t pb-8 pt-10 text-xs text-muted-foreground"
