@@ -131,11 +131,17 @@ const Index = () => {
             {/* Stats */}
             <div className="mt-16 flex flex-wrap items-center justify-center gap-8 sm:gap-14">
               {[["8","Coastal regions"],["3","IPCC scenarios"],["100%","Reproducible"]].map(([big, small], i) => (
-                <div key={i} className="text-center">
-                  <p className="font-mono-num font-display text-3xl font-bold sm:text-4xl" style={{ color: "hsl(188 100% 62%)", textShadow: "0 0 24px hsl(188 100% 50%/0.4)" }}>
+                <div 
+                  key={i} 
+                  className="group text-center cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-110 active:scale-90"
+                >
+                  <p 
+                    className="font-mono-num font-display text-3xl font-bold sm:text-4xl transition-colors duration-300 group-hover:brightness-125" 
+                    style={{ color: "hsl(188 100% 62%)", textShadow: "0 0 24px hsl(188 100% 50%/0.4)" }}
+                  >
                     {big}
                   </p>
-                  <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.16em]" style={{ color: "hsl(210 20% 60%)" }}>
+                  <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.16em] transition-colors duration-300 group-hover:text-white/80" style={{ color: "hsl(210 20% 60%)" }}>
                     {small}
                   </p>
                 </div>
