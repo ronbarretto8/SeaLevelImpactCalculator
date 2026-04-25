@@ -47,6 +47,20 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        ocean: {
+          deep: "hsl(var(--ocean-deep))",
+          midnight: "hsl(var(--ocean-midnight))",
+          blue: "hsl(var(--ocean-blue))",
+          bright: "hsl(var(--ocean-bright))",
+          cyan: "hsl(var(--ocean-cyan))",
+          foam: "hsl(var(--ocean-foam))",
+        },
+        risk: {
+          low: "hsl(var(--risk-low))",
+          mod: "hsl(var(--risk-mod))",
+          high: "hsl(var(--risk-high))",
+        },
+        coral: "hsl(var(--coral))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
