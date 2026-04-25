@@ -159,6 +159,13 @@ export const CoastalMap = ({ state, onSelect }: CoastalMapProps) => {
           </div>
         </div>
       </div>
+
+      {/* Attribution — compact, non-overlapping */}
+      <div className="pointer-events-none absolute bottom-1 right-2 z-[400] hidden md:block">
+        <span className="rounded-md bg-white/75 px-1.5 py-0.5 text-[9px] text-muted-foreground backdrop-blur-sm">
+          Tiles © Esri · Leaflet
+        </span>
+      </div>
     </div>
   );
 };
