@@ -36,6 +36,7 @@ export const CoastalMap = ({ state, onSelect }: CoastalMapProps) => {
         className="absolute inset-0"
         style={{ background: "hsl(195, 80%, 92%)" }}
         worldCopyJump
+        attributionControl={false}
       >
         <TileLayer
           attribution='Tiles © Esri — Source: Esri, USGS, NOAA · Atlas dataset © Climate Intelligence Lab'
