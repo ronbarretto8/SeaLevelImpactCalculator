@@ -14,6 +14,7 @@ import { CoastalMap }      from "@/components/atlas/CoastalMap";
 import { WaveBackground }  from "@/components/atlas/WaveBackground";
 import { HeroBackground }  from "@/components/atlas/HeroBackground";
 import { Navbar }          from "@/components/atlas/Navbar";
+import { CinematicAudio }  from "@/components/atlas/CinematicAudio";
 import { useTheme }        from "@/hooks/useTheme";
 import heroOcean from "@/assets/hero-ocean.jpg";
 
@@ -330,6 +331,9 @@ const Index = () => {
           </div>
         </footer>
       </section>
+
+      {/* Invisible Background Audio */}
+      <CinematicAudio />
     </div>
   );
 };

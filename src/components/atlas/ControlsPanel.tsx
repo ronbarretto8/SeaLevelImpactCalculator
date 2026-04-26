@@ -2,6 +2,7 @@ import { Slider } from "@/components/ui/slider";
 import { AtlasState, DEFAULT_STATE } from "@/utils/calculateImpact";
 import { REGIONS, SCENARIOS, ScenarioKey } from "@/data/regions";
 import { RotateCcw, Waves, Building2, Users, MapPin } from "lucide-react";
+import { sfx } from "@/utils/sfx";
 
 interface ControlsPanelProps {
   state: AtlasState;
@@ -22,7 +23,7 @@ export const ControlsPanel = ({ state, onChange }: ControlsPanelProps) => {
           <h3 className="font-display mt-1 text-xl text-foreground">Calibrate the model</h3>
         </div>
         <button
-          onClick={() => onChange(DEFAULT_STATE)}
+          onClick={() => { sfx.playClick(); onChange(DEFAULT_STATE); }}
           className="flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium text-muted-foreground transition-all hover:border-primary/40 hover:text-foreground"
           style={{ background: "hsl(var(--muted) / 0.5)", borderColor: "hsl(var(--border))" }}
         >
@@ -40,7 +41,7 @@ export const ControlsPanel = ({ state, onChange }: ControlsPanelProps) => {
             return (
               <button
                 key={r.id}
-                onClick={() => update({ region: r.name })}
+                onClick={() => { sfx.playClick(); update({ region: r.name }); }}
                 className="rounded-xl border px-2.5 py-2 text-xs font-medium transition-all duration-200 hover:scale-[1.02]"
                 style={active ? {
                   background: "hsl(var(--primary) / 0.12)",
@@ -74,7 +75,7 @@ export const ControlsPanel = ({ state, onChange }: ControlsPanelProps) => {
             return (
               <button
                 key={k}
-                onClick={() => update({ scenario: k })}
+                onClick={() => { sfx.playClick(); update({ scenario: k }); }}
                 className="rounded-xl border py-2.5 text-xs font-semibold transition-all duration-200 hover:scale-[1.02]"
                 style={active ? {
                   background: colors.bg,
@@ -130,6 +131,6 @@ const SliderRow = ({
         {value.toFixed(2)}{unit}
       </span>
     </div>
-    <Slider value={[value]} min={min} max={max} step={step} onValueChange={(v) => onChange(v[0])} className="cursor-pointer" />
+    <Slider value={[value]} min={min} max={max} step={step} onValueChange={(v) => { sfx.playTick(); onChange(v[0]); }} className="cursor-pointer" />
   </div>
 );
