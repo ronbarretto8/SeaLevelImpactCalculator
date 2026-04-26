@@ -7,7 +7,7 @@ export const CinematicAudio = () => {
   useEffect(() => {
     const playAudio = () => {
       if (audioRef.current) {
-        audioRef.current.volume = 0.08; // Pleasant background volume
+        audioRef.current.volume = 0.05; // Slightly reduced to balance SFX
         audioRef.current.play().catch(() => {
           // If browser blocks initial autoplay, this ensures it starts on first interaction
           console.log("Autoplay blocked by browser. Waiting for interaction.");
