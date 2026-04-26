@@ -38,8 +38,8 @@ export const CinematicAudio = () => {
     source.buffer = buffer;
     source.loop = true;
     
-    // Pleasant background volume (5%)
-    gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+    // Pleasant background volume (7%)
+    gain.gain.setValueAtTime(0.07, audioCtx.currentTime);
     
     source.connect(gain);
     gain.connect(audioCtx.destination);
