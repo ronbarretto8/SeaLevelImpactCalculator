@@ -18,11 +18,10 @@ export const CinematicAudio = () => {
         playPromise
           .then(() => {
             setHasStarted(true);
-            // Smooth fade-in over 4 seconds to an even softer volume
             let vol = 0;
-            const maxVol = 0.06; // Increased to 6% volume
+            const maxVol = 0.06; // 6% volume
             const fadeInterval = setInterval(() => {
-              vol += 0.002;
+              vol += 0.006; // Faster increment (0 to 6% in ~2 seconds)
               if (vol >= maxVol) {
                 clearInterval(fadeInterval);
                 if (audioRef.current) audioRef.current.volume = maxVol;
@@ -30,30 +29,14 @@ export const CinematicAudio = () => {
                 if (audioRef.current) audioRef.current.volume = vol;
               }
             }, 200);
-            
-            // Remove listeners once successfully started
-            document.removeEventListener("click", attemptPlay);
-            document.removeEventListener("touchstart", attemptPlay);
           })
           .catch((err) => {
-            // Autoplay blocked by browser policy (expected).
-            // The listeners will catch the user's first interaction.
-            console.log("Waiting for user interaction to start audio.");
+            console.log("Autoplay blocked by browser policy:", err);
           });
       }
     };
 
-    // Attempt to play immediately (works if browser allows, e.g. after refresh)
     attemptPlay();
-
-    // Fallback: attach to the very first click or touch ANYWHERE on the document
-    document.addEventListener("click", attemptPlay);
-    document.addEventListener("touchstart", attemptPlay);
-    
-    return () => {
-      document.removeEventListener("click", attemptPlay);
-      document.removeEventListener("touchstart", attemptPlay);
-    };
   }, [hasStarted]);
 
   // Pause audio when switching tabs
@@ -64,7 +47,6 @@ export const CinematicAudio = () => {
       if (document.hidden) {
         audioRef.current.pause();
       } else if (hasStarted) {
-        // Only resume if the user had already triggered the initial playback
         audioRef.current.play().catch(console.error);
       }
     };
@@ -79,6 +61,7 @@ export const CinematicAudio = () => {
     <audio
       ref={audioRef}
       loop
+      autoPlay
       src={udioTrack}
       preload="auto"
     />
