@@ -18,13 +18,17 @@ export const CinematicAudio = () => {
     // Attempt immediate play
     playAudio();
 
-    // Fallback: Ensure it starts on first click/touch if blocked initially
+    // Fallback: Ensure it starts on first interaction (click, touch, scroll, or mouse move)
     window.addEventListener("click", playAudio, { once: true });
     window.addEventListener("touchstart", playAudio, { once: true });
+    window.addEventListener("scroll", playAudio, { once: true });
+    window.addEventListener("mousemove", playAudio, { once: true });
     
     return () => {
       window.removeEventListener("click", playAudio);
       window.removeEventListener("touchstart", playAudio);
+      window.removeEventListener("scroll", playAudio);
+      window.removeEventListener("mousemove", playAudio);
     };
   }, []);
 
