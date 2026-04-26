@@ -1,62 +1,89 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import udioTrack from "@/assets/ambient-ocean-cinematic.mp3.mp3";
 
 export const CinematicAudio = () => {
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const [ctx, setCtx] = useState<AudioContext | null>(null);
+  const sourceRef = useRef<AudioBufferSourceNode | null>(null);
+  const gainRef = useRef<GainNode | null>(null);
+  const bufferRef = useRef<AudioBuffer | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
-    const playAudio = () => {
-      if (audioRef.current) {
-        audioRef.current.volume = 0.05; // Slightly reduced to balance SFX
-        audioRef.current.play().catch(() => {
-          // If browser blocks initial autoplay, this ensures it starts on first interaction
-          console.log("Autoplay blocked by browser. Waiting for interaction.");
-        });
-      }
+    const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+    const newCtx = new AudioContextClass();
+    setCtx(newCtx);
+
+    // Load the audio file as a buffer to avoid the OS "Media Session" notification shade
+    fetch(udioTrack)
+      .then(res => res.arrayBuffer())
+      .then(data => newCtx.decodeAudioData(data))
+      .then(buffer => {
+        bufferRef.current = buffer;
+        // Attempt to start immediately
+        startPlayback(newCtx, buffer);
+      })
+      .catch(err => console.error("Web Audio background error:", err));
+
+    return () => {
+      newCtx.close();
     };
+  }, []);
 
-    // Attempt immediate play
-    playAudio();
+  const startPlayback = (audioCtx: AudioContext, buffer: AudioBuffer) => {
+    if (sourceRef.current) return;
 
-    // Fallback: Ensure it starts on first interaction (click, touch, scroll, or mouse move)
-    window.addEventListener("click", playAudio, { once: true });
-    window.addEventListener("touchstart", playAudio, { once: true });
-    window.addEventListener("scroll", playAudio, { once: true });
-    window.addEventListener("mousemove", playAudio, { once: true });
+    const source = audioCtx.createBufferSource();
+    const gain = audioCtx.createGain();
     
-    return () => {
-      window.removeEventListener("click", playAudio);
-      window.removeEventListener("touchstart", playAudio);
-      window.removeEventListener("scroll", playAudio);
-      window.removeEventListener("mousemove", playAudio);
-    };
-  }, []);
+    source.buffer = buffer;
+    source.loop = true;
+    
+    // Pleasant background volume (5%)
+    gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+    
+    source.connect(gain);
+    gain.connect(audioCtx.destination);
+    
+    source.start(0);
+    sourceRef.current = source;
+    gainRef.current = gain;
+    setIsPlaying(true);
+  };
 
-  // Pause audio when switching tabs
   useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (!audioRef.current) return;
-      if (document.hidden) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play().catch(() => {});
+    if (!ctx) return;
+
+    const handleInteraction = () => {
+      if (ctx.state === "suspended") {
+        ctx.resume();
+      }
+      if (bufferRef.current && !isPlaying) {
+        startPlayback(ctx, bufferRef.current);
       }
     };
 
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    const handleVisibility = () => {
+      if (document.hidden) {
+        ctx.suspend();
+      } else {
+        ctx.resume();
+      }
     };
-  }, []);
 
-  return (
-    <audio
-      ref={audioRef}
-      loop
-      autoPlay
-      playsInline
-      src={udioTrack}
-      preload="auto"
-    />
-  );
+    window.addEventListener("click", handleInteraction);
+    window.addEventListener("touchstart", handleInteraction);
+    window.addEventListener("scroll", handleInteraction);
+    window.addEventListener("mousemove", handleInteraction);
+    document.addEventListener("visibilitychange", handleVisibility);
+
+    return () => {
+      window.removeEventListener("click", handleInteraction);
+      window.removeEventListener("touchstart", handleInteraction);
+      window.removeEventListener("scroll", handleInteraction);
+      window.removeEventListener("mousemove", handleInteraction);
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
+  }, [ctx, isPlaying]);
+
+  return null; // No <audio> tag means no "Media Session" pop-up on mobile lock screens
 };
