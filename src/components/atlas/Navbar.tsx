@@ -8,15 +8,15 @@ interface NavbarProps {
 }
 
 const NAV_LINKS = [
-  { href: "#overview",  label: "Overview"  },
+  { href: "#overview", label: "Overview" },
   { href: "#scenarios", label: "Scenarios" },
-  { href: "#atlas",     label: "Atlas"     },
+  { href: "#atlas", label: "Atlas" },
 ];
 
 export const Navbar = ({ theme, onToggleTheme }: NavbarProps) => {
-  const [scrolled, setScrolled]   = useState(false);
-  const [menuOpen, setMenuOpen]   = useState(false);
-  const [activeLink, setActive]   = useState("#overview");
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [activeLink, setActive] = useState("#overview");
   const menuRef = useRef<HTMLDivElement>(null);
   const isClickScrolling = useRef(false);
   const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
@@ -110,7 +110,7 @@ export const Navbar = ({ theme, onToggleTheme }: NavbarProps) => {
             </div>
             <div>
               <p
-                className="text-[13px] sm:text-sm font-bold leading-none tracking-tight whitespace-nowrap"
+                className="text-sm font-bold leading-none tracking-tight"
                 style={{
                   background: "linear-gradient(135deg, hsl(188 100% 60%), hsl(210 90% 52%))",
                   WebkitBackgroundClip: "text",

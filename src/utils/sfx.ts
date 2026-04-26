@@ -50,21 +50,21 @@ class SFX {
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
 
-      osc.type = "triangle"; // Sharper than sine for better audibility
-      // Increased starting frequency for better clarity
-      osc.frequency.setValueAtTime(800, this.ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(100, this.ctx.currentTime + 0.08);
+      osc.type = "sine";
+      // Increased starting frequency from 300 to 600 so it doesn't get lost on laptop speakers
+      osc.frequency.setValueAtTime(600, this.ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(80, this.ctx.currentTime + 0.06);
 
       gain.gain.setValueAtTime(0, this.ctx.currentTime);
-      // Increased gain significantly to 0.4
-      gain.gain.linearRampToValueAtTime(0.4, this.ctx.currentTime + 0.005); 
-      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.08);
+      // Increased gain from 0.08 to 0.2 to make the button click audible
+      gain.gain.linearRampToValueAtTime(0.2, this.ctx.currentTime + 0.005); 
+      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.06);
 
       osc.connect(gain);
       gain.connect(this.ctx.destination);
 
       osc.start();
-      osc.stop(this.ctx.currentTime + 0.08);
+      osc.stop(this.ctx.currentTime + 0.06);
     } catch (e) {
       // Ignore
     }

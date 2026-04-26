@@ -42,7 +42,7 @@ export const ControlsPanel = ({ state, onChange }: ControlsPanelProps) => {
               <button
                 key={r.id}
                 onClick={() => { sfx.playClick(); update({ region: r.name }); }}
-                className="rounded-xl border px-3 py-2.5 sm:px-2.5 sm:py-2 text-xs font-medium transition-all duration-200 hover:scale-[1.02]"
+                className="rounded-xl border px-2.5 py-2 text-xs font-medium transition-all duration-200 hover:scale-[1.02]"
                 style={active ? {
                   background: "hsl(var(--primary) / 0.12)",
                   borderColor: "hsl(var(--primary) / 0.45)",
@@ -68,9 +68,9 @@ export const ControlsPanel = ({ state, onChange }: ControlsPanelProps) => {
           {(Object.keys(SCENARIOS) as ScenarioKey[]).map((k) => {
             const active = state.scenario === k;
             const colors = {
-              optimistic: { c: "hsl(var(--risk-low))",  bg: "hsl(158 85% 42% / 0.12)", bd: "hsl(158 85% 42% / 0.4)" },
-              moderate:   { c: "hsl(var(--risk-mod))",  bg: "hsl(38 100% 55% / 0.12)", bd: "hsl(38 100% 55% / 0.4)" },
-              severe:     { c: "hsl(var(--risk-high))", bg: "hsl(4 90% 60% / 0.12)",   bd: "hsl(4 90% 60% / 0.4)" },
+              optimistic: { c: "hsl(var(--risk-low))", bg: "hsl(158 85% 42% / 0.12)", bd: "hsl(158 85% 42% / 0.4)" },
+              moderate: { c: "hsl(var(--risk-mod))", bg: "hsl(38 100% 55% / 0.12)", bd: "hsl(38 100% 55% / 0.4)" },
+              severe: { c: "hsl(var(--risk-high))", bg: "hsl(4 90% 60% / 0.12)", bd: "hsl(4 90% 60% / 0.4)" },
             }[k];
             return (
               <button
@@ -99,8 +99,8 @@ export const ControlsPanel = ({ state, onChange }: ControlsPanelProps) => {
 
       {/* Sliders */}
       <div className="space-y-5">
-        <SliderRow icon={<Waves className="h-3.5 w-3.5" />}    label="Sea level rise"            unit="m"  value={state.seaLevel}          min={0}   max={3} step={0.05} onChange={(v) => update({ seaLevel: v })} />
-        <SliderRow icon={<Users className="h-3.5 w-3.5" />}    label="Population density"        unit="×"  value={state.popDensity}         min={0.5} max={2} step={0.05} onChange={(v) => update({ popDensity: v })} />
+        <SliderRow icon={<Waves className="h-3.5 w-3.5" />} label="Sea level rise" unit="m" value={state.seaLevel} min={0} max={3} step={0.05} onChange={(v) => update({ seaLevel: v })} />
+        <SliderRow icon={<Users className="h-3.5 w-3.5" />} label="Population density" unit="×" value={state.popDensity} min={0.5} max={2} step={0.05} onChange={(v) => update({ popDensity: v })} />
         <SliderRow icon={<Building2 className="h-3.5 w-3.5" />} label="Infrastructure sensitivity" unit="×" value={state.infraSensitivity} min={0.5} max={2} step={0.05} onChange={(v) => update({ infraSensitivity: v })} />
       </div>
     </div>
