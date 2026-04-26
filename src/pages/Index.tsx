@@ -16,6 +16,7 @@ import { HeroBackground }  from "@/components/atlas/HeroBackground";
 import { Navbar }          from "@/components/atlas/Navbar";
 import { CinematicAudio }  from "@/components/atlas/CinematicAudio";
 import { useTheme }        from "@/hooks/useTheme";
+import { sfx }             from "@/utils/sfx";
 import heroOcean from "@/assets/hero-ocean.jpg";
 
 /* ── Scroll-reveal ── */
@@ -132,9 +133,10 @@ const Index = () => {
             {/* Stats */}
             <div className="mt-16 flex flex-wrap items-center justify-center gap-8 sm:gap-14">
               {[["8","Coastal regions"],["3","IPCC scenarios"],["100%","Reproducible"]].map(([big, small], i) => (
-                <div 
+                <button 
                   key={i} 
-                  className="group text-center cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-110 active:scale-90"
+                  onClick={() => sfx.playClick()}
+                  className="group text-center transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-110 active:scale-90"
                 >
                   <p 
                     className="font-mono-num font-display text-3xl font-bold sm:text-4xl transition-colors duration-300 group-hover:brightness-125" 
@@ -145,7 +147,7 @@ const Index = () => {
                   <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.16em] transition-colors duration-300 group-hover:text-white/80" style={{ color: "hsl(210 20% 60%)" }}>
                     {small}
                   </p>
-                </div>
+                </button>
               ))}
             </div>
           </div>
@@ -168,9 +170,10 @@ const Index = () => {
             { icon: <Shield className="h-4 w-4" />,     title: "IPCC AR6 aligned",   body: "RCP 2.6, 4.5 and 8.5 — calibrated for policy use.",        delay: "70ms" },
             { icon: <Zap className="h-4 w-4" />,        title: "Decision-ready",     body: "Auto-generated strategic response playbooks per region.",    delay: "140ms" },
           ].map((f) => (
-            <div
+            <button
               key={f.title}
-              className="reveal flex items-start gap-4 rounded-2xl p-4 sm:p-5 transition-all duration-300 hover:-translate-y-1"
+              onClick={() => sfx.playClick()}
+              className="reveal flex items-start text-left gap-4 rounded-2xl p-4 sm:p-5 transition-all duration-300 hover:-translate-y-1 active:scale-[0.98]"
               style={{
                 background: isDark ? "hsl(214 50% 9%/0.8)" : "hsl(0 0% 100%/0.85)",
                 border: `1px solid ${isDark ? "hsl(214 30% 20%)" : "hsl(210 35% 85%)"}`,
@@ -189,7 +192,7 @@ const Index = () => {
                 <p className="text-sm font-semibold text-foreground">{f.title}</p>
                 <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{f.body}</p>
               </div>
-            </div>
+            </button>
           ))}
         </div>
       </section>
@@ -217,7 +220,11 @@ const Index = () => {
 
               {/* Added info boxes to balance the layout */}
               <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:max-w-xl">
-                <div className="group rounded-2xl p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg" style={{ border: "1px solid hsl(var(--border) / 0.5)", background: "hsl(var(--muted) / 0.2)" }}>
+                <button 
+                  onClick={() => sfx.playClick()}
+                  className="group text-left rounded-2xl p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg active:scale-[0.98]" 
+                  style={{ border: "1px solid hsl(var(--border) / 0.5)", background: "hsl(var(--muted) / 0.2)" }}
+                >
                   <div className="mb-2 flex items-center gap-2">
                     <div className="flex h-6 w-6 items-center justify-center rounded-lg transition-transform duration-300 group-hover:scale-110" style={{ background: "hsl(var(--primary) / 0.1)", color: "hsl(var(--primary))" }}>
                       <Activity className="h-3 w-3" />
@@ -227,9 +234,13 @@ const Index = () => {
                   <p className="text-xs text-muted-foreground leading-relaxed transition-colors duration-300 group-hover:text-foreground/80">
                     Adjust environmental variables to instantly recalibrate economic and demographic risk models.
                   </p>
-                </div>
+                </button>
                 
-                <div className="group rounded-2xl p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg" style={{ border: "1px solid hsl(var(--border) / 0.5)", background: "hsl(var(--muted) / 0.2)" }}>
+                <button 
+                  onClick={() => sfx.playClick()}
+                  className="group text-left rounded-2xl p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg active:scale-[0.98]" 
+                  style={{ border: "1px solid hsl(var(--border) / 0.5)", background: "hsl(var(--muted) / 0.2)" }}
+                >
                   <div className="mb-2 flex items-center gap-2">
                     <div className="flex h-6 w-6 items-center justify-center rounded-lg transition-transform duration-300 group-hover:scale-110" style={{ background: "hsl(var(--primary) / 0.1)", color: "hsl(var(--primary))" }}>
                       <Zap className="h-3 w-3" />
@@ -239,7 +250,7 @@ const Index = () => {
                   <p className="text-xs text-muted-foreground leading-relaxed transition-colors duration-300 group-hover:text-foreground/80">
                     Vulnerability scores scale exponentially once critical coastal infrastructure thresholds are breached.
                   </p>
-                </div>
+                </button>
               </div>
             </div>
             <div className="reveal reveal-delay-2">
@@ -300,13 +311,18 @@ const Index = () => {
               { icon: <Building2 className="h-4 w-4" />, label: "Greatest economic stake", value: "Mumbai · Gujarat Gulf",   delay: "140ms" },
               { icon: <Waves className="h-4 w-4" />,     label: "Methodology",           value: "IPCC AR6 · RCP scenarios",  delay: "210ms" },
             ].map((c) => (
-              <div key={c.label} className="reveal premium-card p-5" style={{ transitionDelay: c.delay }}>
+              <button 
+                key={c.label} 
+                onClick={() => sfx.playClick()}
+                className="reveal premium-card p-5 text-left transition-all duration-300 hover:-translate-y-1 active:scale-[0.98]" 
+                style={{ transitionDelay: c.delay }}
+              >
                 <div className="mb-3 flex items-center gap-2" style={{ color: "hsl(var(--primary))" }}>
                   {c.icon}
                   <p className="text-[10px] font-semibold uppercase tracking-[0.18em]">{c.label}</p>
                 </div>
                 <p className="font-display text-sm text-foreground">{c.value}</p>
-              </div>
+              </button>
             ))}
           </div>
         </div>

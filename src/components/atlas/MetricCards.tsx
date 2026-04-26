@@ -1,5 +1,6 @@
 import { ImpactResult, fmt } from "@/utils/calculateImpact";
 import { Waves, MapPinned, Users, Coins } from "lucide-react";
+import { sfx } from "@/utils/sfx";
 
 interface MetricItem {
   icon: React.ReactNode;
@@ -56,8 +57,9 @@ export const MetricCards = ({ result }: { result: ImpactResult }) => {
 };
 
 const MetricCard = ({ item: m, delay }: { item: MetricItem; delay: number }) => (
-  <div
-    className="premium-card group relative overflow-hidden p-5 lg:p-6"
+  <button
+    onClick={() => sfx.playClick()}
+    className="premium-card group relative overflow-hidden p-5 lg:p-6 text-left w-full transition-all duration-200 active:scale-[0.98]"
     style={{ animationDelay: `${delay}ms` }}
   >
     {/* Top accent line */}
@@ -101,5 +103,5 @@ const MetricCard = ({ item: m, delay }: { item: MetricItem; delay: number }) => 
       {/* Sub */}
       <p className="mt-1 text-xs text-muted-foreground/70">{m.sub}</p>
     </div>
-  </div>
+  </button>
 );
