@@ -110,7 +110,7 @@ export const Navbar = ({ theme, onToggleTheme }: NavbarProps) => {
             </div>
             <div>
               <p
-                className="text-sm font-bold leading-none tracking-tight"
+                className="text-[13px] sm:text-sm font-bold leading-none tracking-tight whitespace-nowrap"
                 style={{
                   background: "linear-gradient(135deg, hsl(188 100% 60%), hsl(210 90% 52%))",
                   WebkitBackgroundClip: "text",

@@ -42,7 +42,7 @@ export const ControlsPanel = ({ state, onChange }: ControlsPanelProps) => {
               <button
                 key={r.id}
                 onClick={() => { sfx.playClick(); update({ region: r.name }); }}
-                className="rounded-xl border px-2.5 py-2 text-xs font-medium transition-all duration-200 hover:scale-[1.02]"
+                className="rounded-xl border px-3 py-2.5 sm:px-2.5 sm:py-2 text-xs font-medium transition-all duration-200 hover:scale-[1.02]"
                 style={active ? {
                   background: "hsl(var(--primary) / 0.12)",
                   borderColor: "hsl(var(--primary) / 0.45)",

@@ -20,9 +20,9 @@ export const CinematicAudio = () => {
             setHasStarted(true);
             // Smooth fade-in over 4 seconds to an even softer volume
             let vol = 0;
-            const maxVol = 0.02; // Reduced to 2% volume
+            const maxVol = 0.06; // Increased to 6% volume
             const fadeInterval = setInterval(() => {
-              vol += 0.001;
+              vol += 0.002;
               if (vol >= maxVol) {
                 clearInterval(fadeInterval);
                 if (audioRef.current) audioRef.current.volume = maxVol;
@@ -31,12 +31,13 @@ export const CinematicAudio = () => {
               }
             }, 200);
             
-            // Remove click listener once successfully started
+            // Remove listeners once successfully started
             document.removeEventListener("click", attemptPlay);
+            document.removeEventListener("touchstart", attemptPlay);
           })
           .catch((err) => {
             // Autoplay blocked by browser policy (expected).
-            // The click listener will catch the user's first interaction.
+            // The listeners will catch the user's first interaction.
             console.log("Waiting for user interaction to start audio.");
           });
       }
@@ -45,11 +46,13 @@ export const CinematicAudio = () => {
     // Attempt to play immediately (works if browser allows, e.g. after refresh)
     attemptPlay();
 
-    // Fallback: attach to the very first click ANYWHERE on the document
+    // Fallback: attach to the very first click or touch ANYWHERE on the document
     document.addEventListener("click", attemptPlay);
+    document.addEventListener("touchstart", attemptPlay);
     
     return () => {
       document.removeEventListener("click", attemptPlay);
+      document.removeEventListener("touchstart", attemptPlay);
     };
   }, [hasStarted]);
 
