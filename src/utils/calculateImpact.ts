@@ -69,11 +69,11 @@ export function calculateImpact(state: AtlasState, regionOverride?: Region): Imp
   const maxPop = Math.max(...allStats.map(r => r.pop), 0.001);
   const maxEcon = Math.max(...allStats.map(r => r.econ), 0.001);
 
-  const riskScore = Math.min(100, (
+  const riskScore = Math.min(100, Math.max(0, (
     (areaKm2 / maxArea) +
     (population / maxPop) +
     (economic / maxEcon)
-  ) / 3 * 100);
+  ) / 3 * (1 + (state.popDensity - 1) * 0.3 + (state.infraSensitivity - 1) * 0.3) * 100));
 
   const areaPct = (areaKm2 / region.baseArea) * 100;
 

@@ -70,6 +70,7 @@ export const RiskBar = ({ result }: { result: ImpactResult }) => {
               style={{ background: "var(--gradient-risk)" }}
             />
             {/* Animated fill */}
+            <div
               className="relative h-full rounded-full transition-all"
               style={{
                 width: `${result.riskScore}%`,
