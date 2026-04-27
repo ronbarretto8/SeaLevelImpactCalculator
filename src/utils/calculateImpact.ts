@@ -32,17 +32,32 @@ export function getRegionByName(name: string): Region {
   return REGIONS.find(r => r.name === name) ?? REGIONS[0];
 }
 
+const REGION_STATS: Record<string, { elevation: number, density: number, area: number, gdp: number }> = {
+  mumbai: { elevation: 2, density: 20000, area: 150, gdp: 500 },
+  chennai: { elevation: 3, density: 15000, area: 120, gdp: 300 },
+  kolkata: { elevation: 1.5, density: 24000, area: 180, gdp: 280 },
+  goa: { elevation: 4, density: 3000, area: 80, gdp: 150 },
+  kerala: { elevation: 3, density: 8000, area: 140, gdp: 200 },
+  sundarbans: { elevation: 1, density: 5000, area: 250, gdp: 50 },
+  odisha: { elevation: 2.5, density: 7000, area: 160, gdp: 120 },
+  gujarat: { elevation: 3.5, density: 6000, area: 130, gdp: 180 }
+};
+
 export function calculateImpact(state: AtlasState, regionOverride?: Region): ImpactResult {
   const region = regionOverride ?? getRegionByName(state.region);
   const scenarioMultiplier = SCENARIOS[state.scenario].multiplier;
+  const stats = REGION_STATS[region.id] || REGION_STATS.mumbai;
 
-  const areaKm2 = state.seaLevel * 15 * scenarioMultiplier;
+  const seaLevelRise = state.seaLevel * scenarioMultiplier;
+  
+  // Formulas as requested
+  const areaKm2 = stats.area * (seaLevelRise / stats.elevation);
+  const population = (areaKm2 * stats.density * state.popDensity) / 1000; // in thousands
+  const economic = areaKm2 * stats.gdp * state.infraSensitivity; // in millions
+
   const areaPct = (areaKm2 / region.baseArea) * 100;
-  const population = areaKm2 * state.popDensity * 0.5; // thousands
-  const economic = population * state.infraSensitivity * 10; // USD millions
-
   const popRatio = Math.min(population / region.basePopulation, 1);
-  const econRatio = Math.min(economic / 500, 1);
+  const econRatio = Math.min(economic / (stats.area * stats.gdp), 1);
 
   const riskScore = Math.min(
     100,
