@@ -70,23 +70,26 @@ export const RiskBar = ({ result }: { result: ImpactResult }) => {
               style={{ background: "var(--gradient-risk)" }}
             />
             {/* Animated fill */}
-            <div
-              className="relative h-full rounded-full transition-all duration-700"
+              className="relative h-full rounded-full transition-all"
               style={{
                 width: `${result.riskScore}%`,
                 background: "var(--gradient-risk)",
                 boxShadow: `0 0 20px ${tone.glow}`,
+                transitionDuration: "1s",
+                transitionTimingFunction: "cubic-bezier(0.65, 0, 0.35, 1)",
               }}
             />
           </div>
 
           {/* Thumb indicator */}
           <div
-            className="absolute top-1/2 h-5 w-5 -translate-y-1/2 rounded-full border-2 border-background bg-background transition-all duration-700"
+            className="absolute top-1/2 h-5 w-5 -translate-y-1/2 rounded-full border-2 border-background bg-background transition-all"
             style={{
               left: `calc(${result.riskScore}% - 10px)`,
               boxShadow: `0 0 0 2px ${tone.color}, 0 4px 12px ${tone.glow}`,
               background: tone.color,
+              transitionDuration: "1s",
+              transitionTimingFunction: "cubic-bezier(0.65, 0, 0.35, 1)",
             }}
           />
         </div>

@@ -108,7 +108,7 @@ export const ImpactChart = ({ state }: { state: AtlasState }) => {
           rx={radius}
           style={{
             filter: ia ? `drop-shadow(0 0 12px ${metric.color}66)` : undefined,
-            transition: "fill 0.4s ease, filter 0.4s ease",
+            transition: "all 0.8s cubic-bezier(0.65, 0, 0.35, 1)",
           }}
         />
         {ia && height > 18 && (
