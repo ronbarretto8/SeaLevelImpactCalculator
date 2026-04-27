@@ -103,12 +103,12 @@ export const ImpactChart = ({ state }: { state: AtlasState }) => {
         )}
         <rect
           x={x} y={y}
-          width={width} height={height > 0 ? height : 0}
+          width={width} height={Math.max(0, height)}
           fill={`url(#${gradId})`}
           rx={radius}
           style={{
-            filter: ia ? `drop-shadow(0 0 10px ${metric.color}66)` : undefined,
-            transition: "all 0.4s cubic-bezier(0.22,1,0.36,1)",
+            filter: ia ? `drop-shadow(0 0 12px ${metric.color}66)` : undefined,
+            transition: "fill 0.4s ease, filter 0.4s ease",
           }}
         />
         {ia && height > 18 && (
