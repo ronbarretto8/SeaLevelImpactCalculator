@@ -4,6 +4,7 @@ import {
 } from "recharts";
 import { calculateAllRegions, AtlasState } from "@/utils/calculateImpact";
 import { useState } from "react";
+import { sfx } from "@/utils/sfx";
 
 type Metric = "area" | "population" | "economic" | "risk";
 
@@ -141,12 +142,12 @@ export const ImpactChart = ({ state }: { state: AtlasState }) => {
             {METRICS.map((m) => (
               <button
                 key={m.key}
-                onClick={() => setActive(m.key)}
-                className="rounded-xl px-3.5 py-2 text-xs font-semibold transition-all duration-200"
+                onClick={() => { sfx.playClick(); setActive(m.key); }}
+                className="rounded-xl px-3.5 py-2 text-xs font-semibold transition-all duration-300 hover:scale-[1.04] active:scale-95"
                 style={active === m.key ? {
                   background: m.color,
                   color: "hsl(214 90% 6%)",
-                  boxShadow: `0 2px 12px ${m.color}55`,
+                  boxShadow: `0 4px 16px ${m.color}66`,
                 } : {
                   background: "transparent",
                   color: "hsl(var(--muted-foreground))",
