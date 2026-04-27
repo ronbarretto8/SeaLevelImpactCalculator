@@ -55,14 +55,27 @@ export function calculateImpact(state: AtlasState, regionOverride?: Region): Imp
   const population = (areaKm2 * stats.density * state.popDensity) / 1000; // in thousands
   const economic = areaKm2 * stats.gdp * state.infraSensitivity; // in millions
 
-  const areaPct = (areaKm2 / region.baseArea) * 100;
-  const popRatio = Math.min(population / region.basePopulation, 1);
-  const econRatio = Math.min(economic / (stats.area * stats.gdp), 1);
+  // To make risk relative, we must calculate the stats for ALL regions at this state
+  const allStats = REGIONS.map(r => {
+    const s = REGION_STATS[r.id] || REGION_STATS.mumbai;
+    const sl = state.seaLevel * scenarioMultiplier;
+    const area = s.area * (sl / s.elevation);
+    const pop = (area * s.density * state.popDensity) / 1000;
+    const econ = area * s.gdp * state.infraSensitivity;
+    return { area, pop, econ };
+  });
 
-  const riskScore = Math.min(
-    100,
-    (areaPct * 0.4) + (popRatio * 100 * 0.35) + (econRatio * 100 * 0.25)
-  );
+  const maxArea = Math.max(...allStats.map(r => r.area), 0.001);
+  const maxPop = Math.max(...allStats.map(r => r.pop), 0.001);
+  const maxEcon = Math.max(...allStats.map(r => r.econ), 0.001);
+
+  const riskScore = Math.min(100, (
+    (areaKm2 / maxArea) +
+    (population / maxPop) +
+    (economic / maxEcon)
+  ) / 3 * 100);
+
+  const areaPct = (areaKm2 / region.baseArea) * 100;
 
   let riskLabel: ImpactResult["riskLabel"] = "Low";
   if (riskScore >= 70) riskLabel = "High";
