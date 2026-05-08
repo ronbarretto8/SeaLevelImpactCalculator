@@ -8,10 +8,10 @@ interface HeroBackgroundProps {
 }
 
 /**
- * Immersive hero background with cinematic-grade seamless looping.
- * - Uses a deep 5-second crossfade buffer for an invisible loop transition.
- * - Applies a subtle Gaussian blur pulse during the crossfade to mask any frame mismatches.
- * - Performance optimized for 4K video playback.
+ * Immersive hero background with a focused seamless loop.
+ * - Restored original video pace with a crisp 1.5s crossfade.
+ * - Removed cinematic effects (blur/lifts) to keep the video sharp and fast-paced.
+ * - Dual-video stack ensures no blackouts or jumps at the loop point.
  */
 export const HeroBackground = ({ imageUrl, videoUrl }: HeroBackgroundProps) => {
   const [activeVideo, setActiveVideo] = useState<1 | 2>(1);
@@ -23,7 +23,7 @@ export const HeroBackground = ({ imageUrl, videoUrl }: HeroBackgroundProps) => {
   // Initial Playback
   useEffect(() => {
     if (videoUrl && video1Ref.current) {
-      video1Ref.current.play().catch(err => console.warn("Playback blocked:", err));
+      video1Ref.current.play().catch(() => {});
     }
   }, [videoUrl]);
 
@@ -35,7 +35,7 @@ export const HeroBackground = ({ imageUrl, videoUrl }: HeroBackgroundProps) => {
     const v2 = video2Ref.current;
     if (!v1 || !v2) return;
 
-    const CROSSFADE_WINDOW = 5; // Deep 5-second blend for cinematic smoothness
+    const CROSSFADE_WINDOW = 1.5; // Crisper 1.5s blend to maintain original pace
 
     const monitorLoop = () => {
       const current = activeVideo === 1 ? v1 : v2;
@@ -44,40 +44,37 @@ export const HeroBackground = ({ imageUrl, videoUrl }: HeroBackgroundProps) => {
       if (current.duration && !isTransitioning) {
         const remaining = current.duration - current.currentTime;
         
-        // Initiate crossfade 5 seconds before the loop ends
+        // Initiate crossfade 1.5 seconds before the loop ends
         if (remaining <= CROSSFADE_WINDOW && remaining > 0) {
           setIsTransitioning(true);
           
-          // Prepare next video at start and play behind current
+          // Play next video behind current
           next.currentTime = 0;
           next.play().then(() => {
-            // Wait a brief moment to ensure playback is stable
+            setActiveVideo(activeVideo === 1 ? 2 : 1);
+            
+            // End transition state
             setTimeout(() => {
-              setActiveVideo(activeVideo === 1 ? 2 : 1);
-              
-              // End transition state after the fade duration
-              setTimeout(() => {
-                setIsTransitioning(false);
-              }, CROSSFADE_WINDOW * 1000);
-            }, 150);
+              setIsTransitioning(false);
+            }, CROSSFADE_WINDOW * 1000);
           }).catch(console.error);
         }
       }
     };
 
-    const checker = setInterval(monitorLoop, 300);
+    const checker = setInterval(monitorLoop, 200);
     return () => clearInterval(checker);
   }, [videoUrl, activeVideo, isTransitioning, videoError]);
 
   return (
     <div className="absolute inset-0 overflow-hidden bg-[#01040a]" aria-hidden>
-      {/* Background Layer (Image fallback + dark depth) */}
+      {/* Background Layer (Image fallback) */}
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ 
           backgroundImage: `url(${imageUrl})`,
-          opacity: 0.25,
-          transition: "opacity 1.5s ease"
+          opacity: (videoUrl && !videoError) ? 0 : 1,
+          transition: "opacity 1s ease"
         }}
       />
 
@@ -94,9 +91,8 @@ export const HeroBackground = ({ imageUrl, videoUrl }: HeroBackgroundProps) => {
           style={{ 
             opacity: activeVideo === 1 ? 1 : 0,
             zIndex: activeVideo === 1 ? 2 : 1,
-            transition: "opacity 5000ms cubic-bezier(0.4, 0, 0.2, 1), filter 5000ms ease",
-            filter: isTransitioning ? "blur(8px) brightness(1.1)" : "blur(0px) brightness(1)",
-            willChange: "opacity, filter"
+            transition: "opacity 1500ms ease-in-out",
+            willChange: "opacity"
           }}
         />
       )}
@@ -114,14 +110,13 @@ export const HeroBackground = ({ imageUrl, videoUrl }: HeroBackgroundProps) => {
           style={{ 
             opacity: activeVideo === 2 ? 1 : 0,
             zIndex: activeVideo === 2 ? 2 : 1,
-            transition: "opacity 5000ms cubic-bezier(0.4, 0, 0.2, 1), filter 5000ms ease",
-            filter: isTransitioning ? "blur(8px) brightness(1.1)" : "blur(0px) brightness(1)",
-            willChange: "opacity, filter"
+            transition: "opacity 1500ms ease-in-out",
+            willChange: "opacity"
           }}
         />
       )}
 
-      {/* Vignette & Gradients (Reduced opacity for better video visibility) */}
+      {/* Overlays */}
       <div
         className="absolute inset-0 z-[10]"
         style={{
@@ -140,20 +135,20 @@ export const HeroBackground = ({ imageUrl, videoUrl }: HeroBackgroundProps) => {
         }}
       />
 
-      {/* Cinematic Light Rays (Wider and softer) */}
-      <div className="absolute inset-0 z-[12] overflow-hidden pointer-events-none opacity-20">
+      {/* Subtle Animated Light Rays */}
+      <div className="absolute inset-0 z-[12] overflow-hidden pointer-events-none opacity-30">
         {[
-          { left: "15%", width: "250px", delay: "0s", dur: "25s", rot: "-10deg" },
-          { left: "45%", width: "350px", delay: "5s", dur: "30s", rot: "0deg" },
-          { left: "75%", width: "250px", delay: "3s", dur: "28s", rot: "10deg" },
+          { left: "20%", width: "180px", delay: "0s", dur: "18s", rot: "-12deg" },
+          { left: "45%", width: "240px", delay: "4s", dur: "22s", rot: "0deg" },
+          { left: "70%", width: "160px", delay: "2s", dur: "20s", rot: "15deg" },
         ].map((ray, i) => (
           <div
             key={i}
-            className="absolute top-0 h-[80vh] rounded-full blur-[40px]"
+            className="absolute top-0 h-[70vh] rounded-full blur-[25px]"
             style={{
               left: ray.left,
               width: ray.width,
-              background: `linear-gradient(180deg, rgba(160, 240, 255, 0.1) 0%, transparent 100%)`,
+              background: `linear-gradient(180deg, rgba(140, 230, 255, 0.05) 0%, transparent 100%)`,
               transform: `rotate(${ray.rot})`,
               transformOrigin: "top center",
               animation: `ray-sway ${ray.dur} ${ray.delay} ease-in-out infinite`,
