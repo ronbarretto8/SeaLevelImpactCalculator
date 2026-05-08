@@ -111,57 +111,63 @@ const Index = () => {
               planning &amp; long-horizon capital allocation.
             </p>
 
-            <div className="flex flex-wrap items-center justify-center gap-4 reveal-delay-2">
+            <div className="flex flex-wrap items-center justify-center gap-6 reveal-delay-2">
               <a 
                 href="#scenarios" 
-                className="btn-primary group relative overflow-hidden px-8 py-3.5"
+                className="group relative inline-flex items-center gap-3 px-9 py-4 rounded-full font-bold text-sm tracking-wide transition-all duration-500 hover:scale-105 active:scale-95"
                 style={{
-                  boxShadow: "0 0 20px hsla(188, 100%, 50%, 0.3), 0 10px 40px -10px hsla(188, 100%, 50%, 0.5)"
+                  background: "linear-gradient(135deg, #00E5FF 0%, #0091FF 100%)",
+                  color: "#030916",
+                  boxShadow: "0 10px 30px -5px rgba(0, 229, 255, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.3)",
                 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer-move_1.5s_infinite]" />
+                {/* Internal Shimmer */}
+                <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
                 <span className="relative z-10 flex items-center gap-2">
                   Explore scenarios <ArrowDown className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-1" />
                 </span>
               </a>
+              
               <a
                 href="#atlas"
-                className="group relative inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-sm font-semibold transition-all duration-300 hover:scale-105 active:scale-95"
+                className="group relative inline-flex items-center gap-3 px-9 py-4 rounded-full font-bold text-sm tracking-wide transition-all duration-500 hover:scale-105 hover:bg-white/10 active:scale-95"
                 style={{
-                  background: "rgba(4,10,24,0.3)",
-                  color: "hsl(200 20% 95%)",
-                  border: "1px solid rgba(255,255,255,0.12)",
-                  backdropFilter: "blur(16px)",
-                  boxShadow: "0 4px 20px rgba(0,0,0,0.3)"
+                  background: "rgba(255, 255, 255, 0.05)",
+                  color: "#FFFFFF",
+                  border: "1px solid rgba(255, 255, 255, 0.2)",
+                  backdropFilter: "blur(12px)",
+                  boxShadow: "0 10px 30px -10px rgba(0, 0, 0, 0.5)",
                 }}
               >
-                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-500/0 via-cyan-500/10 to-cyan-500/0 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                {/* Border Glow Pulse */}
+                <div className="absolute inset-0 rounded-full border border-cyan-400/50 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                 <span className="relative z-10 flex items-center gap-2">
-                  Open the atlas <Globe2 className="h-4 w-4 transition-transform duration-700 group-hover:rotate-[360deg]" />
+                  Open the atlas <Globe2 className="h-4 w-4 transition-transform duration-700 group-hover:rotate-[180deg]" />
                 </span>
               </a>
             </div>
 
             {/* Stats */}
-            <div className="mt-16 flex flex-wrap items-center justify-center gap-8 sm:gap-14 reveal-delay-3">
+            <div className="mt-20 flex flex-wrap items-center justify-center gap-12 sm:gap-20 reveal-delay-3">
               {[["8", "Coastal regions"], ["3", "IPCC scenarios"], ["100%", "Reproducible"]].map(([big, small], i) => (
                 <div
                   key={i}
-                  className="group relative text-center cursor-pointer px-6 py-4 rounded-3xl transition-all duration-500 hover:bg-white/[0.02]"
+                  className="group relative flex flex-col items-center cursor-default"
                 >
-                  <div className="absolute inset-0 -z-10 scale-50 opacity-0 rounded-3xl bg-cyan-500/5 blur-2xl transition-all duration-500 group-hover:scale-110 group-hover:opacity-100" />
+                  {/* Subtle Background Glow Pulse */}
+                  <div className="absolute top-1/2 left-1/2 -z-10 h-24 w-24 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400/0 blur-3xl transition-all duration-700 group-hover:bg-cyan-400/15" />
                   
                   <p
-                    className="font-mono-num font-display text-4xl font-bold sm:text-5xl transition-all duration-500 group-hover:scale-110 group-hover:translate-y-[-4px]"
+                    className="font-mono-num font-display text-5xl font-bold sm:text-6xl transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-125 group-hover:translate-y-[-8px]"
                     style={{ 
-                      color: "hsl(188 100% 65%)", 
-                      textShadow: "0 0 30px hsla(188, 100%, 50%, 0.45)",
-                      filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.4))" 
+                      color: "#00E5FF", 
+                      textShadow: "0 0 40px rgba(0, 229, 255, 0.5)",
+                      letterSpacing: "-0.02em"
                     }}
                   >
                     {big}
                   </p>
-                  <p className="mt-2 text-[10px] font-bold uppercase tracking-[0.25em] transition-all duration-300 group-hover:text-white group-hover:tracking-[0.3em]" style={{ color: "hsl(210 20% 65%)" }}>
+                  <p className="mt-3 text-[10px] font-bold uppercase tracking-[0.3em] transition-all duration-300 group-hover:text-white group-hover:tracking-[0.4em]" style={{ color: "rgba(255, 255, 255, 0.45)" }}>
                     {small}
                   </p>
                 </div>
