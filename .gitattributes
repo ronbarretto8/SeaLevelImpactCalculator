@@ -1,1 +1,2 @@
 src/assets/338904.mp4 filter=lfs diff=lfs merge=lfs -text
+public/*.mp4 filter=lfs diff=lfs merge=lfs -text
