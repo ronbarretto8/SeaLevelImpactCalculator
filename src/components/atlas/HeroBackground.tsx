@@ -1,34 +1,49 @@
+import { useRef } from "react";
+
 interface HeroBackgroundProps {
-  imageUrl: string;
-  parallaxX: number;
-  parallaxY: number;
+  imageUrl?: string;
+  videoUrl?: string;
+  // Parallax props retained for API compatibility but not used
+  parallaxX?: number;
+  parallaxY?: number;
 }
 
 /**
- * Clean immersive hero background.
- * - Full-screen underwater image with subtle parallax
- * - Dark overlay for readability
- * - Very soft light rays (CSS only, no canvas, no particles)
+ * Immersive hero background.
+ * - Plays an MP4 video at native quality without any parallax or fade effects.
+ * - Falls back to a static image when no video is supplied or fails to load.
+ * - Preserves dark overlay, vignette, and subtle CSS light‑ray animation.
  */
-export const HeroBackground = ({ imageUrl, parallaxX, parallaxY }: HeroBackgroundProps) => {
+export const HeroBackground = ({ imageUrl, videoUrl }: HeroBackgroundProps) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
   return (
     <div className="absolute inset-0 overflow-hidden" aria-hidden>
-      {/* ── Background image with subtle parallax ── */}
+      {/* Fallback Image (Always rendered behind the video) */}
       <div
-        className="absolute inset-[-4%]"
-        style={{
-          transform: `translate(${parallaxX * 0.025}px, ${parallaxY * 0.018}px)`,
-          transition: "transform 1.4s cubic-bezier(0.22, 1, 0.36, 1)",
-          willChange: "transform",
-        }}
-      >
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${imageUrl})` }}
-        />
-      </div>
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url(${imageUrl})` }}
+      />
 
-      {/* ── Primary dark overlay — lighter so image shows through ── */}
+      {/* Background Video */}
+      {videoUrl && (
+        <video
+          ref={videoRef}
+          className="absolute inset-0 w-full h-full object-cover"
+          src={videoUrl}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          onError={(e) => {
+            // Hide video if it fails to load
+            if (e.currentTarget) e.currentTarget.style.display = "none";
+          }}
+        />
+      )}
+
+      {/* Primary dark overlay */}
       <div
         className="absolute inset-0"
         style={{
@@ -42,7 +57,7 @@ export const HeroBackground = ({ imageUrl, parallaxX, parallaxY }: HeroBackgroun
         }}
       />
 
-      {/* ── Side vignette ── */}
+      {/* Side vignette */}
       <div
         className="absolute inset-0"
         style={{
@@ -50,19 +65,13 @@ export const HeroBackground = ({ imageUrl, parallaxX, parallaxY }: HeroBackgroun
         }}
       />
 
-      {/* ── Very subtle light rays (CSS only — no glow, no particles) ── */}
-      <div
-        className="absolute inset-0 overflow-hidden"
-        style={{
-          transform: `translate(${parallaxX * 0.008}px, ${parallaxY * 0.005}px)`,
-          transition: "transform 2.5s cubic-bezier(0.22, 1, 0.36, 1)",
-        }}
-      >
+      {/* Very subtle CSS light rays (no JS) */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[
-          { left: "22%",  width: "160px", delay: "0s",   dur: "12s", rot: "-14deg", op: 0.04 },
-          { left: "40%",  width: "200px", delay: "2s",   dur: "15s", rot: "-2deg",  op: 0.05 },
-          { left: "60%",  width: "140px", delay: "1s",   dur: "13s", rot: "12deg",  op: 0.04 },
-          { left: "75%",  width: "120px", delay: "3s",   dur: "11s", rot: "22deg",  op: 0.03 },
+          { left: "22%", width: "160px", delay: "0s", dur: "12s", rot: "-14deg", op: 0.04 },
+          { left: "40%", width: "200px", delay: "2s", dur: "15s", rot: "-2deg", op: 0.05 },
+          { left: "60%", width: "140px", delay: "1s", dur: "13s", rot: "12deg", op: 0.04 },
+          { left: "75%", width: "120px", delay: "3s", dur: "11s", rot: "22deg", op: 0.03 },
         ].map((ray, i) => (
           <div
             key={i}

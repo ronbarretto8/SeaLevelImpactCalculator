@@ -17,6 +17,8 @@ import { Navbar } from "@/components/atlas/Navbar";
 import { CinematicAudio } from "@/components/atlas/CinematicAudio";
 import { useTheme } from "@/hooks/useTheme";
 import heroOcean from "@/assets/hero-ocean.jpg";
+// Using a high-quality, optimized external video for production to avoid 300MB LFS limits on Vercel
+const heroVideo = "https://cdn.pixabay.com/video/2023/11/04/187707-880629731_large.mp4";
 
 /* ── Scroll-reveal ── */
 function useScrollReveal() {
@@ -74,7 +76,7 @@ const Index = () => {
           HERO — full-viewport, image background
           ════════════════════════════════════════ */}
       <section id="overview" className="relative flex min-h-screen items-center justify-center overflow-hidden">
-        <HeroBackground imageUrl={heroOcean} parallaxX={mouse.x} parallaxY={mouse.y} />
+        <HeroBackground imageUrl={heroOcean} videoUrl={heroVideo} parallaxX={mouse.x} parallaxY={mouse.y} />
 
         <div className="section-padding relative z-10 mx-auto w-full max-w-[1520px] pb-28 pt-24 text-center">
           <div className="mx-auto max-w-4xl animate-fade-up">
