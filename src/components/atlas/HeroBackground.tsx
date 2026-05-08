@@ -18,9 +18,20 @@ export const HeroBackground = ({ imageUrl, videoUrl }: HeroBackgroundProps) => {
   const video1Ref = useRef<HTMLVideoElement>(null);
   const video2Ref = useRef<HTMLVideoElement>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [videoError, setVideoError] = useState(false);
 
+  // Initial Playback
   useEffect(() => {
-    if (!videoUrl) return;
+    if (videoUrl && video1Ref.current) {
+      video1Ref.current.play().catch((err) => {
+        console.warn("Initial video playback failed, likely awaiting user interaction:", err);
+      });
+    }
+  }, [videoUrl]);
+
+  // Seamless Loop Logic
+  useEffect(() => {
+    if (!videoUrl || videoError) return;
 
     const v1 = video1Ref.current;
     const v2 = video2Ref.current;
@@ -35,7 +46,7 @@ export const HeroBackground = ({ imageUrl, videoUrl }: HeroBackgroundProps) => {
       if (currentVideo.duration && !isTransitioning) {
         const remaining = currentVideo.duration - currentVideo.currentTime;
         
-        if (remaining <= CROSSFADE_TIME) {
+        if (remaining <= CROSSFADE_TIME && remaining > 0) {
           setIsTransitioning(true);
           
           // Prepare and play the next video
@@ -58,7 +69,7 @@ export const HeroBackground = ({ imageUrl, videoUrl }: HeroBackgroundProps) => {
       v1.removeEventListener("timeupdate", handleTimeUpdate);
       v2.removeEventListener("timeupdate", handleTimeUpdate);
     };
-  }, [videoUrl, activeVideo, isTransitioning]);
+  }, [videoUrl, activeVideo, isTransitioning, videoError]);
 
   return (
     <div className="absolute inset-0 overflow-hidden bg-[#030916]" aria-hidden>
@@ -67,7 +78,7 @@ export const HeroBackground = ({ imageUrl, videoUrl }: HeroBackgroundProps) => {
         className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000"
         style={{ 
           backgroundImage: `url(${imageUrl})`,
-          opacity: videoUrl ? 0 : 1 
+          opacity: (videoUrl && !videoError) ? 0 : 1 
         }}
       />
 
@@ -77,12 +88,19 @@ export const HeroBackground = ({ imageUrl, videoUrl }: HeroBackgroundProps) => {
           ref={video1Ref}
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[2000ms] ease-in-out"
           src={videoUrl}
+          autoPlay
           muted
+          loop={false}
           playsInline
           preload="auto"
+          onEnded={() => {
+            if (activeVideo === 1) setActiveVideo(2);
+          }}
+          onError={() => setVideoError(true)}
           style={{ 
             opacity: activeVideo === 1 ? 1 : 0,
-            zIndex: activeVideo === 1 ? 2 : 1
+            zIndex: activeVideo === 1 ? 2 : 1,
+            pointerEvents: "none"
           }}
         />
       )}
@@ -94,11 +112,17 @@ export const HeroBackground = ({ imageUrl, videoUrl }: HeroBackgroundProps) => {
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[2000ms] ease-in-out"
           src={videoUrl}
           muted
+          loop={false}
           playsInline
           preload="auto"
+          onEnded={() => {
+            if (activeVideo === 2) setActiveVideo(1);
+          }}
+          onError={() => setVideoError(true)}
           style={{ 
             opacity: activeVideo === 2 ? 1 : 0,
-            zIndex: activeVideo === 2 ? 2 : 1
+            zIndex: activeVideo === 2 ? 2 : 1,
+            pointerEvents: "none"
           }}
         />
       )}
