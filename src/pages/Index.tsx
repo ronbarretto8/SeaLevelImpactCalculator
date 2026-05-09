@@ -287,8 +287,7 @@ const Index = () => {
           className="absolute inset-0 z-5 pointer-events-none"
           style={{ maskImage: "linear-gradient(to top, black 50%, transparent 100%)", WebkitMaskImage: "linear-gradient(to top, black 50%, transparent 100%)" }}
         >
-          <WaveBackground key={`dark-sec-${isDark}`} variant="section" className="transition-opacity duration-500 ease-in-out" style={{ opacity: isDark ? 0.6 : 0 }} isDark={true} />
-          <WaveBackground key={`light-sec-${isDark}`} variant="section" className="transition-opacity duration-500 ease-in-out" style={{ opacity: isDark ? 0 : 0.6 }} isDark={false} />
+          <WaveBackground variant="section" isDark={isDark} />
         </div>
       </section>
 
@@ -303,13 +302,21 @@ const Index = () => {
       >
         {/* Sci-fi Animated Background Elements for Dark Mode only */}
         <div 
-          className="absolute inset-0 z-0 pointer-events-none mix-blend-screen transition-opacity duration-500 ease-in-out"
+          className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-500 ease-in-out"
           style={{ opacity: isDark ? 0.5 : 0 }}
         >
           <div className="absolute inset-0 bg-ocean-fog" />
           <div className="absolute inset-0 bg-contour-lines opacity-30" />
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="h-[200%] w-[120px] bg-cyan-400/10 blur-[80px]" style={{ animation: "light-sweep 20s infinite linear reverse", willChange: "transform, opacity" }} />
+            <div 
+              className="h-[200%] w-[400px]" 
+              style={{ 
+                background: "radial-gradient(ellipse at center, rgba(34, 211, 238, 0.12) 0%, transparent 60%)",
+                animation: "light-sweep 20s infinite linear reverse", 
+                willChange: "transform",
+                transform: "translateZ(0)"
+              }} 
+            />
           </div>
           {/* Smooth transition into the footer */}
           <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_60%,hsl(214_60%_6%)_100%)]" />
@@ -383,10 +390,13 @@ const Index = () => {
       {/* Absolute footer waves at the very bottom of the page */}
       <div 
         className="absolute inset-x-0 bottom-0 z-0 pointer-events-none"
-        style={{ maskImage: "linear-gradient(to top, black 90%, transparent 100%)", WebkitMaskImage: "linear-gradient(to top, black 90%, transparent 100%)", height: "200px" }}
+        style={{
+          maskImage: "linear-gradient(to top, black 72%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to top, black 72%, transparent 100%)",
+          height: "280px"
+        }}
       >
-        <WaveBackground key={`dark-foot-${isDark}`} variant="footer" className="transition-opacity duration-500 ease-in-out" style={{ opacity: isDark ? 0.7 : 0 }} isDark={true} />
-        <WaveBackground key={`light-foot-${isDark}`} variant="footer" className="transition-opacity duration-500 ease-in-out" style={{ opacity: isDark ? 0 : 0.5 }} isDark={false} />
+        <WaveBackground variant="footer" isDark={isDark} />
       </div>
 
       {/* Invisible Background Audio */}

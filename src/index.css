@@ -408,23 +408,24 @@
    KEYFRAMES
    ================================================================ */
 @keyframes wave-flow {
-  0% {
-    transform: translateX(0);
-  }
-
-  100% {
-    transform: translateX(-50%);
-  }
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 @keyframes wave-flow-rev {
-  0% {
-    transform: translateX(-50%);
-  }
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
 
-  100% {
-    transform: translateX(0);
-  }
+/* ── Cinematic ocean wave system (used by WaveBackground v2) ── */
+@keyframes wave-flow-cin {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes wave-flow-rev-cin {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
 }
 
 @keyframes float-slow {
@@ -528,14 +529,17 @@
 
 .animate-wave {
   animation: wave-flow 18s linear infinite;
+  will-change: transform;
 }
 
 .animate-wave-rev {
   animation: wave-flow-rev 26s linear infinite;
+  will-change: transform;
 }
 
 .animate-wave-slow {
   animation: wave-flow 38s linear infinite;
+  will-change: transform;
 }
 
 .animate-float {
