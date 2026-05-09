@@ -284,11 +284,11 @@ const Index = () => {
 
         {/* Crossfaded waves for zero-lag transition */}
         <div 
-          className="absolute inset-0 z-0 pointer-events-none"
-          style={{ maskImage: "linear-gradient(to top, black 30%, transparent 100%)", WebkitMaskImage: "linear-gradient(to top, black 30%, transparent 100%)" }}
+          className="absolute inset-0 z-5 pointer-events-none"
+          style={{ maskImage: "linear-gradient(to top, black 50%, transparent 100%)", WebkitMaskImage: "linear-gradient(to top, black 50%, transparent 100%)" }}
         >
-          <WaveBackground variant="section" className="transition-opacity duration-500 ease-in-out" style={{ opacity: isDark ? 0.6 : 0 }} isDark={true} />
-          <WaveBackground variant="section" className="transition-opacity duration-500 ease-in-out" style={{ opacity: isDark ? 0 : 0.6 }} isDark={false} />
+          <WaveBackground key={`dark-sec-${isDark}`} variant="section" className="transition-opacity duration-500 ease-in-out" style={{ opacity: isDark ? 0.6 : 0 }} isDark={true} />
+          <WaveBackground key={`light-sec-${isDark}`} variant="section" className="transition-opacity duration-500 ease-in-out" style={{ opacity: isDark ? 0 : 0.6 }} isDark={false} />
         </div>
       </section>
 
@@ -359,11 +359,11 @@ const Index = () => {
 
         {/* Crossfaded waves for zero-lag transition */}
         <div 
-          className="absolute inset-x-0 bottom-0 z-0 pointer-events-none"
-          style={{ maskImage: "linear-gradient(to top, black 40%, transparent 100%)", WebkitMaskImage: "linear-gradient(to top, black 40%, transparent 100%)" }}
+          className="absolute inset-x-0 bottom-0 z-5 pointer-events-none"
+          style={{ maskImage: "linear-gradient(to top, black 60%, transparent 100%)", WebkitMaskImage: "linear-gradient(to top, black 60%, transparent 100%)" }}
         >
-          <WaveBackground variant="footer" className="transition-opacity duration-500 ease-in-out" style={{ opacity: isDark ? 0.6 : 0 }} isDark={true} />
-          <WaveBackground variant="footer" className="transition-opacity duration-500 ease-in-out" style={{ opacity: isDark ? 0 : 0.6 }} isDark={false} />
+          <WaveBackground key={`dark-foot-${isDark}`} variant="footer" className="transition-opacity duration-500 ease-in-out" style={{ opacity: isDark ? 0.6 : 0 }} isDark={true} />
+          <WaveBackground key={`light-foot-${isDark}`} variant="footer" className="transition-opacity duration-500 ease-in-out" style={{ opacity: isDark ? 0 : 0.6 }} isDark={false} />
         </div>
 
         <footer

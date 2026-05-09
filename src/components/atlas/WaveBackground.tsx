@@ -23,7 +23,7 @@ export const WaveBackground = memo(({ variant = "hero", className = "", isDark =
     foam: isDark ? ["hsl(201, 80%, 10%)", "hsl(201, 80%, 10%)"] : ["hsl(188, 80%, 90%)", "hsl(188, 80%, 90%)"],
   };
 
-  const idSuffix = isDark ? "-dark" : "-light";
+  const idSuffix = `${variant}-${isDark ? "dark" : "light"}`;
 
   return (
     <div
