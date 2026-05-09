@@ -12,7 +12,7 @@ interface WaveBackgroundProps {
 export const WaveBackground = memo(({ variant = "hero", className = "", isDark = true }: WaveBackgroundProps) => {
   const opacity = variant === "hero" ? 1 : variant === "section" ? 0.8 : 0.9;
   
-  // Adaptive color palette based on theme - Using direct hex codes for Dark Mode to ensure exact match
+  // Adaptive color palette based on theme - Strictly avoiding light colors in Dark Mode
   const colors = {
     sky: isDark ? ["#020B16", "#01040a"] : ["hsl(205, 50%, 85%)", "hsl(210, 60%, 75%)"],
     back: isDark ? ["#031526", "#020B16"] : ["hsl(205, 60%, 80%)", "hsl(210, 65%, 70%)"],
@@ -20,7 +20,8 @@ export const WaveBackground = memo(({ variant = "hero", className = "", isDark =
     mid: isDark ? ["#0A3A52", "#06243A"] : ["hsl(205, 70%, 70%)", "hsl(210, 75%, 60%)"],
     front: isDark ? ["#0D4B68", "#0A3A52"] : ["hsl(210, 65%, 65%)", "hsl(214, 70%, 55%)"],
     navy: isDark ? ["#020B16", "#000000"] : ["hsl(214, 70%, 60%)", "hsl(216, 75%, 50%)"],
-    foam: isDark ? ["#00E5FF", "#00E5FF"] : ["hsl(188, 80%, 90%)", "hsl(188, 80%, 90%)"],
+    // Foam is now a deep navy to eliminate all light highlights in Dark Mode
+    foam: isDark ? ["#020B16", "#020B16"] : ["hsl(188, 80%, 90%)", "hsl(188, 80%, 90%)"],
   };
 
   const idSuffix = `${variant}-${isDark ? "dark" : "light"}`;
@@ -33,7 +34,7 @@ export const WaveBackground = memo(({ variant = "hero", className = "", isDark =
     >
       <div className="relative h-[400px] w-full sm:h-[460px]">
 
-        {/* Layer 1 — deepest back, slowest, faintest */}
+        {/* Layer 1 — deepest back */}
         <svg
           className="absolute bottom-0 left-0 h-[320px] w-[200%] animate-wave-slow"
           viewBox="0 0 2880 320"
@@ -84,7 +85,7 @@ export const WaveBackground = memo(({ variant = "hero", className = "", isDark =
           />
         </svg>
 
-        {/* Layer 4 — ocean blue, faster reverse */}
+        {/* Layer 4 — ocean blue */}
         <svg
           className="absolute bottom-0 left-0 h-[200px] w-[200%] animate-wave-rev"
           viewBox="0 0 2880 200"
@@ -101,7 +102,7 @@ export const WaveBackground = memo(({ variant = "hero", className = "", isDark =
           />
         </svg>
 
-        {/* Layer 5 — deepest front, fastest */}
+        {/* Layer 5 — deepest front */}
         <svg
           className="absolute bottom-0 left-0 h-[150px] w-[200%] animate-wave"
           viewBox="0 0 2880 150"
@@ -112,22 +113,20 @@ export const WaveBackground = memo(({ variant = "hero", className = "", isDark =
               <stop offset="0%" stopColor={colors.front[0]} stopOpacity={isDark ? "0.95" : "0.95"} />
               <stop offset="100%" stopColor={colors.front[1]} stopOpacity="1" />
             </linearGradient>
-            {/* Subtle cyan crest foam */}
             <linearGradient id={`wv-foam-${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor={colors.foam[0]} stopOpacity={isDark ? "0.2" : "0.15"} />
+              <stop offset="0%" stopColor={colors.foam[0]} stopOpacity={isDark ? "0.1" : "0.15"} />
               <stop offset="100%" stopColor={colors.foam[1]} stopOpacity="0" />
             </linearGradient>
           </defs>
           <path fill={`url(#wv-front-${idSuffix})`}
             d="M0,90 C240,40 480,140 720,90 C960,40 1200,140 1440,90 C1680,40 1920,140 2160,90 C2400,40 2640,140 2880,90 L2880,150 L0,150 Z"
           />
-          {/* Cyan foam crest */}
           <path fill={`url(#wv-foam-${idSuffix})`}
             d="M0,90 C240,40 480,140 720,90 C960,40 1200,140 1440,90 C1680,40 1920,140 2160,90 C2400,40 2640,140 2880,90 L2880,97 C2640,147 2400,47 2160,97 C1920,147 1680,47 1440,97 C1200,147 960,47 720,97 C480,147 240,47 0,97 Z"
           />
         </svg>
 
-        {/* Layer 6 — tiny crest wave, deepest navy */}
+        {/* Layer 6 — tiny crest wave */}
         <svg
           className="absolute bottom-0 left-0 h-[80px] w-[200%] animate-wave-rev"
           viewBox="0 0 2880 80"
