@@ -10,21 +10,24 @@ interface WaveBackgroundProps {
  * Layered animated SVG ocean waves — adaptive palette.
  */
 export const WaveBackground = memo(({ variant = "hero", className = "", isDark = true }: WaveBackgroundProps) => {
-  const opacity = variant === "hero" ? 1 : variant === "section" ? 0.8 : 0.9;
+  // Drastically reduced opacity for Dark Mode to ensure it blends perfectly
+  const baseOpacity = isDark ? 0.4 : 0.6;
+  const opacity = variant === "hero" ? 1 : variant === "section" ? baseOpacity : baseOpacity * 0.8;
   
-  // Adaptive color palette based on theme - Strictly avoiding light colors in Dark Mode
+  // ULTRA-DARK palette to ensure zero 'light blue' feel in Dark Mode
   const colors = {
-    sky: isDark ? ["#020B16", "#01040a"] : ["hsl(205, 50%, 85%)", "hsl(210, 60%, 75%)"],
-    back: isDark ? ["#031526", "#020B16"] : ["hsl(205, 60%, 80%)", "hsl(210, 65%, 70%)"],
-    azure: isDark ? ["#06243A", "#031526"] : ["hsl(200, 70%, 75%)", "hsl(205, 75%, 65%)"],
-    mid: isDark ? ["#0A3A52", "#06243A"] : ["hsl(205, 70%, 70%)", "hsl(210, 75%, 60%)"],
-    front: isDark ? ["#0D4B68", "#0A3A52"] : ["hsl(210, 65%, 65%)", "hsl(214, 70%, 55%)"],
-    navy: isDark ? ["#020B16", "#000000"] : ["hsl(214, 70%, 60%)", "hsl(216, 75%, 50%)"],
-    // Foam is now a deep navy to eliminate all light highlights in Dark Mode
-    foam: isDark ? ["#020B16", "#020B16"] : ["hsl(188, 80%, 90%)", "hsl(188, 80%, 90%)"],
+    sky: isDark ? ["#01040a", "#000000"] : ["hsl(205, 50%, 85%)", "hsl(210, 60%, 75%)"],
+    back: isDark ? ["#020B16", "#01040a"] : ["hsl(205, 60%, 80%)", "hsl(210, 65%, 70%)"],
+    azure: isDark ? ["#031526", "#020B16"] : ["hsl(200, 70%, 75%)", "hsl(205, 75%, 65%)"],
+    mid: isDark ? ["#06243A", "#031526"] : ["hsl(205, 70%, 70%)", "hsl(210, 75%, 60%)"],
+    front: isDark ? ["#0A3A52", "#06243A"] : ["hsl(210, 65%, 65%)", "hsl(214, 70%, 55%)"],
+    navy: isDark ? ["#01040a", "#000000"] : ["hsl(214, 70%, 60%)", "hsl(216, 75%, 50%)"],
+    foam: isDark ? ["#01040a", "#01040a"] : ["hsl(188, 80%, 90%)", "hsl(188, 80%, 90%)"],
   };
 
   const idSuffix = `${variant}-${isDark ? "dark" : "light"}`;
+  const waveHeight = variant === "footer" ? "h-[200px]" : "h-[400px]";
+  const smWaveHeight = variant === "footer" ? "sm:h-[240px]" : "sm:h-[460px]";
 
   return (
     <div
@@ -32,18 +35,18 @@ export const WaveBackground = memo(({ variant = "hero", className = "", isDark =
       className={`pointer-events-none absolute inset-x-0 bottom-0 overflow-hidden ${className}`}
       style={{ opacity }}
     >
-      <div className="relative h-[400px] w-full sm:h-[460px]">
+      <div className={`relative ${waveHeight} w-full ${smWaveHeight}`}>
 
         {/* Layer 1 — deepest back */}
         <svg
-          className="absolute bottom-0 left-0 h-[320px] w-[200%] animate-wave-slow"
+          className="absolute bottom-0 left-0 h-[80%] w-[200%] animate-wave-slow"
           viewBox="0 0 2880 320"
           preserveAspectRatio="none"
         >
           <defs>
             <linearGradient id={`wv-sky-${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor={colors.sky[0]} stopOpacity={isDark ? "0.6" : "0.3"} />
-              <stop offset="100%" stopColor={colors.sky[1]} stopOpacity={isDark ? "0.9" : "0.6"} />
+              <stop offset="0%" stopColor={colors.sky[0]} stopOpacity={isDark ? "0.4" : "0.3"} />
+              <stop offset="100%" stopColor={colors.sky[1]} stopOpacity={isDark ? "0.7" : "0.6"} />
             </linearGradient>
           </defs>
           <path fill={`url(#wv-sky-${idSuffix})`}
@@ -53,14 +56,14 @@ export const WaveBackground = memo(({ variant = "hero", className = "", isDark =
 
         {/* Layer 2 — mid-back */}
         <svg
-          className="absolute bottom-0 left-0 h-[280px] w-[200%] animate-wave-slow"
+          className="absolute bottom-0 left-0 h-[70%] w-[200%] animate-wave-slow"
           viewBox="0 0 2880 280"
           preserveAspectRatio="none"
         >
           <defs>
             <linearGradient id={`wv-back-${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor={colors.back[0]} stopOpacity={isDark ? "0.7" : "0.55"} />
-              <stop offset="100%" stopColor={colors.back[1]} stopOpacity={isDark ? "1" : "0.85"} />
+              <stop offset="0%" stopColor={colors.back[0]} stopOpacity={isDark ? "0.5" : "0.55"} />
+              <stop offset="100%" stopColor={colors.back[1]} stopOpacity={isDark ? "0.8" : "0.85"} />
             </linearGradient>
           </defs>
           <path fill={`url(#wv-back-${idSuffix})`}
@@ -70,14 +73,14 @@ export const WaveBackground = memo(({ variant = "hero", className = "", isDark =
 
         {/* Layer 3 — azure mid */}
         <svg
-          className="absolute bottom-0 left-0 h-[240px] w-[200%] animate-wave"
+          className="absolute bottom-0 left-0 h-[60%] w-[200%] animate-wave"
           viewBox="0 0 2880 240"
           preserveAspectRatio="none"
         >
           <defs>
             <linearGradient id={`wv-azure-${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor={colors.azure[0]} stopOpacity={isDark ? "0.8" : "0.6"} />
-              <stop offset="100%" stopColor={colors.azure[1]} stopOpacity={isDark ? "1" : "0.9"} />
+              <stop offset="0%" stopColor={colors.azure[0]} stopOpacity={isDark ? "0.6" : "0.6"} />
+              <stop offset="100%" stopColor={colors.azure[1]} stopOpacity={isDark ? "0.9" : "0.9"} />
             </linearGradient>
           </defs>
           <path fill={`url(#wv-azure-${idSuffix})`}
@@ -87,13 +90,13 @@ export const WaveBackground = memo(({ variant = "hero", className = "", isDark =
 
         {/* Layer 4 — ocean blue */}
         <svg
-          className="absolute bottom-0 left-0 h-[200px] w-[200%] animate-wave-rev"
+          className="absolute bottom-0 left-0 h-[50%] w-[200%] animate-wave-rev"
           viewBox="0 0 2880 200"
           preserveAspectRatio="none"
         >
           <defs>
             <linearGradient id={`wv-mid-${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor={colors.mid[0]} stopOpacity={isDark ? "0.9" : "0.75"} />
+              <stop offset="0%" stopColor={colors.mid[0]} stopOpacity={isDark ? "0.7" : "0.75"} />
               <stop offset="100%" stopColor={colors.mid[1]} stopOpacity="1" />
             </linearGradient>
           </defs>
@@ -104,17 +107,17 @@ export const WaveBackground = memo(({ variant = "hero", className = "", isDark =
 
         {/* Layer 5 — deepest front */}
         <svg
-          className="absolute bottom-0 left-0 h-[150px] w-[200%] animate-wave"
+          className="absolute bottom-0 left-0 h-[40%] w-[200%] animate-wave"
           viewBox="0 0 2880 150"
           preserveAspectRatio="none"
         >
           <defs>
             <linearGradient id={`wv-front-${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor={colors.front[0]} stopOpacity={isDark ? "0.95" : "0.95"} />
+              <stop offset="0%" stopColor={colors.front[0]} stopOpacity={isDark ? "0.8" : "0.95"} />
               <stop offset="100%" stopColor={colors.front[1]} stopOpacity="1" />
             </linearGradient>
             <linearGradient id={`wv-foam-${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor={colors.foam[0]} stopOpacity={isDark ? "0.1" : "0.15"} />
+              <stop offset="0%" stopColor={colors.foam[0]} stopOpacity={isDark ? "0.05" : "0.15"} />
               <stop offset="100%" stopColor={colors.foam[1]} stopOpacity="0" />
             </linearGradient>
           </defs>
@@ -128,13 +131,13 @@ export const WaveBackground = memo(({ variant = "hero", className = "", isDark =
 
         {/* Layer 6 — tiny crest wave */}
         <svg
-          className="absolute bottom-0 left-0 h-[80px] w-[200%] animate-wave-rev"
+          className="absolute bottom-0 left-0 h-[20%] w-[200%] animate-wave-rev"
           viewBox="0 0 2880 80"
           preserveAspectRatio="none"
         >
           <defs>
             <linearGradient id={`wv-navy-${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor={colors.navy[0]} stopOpacity={isDark ? "0.98" : "0.98"} />
+              <stop offset="0%" stopColor={colors.navy[0]} stopOpacity={isDark ? "0.9" : "0.98"} />
               <stop offset="100%" stopColor={colors.navy[1]} stopOpacity="1" />
             </linearGradient>
           </defs>
