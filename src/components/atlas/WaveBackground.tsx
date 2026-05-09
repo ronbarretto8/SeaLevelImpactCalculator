@@ -12,15 +12,15 @@ interface WaveBackgroundProps {
 export const WaveBackground = memo(({ variant = "hero", className = "", isDark = true }: WaveBackgroundProps) => {
   const opacity = variant === "hero" ? 1 : variant === "section" ? 0.8 : 0.9;
   
-  // Adaptive color palette based on theme
+  // Adaptive color palette based on theme - Using direct hex codes for Dark Mode to ensure exact match
   const colors = {
-    sky: isDark ? ["hsl(216, 80%, 4%)", "hsl(216, 80%, 2%)"] : ["hsl(205, 50%, 85%)", "hsl(210, 60%, 75%)"],
-    back: isDark ? ["hsl(211, 80%, 6%)", "hsl(211, 80%, 3%)"] : ["hsl(205, 60%, 80%)", "hsl(210, 65%, 70%)"],
-    azure: isDark ? ["hsl(205, 75%, 8%)", "hsl(205, 75%, 4%)"] : ["hsl(200, 70%, 75%)", "hsl(205, 75%, 65%)"],
-    mid: isDark ? ["hsl(201, 70%, 10%)", "hsl(201, 70%, 5%)"] : ["hsl(205, 70%, 70%)", "hsl(210, 75%, 60%)"],
-    front: isDark ? ["hsl(199, 70%, 12%)", "hsl(199, 70%, 6%)"] : ["hsl(210, 65%, 65%)", "hsl(214, 70%, 55%)"],
-    navy: isDark ? ["hsl(218, 80%, 3%)", "hsl(220, 90%, 1%)"] : ["hsl(214, 70%, 60%)", "hsl(216, 75%, 50%)"],
-    foam: isDark ? ["hsl(201, 80%, 10%)", "hsl(201, 80%, 10%)"] : ["hsl(188, 80%, 90%)", "hsl(188, 80%, 90%)"],
+    sky: isDark ? ["#020B16", "#01040a"] : ["hsl(205, 50%, 85%)", "hsl(210, 60%, 75%)"],
+    back: isDark ? ["#031526", "#020B16"] : ["hsl(205, 60%, 80%)", "hsl(210, 65%, 70%)"],
+    azure: isDark ? ["#06243A", "#031526"] : ["hsl(200, 70%, 75%)", "hsl(205, 75%, 65%)"],
+    mid: isDark ? ["#0A3A52", "#06243A"] : ["hsl(205, 70%, 70%)", "hsl(210, 75%, 60%)"],
+    front: isDark ? ["#0D4B68", "#0A3A52"] : ["hsl(210, 65%, 65%)", "hsl(214, 70%, 55%)"],
+    navy: isDark ? ["#020B16", "#000000"] : ["hsl(214, 70%, 60%)", "hsl(216, 75%, 50%)"],
+    foam: isDark ? ["#00E5FF", "#00E5FF"] : ["hsl(188, 80%, 90%)", "hsl(188, 80%, 90%)"],
   };
 
   const idSuffix = `${variant}-${isDark ? "dark" : "light"}`;
@@ -40,12 +40,12 @@ export const WaveBackground = memo(({ variant = "hero", className = "", isDark =
           preserveAspectRatio="none"
         >
           <defs>
-            <linearGradient id={`wv-sky${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor={colors.sky[0]} stopOpacity="0.3" />
-              <stop offset="100%" stopColor={colors.sky[1]} stopOpacity="0.6" />
+            <linearGradient id={`wv-sky-${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stopColor={colors.sky[0]} stopOpacity={isDark ? "0.6" : "0.3"} />
+              <stop offset="100%" stopColor={colors.sky[1]} stopOpacity={isDark ? "0.9" : "0.6"} />
             </linearGradient>
           </defs>
-          <path fill={`url(#wv-sky${idSuffix})`}
+          <path fill={`url(#wv-sky-${idSuffix})`}
             d="M0,170 C200,110 400,230 600,170 C800,110 1000,230 1200,170 C1400,110 1600,230 1800,170 C2000,110 2200,230 2400,170 C2600,110 2800,230 2880,170 L2880,320 L0,320 Z"
           />
         </svg>
@@ -57,12 +57,12 @@ export const WaveBackground = memo(({ variant = "hero", className = "", isDark =
           preserveAspectRatio="none"
         >
           <defs>
-            <linearGradient id={`wv-back${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor={colors.back[0]} stopOpacity="0.55" />
-              <stop offset="100%" stopColor={colors.back[1]} stopOpacity="0.85" />
+            <linearGradient id={`wv-back-${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stopColor={colors.back[0]} stopOpacity={isDark ? "0.7" : "0.55"} />
+              <stop offset="100%" stopColor={colors.back[1]} stopOpacity={isDark ? "1" : "0.85"} />
             </linearGradient>
           </defs>
-          <path fill={`url(#wv-back${idSuffix})`}
+          <path fill={`url(#wv-back-${idSuffix})`}
             d="M0,140 C240,80 480,200 720,140 C960,80 1200,200 1440,140 C1680,80 1920,200 2160,140 C2400,80 2640,200 2880,140 L2880,280 L0,280 Z"
           />
         </svg>
@@ -74,12 +74,12 @@ export const WaveBackground = memo(({ variant = "hero", className = "", isDark =
           preserveAspectRatio="none"
         >
           <defs>
-            <linearGradient id={`wv-azure${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor={colors.azure[0]} stopOpacity="0.6" />
-              <stop offset="100%" stopColor={colors.azure[1]} stopOpacity="0.9" />
+            <linearGradient id={`wv-azure-${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stopColor={colors.azure[0]} stopOpacity={isDark ? "0.8" : "0.6"} />
+              <stop offset="100%" stopColor={colors.azure[1]} stopOpacity={isDark ? "1" : "0.9"} />
             </linearGradient>
           </defs>
-          <path fill={`url(#wv-azure${idSuffix})`}
+          <path fill={`url(#wv-azure-${idSuffix})`}
             d="M0,130 C220,70 440,190 660,130 C880,70 1100,190 1320,130 C1540,70 1760,190 1980,130 C2200,70 2420,190 2640,130 C2750,110 2880,150 2880,150 L2880,240 L0,240 Z"
           />
         </svg>
@@ -91,12 +91,12 @@ export const WaveBackground = memo(({ variant = "hero", className = "", isDark =
           preserveAspectRatio="none"
         >
           <defs>
-            <linearGradient id={`wv-mid${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor={colors.mid[0]} stopOpacity="0.75" />
+            <linearGradient id={`wv-mid-${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stopColor={colors.mid[0]} stopOpacity={isDark ? "0.9" : "0.75"} />
               <stop offset="100%" stopColor={colors.mid[1]} stopOpacity="1" />
             </linearGradient>
           </defs>
-          <path fill={`url(#wv-mid${idSuffix})`}
+          <path fill={`url(#wv-mid-${idSuffix})`}
             d="M0,120 C300,60 600,180 900,120 C1200,60 1500,180 1800,120 C2100,60 2400,180 2700,120 C2790,100 2880,140 2880,140 L2880,200 L0,200 Z"
           />
         </svg>
@@ -108,21 +108,21 @@ export const WaveBackground = memo(({ variant = "hero", className = "", isDark =
           preserveAspectRatio="none"
         >
           <defs>
-            <linearGradient id={`wv-front${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor={colors.front[0]} stopOpacity="0.95" />
+            <linearGradient id={`wv-front-${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stopColor={colors.front[0]} stopOpacity={isDark ? "0.95" : "0.95"} />
               <stop offset="100%" stopColor={colors.front[1]} stopOpacity="1" />
             </linearGradient>
             {/* Subtle cyan crest foam */}
-            <linearGradient id={`wv-foam${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor={colors.foam[0]} stopOpacity="0.15" />
+            <linearGradient id={`wv-foam-${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stopColor={colors.foam[0]} stopOpacity={isDark ? "0.2" : "0.15"} />
               <stop offset="100%" stopColor={colors.foam[1]} stopOpacity="0" />
             </linearGradient>
           </defs>
-          <path fill={`url(#wv-front${idSuffix})`}
+          <path fill={`url(#wv-front-${idSuffix})`}
             d="M0,90 C240,40 480,140 720,90 C960,40 1200,140 1440,90 C1680,40 1920,140 2160,90 C2400,40 2640,140 2880,90 L2880,150 L0,150 Z"
           />
           {/* Cyan foam crest */}
-          <path fill={`url(#wv-foam${idSuffix})`}
+          <path fill={`url(#wv-foam-${idSuffix})`}
             d="M0,90 C240,40 480,140 720,90 C960,40 1200,140 1440,90 C1680,40 1920,140 2160,90 C2400,40 2640,140 2880,90 L2880,97 C2640,147 2400,47 2160,97 C1920,147 1680,47 1440,97 C1200,147 960,47 720,97 C480,147 240,47 0,97 Z"
           />
         </svg>
@@ -134,12 +134,12 @@ export const WaveBackground = memo(({ variant = "hero", className = "", isDark =
           preserveAspectRatio="none"
         >
           <defs>
-            <linearGradient id={`wv-navy${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor={colors.navy[0]} stopOpacity="0.98" />
+            <linearGradient id={`wv-navy-${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stopColor={colors.navy[0]} stopOpacity={isDark ? "0.98" : "0.98"} />
               <stop offset="100%" stopColor={colors.navy[1]} stopOpacity="1" />
             </linearGradient>
           </defs>
-          <path fill={`url(#wv-navy${idSuffix})`}
+          <path fill={`url(#wv-navy-${idSuffix})`}
             d="M0,40 C180,15 360,65 540,40 C720,15 900,65 1080,40 C1260,15 1440,65 1620,40 C1800,15 1980,65 2160,40 C2340,15 2520,65 2700,40 C2790,28 2880,52 2880,52 L2880,80 L0,80 Z"
           />
         </svg>
@@ -148,4 +148,5 @@ export const WaveBackground = memo(({ variant = "hero", className = "", isDark =
     </div>
   );
 });
+
 WaveBackground.displayName = "WaveBackground";

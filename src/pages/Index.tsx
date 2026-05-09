@@ -357,19 +357,21 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Crossfaded waves for zero-lag transition */}
-        <div 
-          className="absolute inset-x-0 bottom-0 z-5 pointer-events-none"
-          style={{ maskImage: "linear-gradient(to top, black 60%, transparent 100%)", WebkitMaskImage: "linear-gradient(to top, black 60%, transparent 100%)" }}
-        >
-          <WaveBackground key={`dark-foot-${isDark}`} variant="footer" className="transition-opacity duration-500 ease-in-out" style={{ opacity: isDark ? 0.6 : 0 }} isDark={true} />
-          <WaveBackground key={`light-foot-${isDark}`} variant="footer" className="transition-opacity duration-500 ease-in-out" style={{ opacity: isDark ? 0 : 0.6 }} isDark={false} />
-        </div>
+
 
         <footer
           className="section-padding relative z-10 mx-auto max-w-[1520px] border-t pb-8 pt-10 text-xs text-muted-foreground"
           style={{ borderColor: dividerColor }}
         >
+          {/* Wave Background integrated directly into footer */}
+          <div 
+            className="absolute inset-x-0 bottom-0 z-0 pointer-events-none"
+            style={{ maskImage: "linear-gradient(to top, black 80%, transparent 100%)", WebkitMaskImage: "linear-gradient(to top, black 80%, transparent 100%)", height: "400px" }}
+          >
+            <WaveBackground key={`dark-foot-${isDark}`} variant="footer" className="transition-opacity duration-500 ease-in-out" style={{ opacity: isDark ? 0.8 : 0 }} isDark={true} />
+            <WaveBackground key={`light-foot-${isDark}`} variant="footer" className="transition-opacity duration-500 ease-in-out" style={{ opacity: isDark ? 0 : 0.6 }} isDark={false} />
+          </div>
+
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-2.5">
               <div
