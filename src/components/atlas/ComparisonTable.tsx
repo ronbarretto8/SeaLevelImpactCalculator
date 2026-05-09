@@ -15,14 +15,7 @@ export const ComparisonTable = ({ state }: { state: AtlasState }) => {
   ];
 
   return (
-    <div
-      className="overflow-hidden rounded-2xl"
-      style={{
-        background: "var(--gradient-card)",
-        border: "1px solid hsl(var(--border) / 0.65)",
-        boxShadow: "var(--shadow-md)",
-      }}
-    >
+    <div className="premium-card overflow-hidden">
       {/* Header */}
       <div className="border-b px-6 py-5 sm:px-7" style={{ borderColor: "hsl(var(--border) / 0.4)", background: "hsl(var(--muted) / 0.35)" }}>
         <p className="text-[10px] font-semibold uppercase tracking-[0.2em]" style={{ color: "hsl(var(--primary))" }}>

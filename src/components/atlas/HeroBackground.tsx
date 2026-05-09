@@ -23,7 +23,7 @@ export const HeroBackground = ({ imageUrl, videoUrl }: HeroBackgroundProps) => {
   // Initial Playback
   useEffect(() => {
     if (videoUrl && video1Ref.current) {
-      video1Ref.current.play().catch(() => {});
+      video1Ref.current.play().catch(() => { });
     }
   }, [videoUrl]);
 
@@ -43,16 +43,16 @@ export const HeroBackground = ({ imageUrl, videoUrl }: HeroBackgroundProps) => {
 
       if (current.duration && !isTransitioning) {
         const remaining = current.duration - current.currentTime;
-        
+
         // Initiate crossfade 1.5 seconds before the loop ends
         if (remaining <= CROSSFADE_WINDOW && remaining > 0) {
           setIsTransitioning(true);
-          
+
           // Play next video behind current
           next.currentTime = 0;
           next.play().then(() => {
             setActiveVideo(activeVideo === 1 ? 2 : 1);
-            
+
             // End transition state
             setTimeout(() => {
               setIsTransitioning(false);
@@ -71,7 +71,7 @@ export const HeroBackground = ({ imageUrl, videoUrl }: HeroBackgroundProps) => {
       {/* Background Layer (Image fallback) */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ 
+        style={{
           backgroundImage: `url(${imageUrl})`,
           opacity: (videoUrl && !videoError) ? 0 : 1,
           transition: "opacity 1s ease"
@@ -88,7 +88,7 @@ export const HeroBackground = ({ imageUrl, videoUrl }: HeroBackgroundProps) => {
           playsInline
           preload="auto"
           onError={() => setVideoError(true)}
-          style={{ 
+          style={{
             opacity: activeVideo === 1 ? 1 : 0,
             zIndex: activeVideo === 1 ? 2 : 1,
             transition: "opacity 1500ms ease-in-out",
@@ -107,7 +107,7 @@ export const HeroBackground = ({ imageUrl, videoUrl }: HeroBackgroundProps) => {
           playsInline
           preload="auto"
           onError={() => setVideoError(true)}
-          style={{ 
+          style={{
             opacity: activeVideo === 2 ? 1 : 0,
             zIndex: activeVideo === 2 ? 2 : 1,
             transition: "opacity 1500ms ease-in-out",
@@ -116,22 +116,26 @@ export const HeroBackground = ({ imageUrl, videoUrl }: HeroBackgroundProps) => {
         />
       )}
 
-      {/* Overlays */}
+      {/* Overlays - Cinematic Documentary / Apple Keynote Aesthetic */}
+      
+      {/* 1. Vertical Dark Gradient (Atmospheric, not flat black) */}
       <div
-        className="absolute inset-0 z-[10]"
+        className="absolute inset-0 z-[10] pointer-events-none mix-blend-multiply"
         style={{
-          background: `linear-gradient(180deg, 
-            rgba(1, 4, 10, 0.4) 0%, 
-            rgba(1, 4, 10, 0.1) 40%, 
-            rgba(1, 4, 10, 0.3) 75%, 
-            rgba(1, 4, 10, 0.7) 100%
+          background: `linear-gradient(to bottom, 
+            rgba(6, 12, 26, 0.3) 0%, 
+            rgba(4, 8, 20, 0.1) 25%, 
+            rgba(2, 5, 14, 0.7) 65%, 
+            rgba(1, 2, 8, 0.95) 100%
           )`,
         }}
       />
+      
+      {/* 2. Subtle Radial Vignette for Depth */}
       <div
-        className="absolute inset-0 z-[11]"
+        className="absolute inset-0 z-[11] pointer-events-none"
         style={{
-          background: "radial-gradient(ellipse 110% 100% at 50% 50%, transparent 40%, rgba(1, 4, 10, 0.5) 100%)",
+          background: "radial-gradient(ellipse at 50% 40%, transparent 35%, rgba(0, 3, 10, 0.4) 80%, rgba(0, 2, 8, 0.85) 100%)",
         }}
       />
 

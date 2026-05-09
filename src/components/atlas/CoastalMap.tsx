@@ -40,7 +40,7 @@ export const CoastalMap = ({ state, onSelect, isDark = true }: CoastalMapProps) 
         zoom={5} minZoom={4} maxZoom={9}
         scrollWheelZoom
         className="absolute inset-0"
-        style={{ background: isDark ? "hsl(214, 65%, 6%)" : "hsl(200, 50%, 88%)" }}
+        style={{ background: isDark ? "hsl(214, 65%, 6%)" : "hsl(200, 50%, 88%)", transition: "background 0.3s ease" }}
         worldCopyJump
         attributionControl={false}
         zoomControl={true}
@@ -48,10 +48,14 @@ export const CoastalMap = ({ state, onSelect, isDark = true }: CoastalMapProps) 
         <TileLayer
           url="https://server.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}"
           attribution="Tiles © Esri"
+          keepBuffer={12}
+          updateWhenZooming={false}
         />
         <TileLayer
           url="https://server.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Reference/MapServer/tile/{z}/{y}/{x}"
           opacity={0.5}
+          keepBuffer={12}
+          updateWhenZooming={false}
         />
         <FlyTo lat={active.region.lat} lng={active.region.lng} />
 
@@ -95,6 +99,21 @@ export const CoastalMap = ({ state, onSelect, isDark = true }: CoastalMapProps) 
           );
         })}
       </MapContainer>
+
+      {/* ── Dark Mode Sci-Fi Overlays (Pointer Events None) ── */}
+      <div 
+        className="absolute inset-0 z-[399] pointer-events-none transition-opacity duration-500"
+        style={{ opacity: isDark ? 1 : 0 }}
+      >
+        {/* Darkening layer to replace TileLayer opacity changes */}
+        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 mix-blend-screen opacity-60">
+          <div className="absolute inset-0 bg-ocean-fog" />
+          <div className="absolute inset-0 bg-contour-lines opacity-40" />
+        </div>
+        {/* Subtle radial vignette to blend the map edges into the dark theme */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,hsl(214_60%_6%_/_0.8)_100%)]" />
+      </div>
 
       {/* ── Legend — bottom-left to avoid zoom controls ── */}
       <div className="pointer-events-none absolute bottom-14 left-3 z-[400] hidden md:block lg:bottom-16 lg:left-4">

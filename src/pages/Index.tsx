@@ -17,7 +17,7 @@ import { Navbar } from "@/components/atlas/Navbar";
 import { CinematicAudio } from "@/components/atlas/CinematicAudio";
 import { useTheme } from "@/hooks/useTheme";
 import heroOcean from "@/assets/hero-ocean.jpg";
-const heroVideo = "/338904.mp4";
+const heroVideo = "/hero-optimized.mp4";
 
 /* ── Scroll-reveal ── */
 function useScrollReveal() {
@@ -37,6 +37,8 @@ function useScrollReveal() {
 
 const Index = () => {
   const { theme, toggle, isDark } = useTheme();
+  const scenariosRef = useRef<HTMLElement>(null);
+  const atlasRef = useRef<HTMLElement>(null);
   const [state, setState] = useState<AtlasState>(DEFAULT_STATE);
   const result = useMemo(() => calculateImpact(state), [state]);
 
@@ -94,7 +96,7 @@ const Index = () => {
             </div>
 
             <h1
-              className="font-display mb-6 text-[2.8rem] leading-[1.02] sm:text-6xl md:text-7xl lg:text-[5.5rem] xl:text-[6.5rem]"
+              className="font-display mb-4 sm:mb-6 text-4xl leading-[1.05] sm:text-6xl md:text-7xl lg:text-[5.5rem] xl:text-[6.5rem]"
               style={{ color: "hsl(200 30% 96%)", textShadow: "0 2px 20px rgba(0,0,0,0.4)" }}
             >
               Sea Level Rise
@@ -103,7 +105,7 @@ const Index = () => {
             </h1>
 
             <p
-              className="mx-auto mb-10 max-w-2xl text-base leading-7 sm:text-lg lg:text-xl"
+              className="mx-auto mb-8 sm:mb-10 max-w-2xl text-sm leading-relaxed sm:text-lg lg:text-xl px-4 sm:px-0"
               style={{ color: "hsl(210 25% 78%)", textShadow: "0 1px 8px rgba(0,0,0,0.5)" }}
             >
               A decision-grade atlas modelling sea-level rise across India's 8 most
@@ -111,63 +113,52 @@ const Index = () => {
               planning &amp; long-horizon capital allocation.
             </p>
 
-            <div className="flex flex-wrap items-center justify-center gap-6 reveal-delay-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 w-full max-w-xs sm:max-w-none mx-auto reveal-delay-2 px-6 sm:px-0">
               <a 
-                href="#scenarios" 
-                className="group relative inline-flex items-center gap-3 px-9 py-4 rounded-full font-bold text-sm tracking-wide transition-all duration-500 hover:scale-105 active:scale-95"
-                style={{
-                  background: "linear-gradient(135deg, #00E5FF 0%, #0091FF 100%)",
-                  color: "#030916",
-                  boxShadow: "0 10px 30px -5px rgba(0, 229, 255, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.3)",
-                }}
+                href="#scenarios"
+                onClick={(e) => { e.preventDefault(); scenariosRef.current?.scrollIntoView({ behavior: 'smooth' }); }}
+                className="btn-primary flex justify-center"
               >
-                {/* Internal Shimmer */}
-                <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
-                <span className="relative z-10 flex items-center gap-2">
-                  Explore scenarios <ArrowDown className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-1" />
-                </span>
+                Explore scenarios <ArrowDown className="h-4 w-4" />
               </a>
-              
               <a
                 href="#atlas"
-                className="group relative inline-flex items-center gap-3 px-9 py-4 rounded-full font-bold text-sm tracking-wide transition-all duration-500 hover:scale-105 hover:bg-white/10 active:scale-95"
+                onClick={(e) => { e.preventDefault(); atlasRef.current?.scrollIntoView({ behavior: 'smooth' }); }}
+                className="group justify-center"
                 style={{
-                  background: "rgba(255, 255, 255, 0.05)",
-                  color: "#FFFFFF",
-                  border: "1px solid rgba(255, 255, 255, 0.2)",
-                  backdropFilter: "blur(12px)",
-                  boxShadow: "0 10px 30px -10px rgba(0, 0, 0, 0.5)",
+                  display: "inline-flex", alignItems: "center", gap: "0.5rem",
+                  padding: "0.75rem 1.625rem", borderRadius: "9999px",
+                  background: "rgba(4,10,24,0.50)", color: "hsl(200 20% 90%)",
+                  border: "1px solid rgba(200,230,255,0.25)", backdropFilter: "blur(12px)",
+                  fontSize: "0.875rem", fontWeight: 600,
+                  transition: "all 0.25s ease",
+                  cursor: "pointer"
                 }}
               >
-                {/* Border Glow Pulse */}
-                <div className="absolute inset-0 rounded-full border border-cyan-400/50 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                <span className="relative z-10 flex items-center gap-2">
-                  Open the atlas <Globe2 className="h-4 w-4 transition-transform duration-700 group-hover:rotate-[180deg]" />
-                </span>
+                Open the atlas <Globe2 className="h-4 w-4" />
               </a>
             </div>
 
             {/* Stats */}
-            <div className="mt-20 flex flex-wrap items-center justify-center gap-12 sm:gap-20 reveal-delay-3">
+            <div className="mt-12 sm:mt-16 flex flex-wrap items-center justify-center gap-6 sm:gap-14 reveal-delay-3 px-4">
               {[["8", "Coastal regions"], ["3", "IPCC scenarios"], ["100%", "Reproducible"]].map(([big, small], i) => (
                 <div
                   key={i}
-                  className="group relative flex flex-col items-center cursor-default"
+                  className="group relative text-center cursor-default transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-125 w-[40%] sm:w-auto"
                 >
-                  {/* Subtle Background Glow Pulse */}
-                  <div className="absolute top-1/2 left-1/2 -z-10 h-24 w-24 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400/0 blur-3xl transition-all duration-700 group-hover:bg-cyan-400/15" />
-                  
                   <p
-                    className="font-mono-num font-display text-5xl font-bold sm:text-6xl transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-125 group-hover:translate-y-[-8px]"
+                    className="font-mono-num font-display text-3xl sm:text-5xl font-bold transition-all duration-300 group-hover:text-[#00E5FF] group-hover:brightness-125"
                     style={{ 
-                      color: "#00E5FF", 
-                      textShadow: "0 0 40px rgba(0, 229, 255, 0.5)",
-                      letterSpacing: "-0.02em"
+                      color: "hsl(188 100% 62%)", 
+                      textShadow: "0 0 24px hsla(188, 100%, 50%, 0.4)",
                     }}
                   >
                     {big}
                   </p>
-                  <p className="mt-3 text-[10px] font-bold uppercase tracking-[0.3em] transition-all duration-300 group-hover:text-white group-hover:tracking-[0.4em]" style={{ color: "rgba(255, 255, 255, 0.45)" }}>
+                  <p 
+                    className="mt-1 text-[8px] sm:text-[10px] font-bold uppercase tracking-[0.15em] sm:tracking-[0.2em] transition-all duration-300 group-hover:text-white group-hover:tracking-[0.25em]" 
+                    style={{ color: "hsl(210 20% 65%)" }}
+                  >
                     {small}
                   </p>
                 </div>
@@ -195,14 +186,8 @@ const Index = () => {
           ].map((f) => (
             <div
               key={f.title}
-              className="reveal flex items-start gap-4 rounded-2xl p-4 sm:p-5 transition-all duration-300 hover:-translate-y-1"
-              style={{
-                background: isDark ? "hsl(214 50% 9%/0.8)" : "hsl(0 0% 100%/0.85)",
-                border: `1px solid ${isDark ? "hsl(214 30% 20%)" : "hsl(210 35% 85%)"}`,
-                backdropFilter: "blur(8px)",
-                boxShadow: isDark ? "var(--shadow-sm)" : "0 2px 12px hsl(210 40% 70%/0.2)",
-                transitionDelay: f.delay,
-              }}
+              className="reveal premium-card flex items-start gap-4 p-4 sm:p-5"
+              style={{ transitionDelay: f.delay }}
             >
               <div
                 className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
@@ -222,7 +207,22 @@ const Index = () => {
       {/* ════════════════════════════════════════
           SCENARIOS + CONTROLS
           ════════════════════════════════════════ */}
-      <section id="scenarios" className="relative py-16 sm:py-24 lg:py-28">
+      <section id="scenarios" ref={scenariosRef} className="relative overflow-hidden py-16 sm:py-24 lg:py-28">
+        {/* Sci-fi Animated Background Elements */}
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <div className="absolute inset-0 bg-sci-fi-grid [mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)]" />
+          <div className="absolute inset-0 bg-ocean-fog" />
+          <div className="absolute inset-0 bg-contour-lines" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="h-[200%] w-[120px] bg-cyan-400/20 blur-[60px]" style={{ animation: "light-sweep 15s infinite linear", willChange: "transform, opacity" }} />
+          </div>
+          {/* Theme-aware vignette over the animations */}
+          <div 
+            className="absolute inset-0" 
+            style={{ background: "radial-gradient(ellipse at center, transparent 40%, hsl(var(--background) / 0.9) 100%)" }} 
+          />
+        </div>
+
         <div className="section-padding relative z-10 mx-auto max-w-[1520px]">
           <div className="mb-10 grid gap-8 sm:mb-12 lg:grid-cols-[1.3fr_1fr] lg:items-start">
             <div className="reveal">
@@ -242,26 +242,26 @@ const Index = () => {
 
               {/* Added info boxes to balance the layout */}
               <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:max-w-xl">
-                <div className="group rounded-2xl p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg" style={{ border: "1px solid hsl(var(--border) / 0.5)", background: "hsl(var(--muted) / 0.2)" }}>
-                  <div className="mb-2 flex items-center gap-2">
-                    <div className="flex h-6 w-6 items-center justify-center rounded-lg transition-transform duration-300 group-hover:scale-110" style={{ background: "hsl(var(--primary) / 0.1)", color: "hsl(var(--primary))" }}>
-                      <Activity className="h-3 w-3" />
+                <div className="group premium-card p-5 transition-all duration-300">
+                  <div className="mb-3 flex items-center gap-2">
+                    <div className="flex h-7 w-7 items-center justify-center rounded-lg transition-transform duration-300 group-hover:scale-110" style={{ background: "hsl(var(--primary) / 0.1)", color: "hsl(var(--primary))" }}>
+                      <Activity className="h-3.5 w-3.5" />
                     </div>
                     <span className="text-[10px] font-bold uppercase tracking-wider text-foreground">Dynamic Engine</span>
                   </div>
-                  <p className="text-xs text-muted-foreground leading-relaxed transition-colors duration-300 group-hover:text-foreground/80">
+                  <p className="text-xs text-muted-foreground leading-relaxed transition-colors duration-300 group-hover:text-foreground/90">
                     Adjust environmental variables to instantly recalibrate economic and demographic risk models.
                   </p>
                 </div>
 
-                <div className="group rounded-2xl p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg" style={{ border: "1px solid hsl(var(--border) / 0.5)", background: "hsl(var(--muted) / 0.2)" }}>
-                  <div className="mb-2 flex items-center gap-2">
-                    <div className="flex h-6 w-6 items-center justify-center rounded-lg transition-transform duration-300 group-hover:scale-110" style={{ background: "hsl(var(--primary) / 0.1)", color: "hsl(var(--primary))" }}>
-                      <Zap className="h-3 w-3" />
+                <div className="group premium-card p-5 transition-all duration-300">
+                  <div className="mb-3 flex items-center gap-2">
+                    <div className="flex h-7 w-7 items-center justify-center rounded-lg transition-transform duration-300 group-hover:scale-110" style={{ background: "hsl(var(--primary) / 0.1)", color: "hsl(var(--primary))" }}>
+                      <TrendingUp className="h-3.5 w-3.5" />
                     </div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-foreground">Non-Linear Risk</span>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-foreground">Non-linear Risk</span>
                   </div>
-                  <p className="text-xs text-muted-foreground leading-relaxed transition-colors duration-300 group-hover:text-foreground/80">
+                  <p className="text-xs text-muted-foreground leading-relaxed transition-colors duration-300 group-hover:text-foreground/90">
                     Vulnerability scores scale exponentially once critical coastal infrastructure thresholds are breached.
                   </p>
                 </div>
@@ -282,8 +282,11 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Show waves in both modes now, WaveBackground handles the theme */}
-        <WaveBackground variant="section" className="z-0 opacity-50" isDark={isDark} />
+        {/* Crossfaded waves for zero-lag transition */}
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <WaveBackground variant="section" className="transition-opacity duration-500 ease-in-out" style={{ opacity: isDark ? 0.5 : 0 }} isDark={true} />
+          <WaveBackground variant="section" className="transition-opacity duration-500 ease-in-out" style={{ opacity: isDark ? 0 : 0.5 }} isDark={false} />
+        </div>
       </section>
 
       {/* ════════════════════════════════════════
@@ -291,9 +294,24 @@ const Index = () => {
           ════════════════════════════════════════ */}
       <section
         id="atlas"
-        className="relative py-16 sm:py-24 lg:py-28"
+        ref={atlasRef}
+        className="relative overflow-hidden py-16 sm:py-24 lg:py-28"
         style={{ borderTop: `1px solid ${dividerColor}` }}
       >
+        {/* Sci-fi Animated Background Elements for Dark Mode only */}
+        <div 
+          className="absolute inset-0 z-0 pointer-events-none mix-blend-screen transition-opacity duration-500 ease-in-out"
+          style={{ opacity: isDark ? 0.5 : 0 }}
+        >
+          <div className="absolute inset-0 bg-ocean-fog" />
+          <div className="absolute inset-0 bg-contour-lines opacity-30" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="h-[200%] w-[120px] bg-cyan-400/10 blur-[80px]" style={{ animation: "light-sweep 20s infinite linear reverse", willChange: "transform, opacity" }} />
+          </div>
+          {/* Smooth transition into the footer */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_60%,hsl(214_60%_6%)_100%)]" />
+        </div>
+
         <div className="section-padding relative z-10 mx-auto max-w-[1600px]">
           <div className="reveal mx-auto mb-10 max-w-2xl text-center sm:mb-12">
             <div className="chip mx-auto mb-4">
@@ -336,7 +354,11 @@ const Index = () => {
           </div>
         </div>
 
-        <WaveBackground variant="footer" className="z-0 opacity-60" isDark={isDark} />
+        {/* Crossfaded waves for zero-lag transition */}
+        <div className="absolute inset-x-0 bottom-0 z-0 pointer-events-none">
+          <WaveBackground variant="footer" className="transition-opacity duration-500 ease-in-out" style={{ opacity: isDark ? 0.6 : 0 }} isDark={true} />
+          <WaveBackground variant="footer" className="transition-opacity duration-500 ease-in-out" style={{ opacity: isDark ? 0 : 0.6 }} isDark={false} />
+        </div>
 
         <footer
           className="section-padding relative z-10 mx-auto max-w-[1520px] border-t pb-8 pt-10 text-xs text-muted-foreground"

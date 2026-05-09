@@ -169,12 +169,17 @@
     border-color: hsl(var(--primary) / 0.22);
   }
 
-  /* ── Premium card ── */
+  /* ── Premium card (Upgraded Glassmorphism) ── */
   .premium-card {
-    background: var(--gradient-card);
-    border: 1px solid hsl(var(--border) / 0.8);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-md);
+    background: linear-gradient(135deg, hsl(var(--card) / 0.8) 0%, hsl(var(--background) / 0.5) 100%);
+    backdrop-filter: blur(24px) saturate(1.2);
+    -webkit-backdrop-filter: blur(24px) saturate(1.2);
+    border-top: 1px solid hsl(var(--border) / 0.9);
+    border-left: 1px solid hsl(var(--border) / 0.6);
+    border-right: 1px solid hsl(var(--border) / 0.3);
+    border-bottom: 1px solid hsl(var(--border) / 0.2);
+    border-radius: calc(var(--radius) * 1.5);
+    box-shadow: var(--shadow-xl), inset 0 1px 0 hsl(var(--foreground) / 0.08);
     transition:
       transform 0.35s var(--ease-premium),
       box-shadow 0.35s var(--ease-premium),
@@ -183,8 +188,8 @@
 
   .premium-card:hover {
     transform: translateY(-3px);
-    border-color: hsl(var(--primary) / 0.3);
-    box-shadow: var(--shadow-xl), 0 0 0 1px hsl(var(--primary) / 0.08);
+    border-color: hsl(var(--primary) / 0.4);
+    box-shadow: var(--shadow-xl), 0 0 0 1px hsl(var(--primary) / 0.15);
   }
 
   /* ── Deep card ── */
@@ -637,4 +642,48 @@
     transform: none !important;
     transition: none !important;
   }
+}
+
+/* ================================================================
+   SCI-FI BACKGROUND ANIMATIONS
+   ================================================================ */
+@keyframes fog-drift {
+  0% { background-position: 0% 50%; opacity: 0.04; }
+  50% { background-position: 100% 50%; opacity: 0.08; }
+  100% { background-position: 0% 50%; opacity: 0.04; }
+}
+@keyframes light-sweep {
+  0% { transform: translateX(-100%) rotate(25deg); opacity: 0; }
+  25% { opacity: 0.07; }
+  50% { transform: translateX(100%) rotate(25deg); opacity: 0; }
+  100% { transform: translateX(100%) rotate(25deg); opacity: 0; }
+}
+@keyframes grid-move {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 40px; }
+}
+
+.bg-sci-fi-grid {
+  background-image: 
+    linear-gradient(to right, rgba(140, 230, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(140, 230, 255, 0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: grid-move 8s linear infinite;
+}
+
+.bg-ocean-fog {
+  background: radial-gradient(circle at 20% 50%, rgba(140, 230, 255, 0.15) 0%, transparent 40%),
+              radial-gradient(circle at 80% 60%, rgba(0, 200, 255, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 50% 20%, rgba(140, 230, 255, 0.08) 0%, transparent 40%);
+  background-size: 200% 200%;
+  animation: fog-drift 18s ease-in-out infinite;
+}
+
+.bg-contour-lines {
+  background-image: 
+    radial-gradient(circle at 30% 30%, transparent 30%, rgba(140,230,255, 0.05) 31%, transparent 32%),
+    radial-gradient(circle at 30% 30%, transparent 40%, rgba(140,230,255, 0.05) 41%, transparent 42%),
+    radial-gradient(circle at 70% 80%, transparent 20%, rgba(140,230,255, 0.04) 21%, transparent 22%),
+    radial-gradient(circle at 70% 80%, transparent 35%, rgba(140,230,255, 0.04) 36%, transparent 37%);
+  background-size: 100% 100%;
 }

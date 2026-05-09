@@ -14,7 +14,7 @@ export const DecisionEngine = ({ result }: { result: ImpactResult }) => {
 
   return (
     <div
-      className="deep-card relative overflow-hidden p-7 lg:p-9"
+      className="premium-card relative overflow-hidden p-7 lg:p-9"
     >
       {/* Ambient glows */}
       <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full opacity-25" style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.2) 0%, transparent 70%)", filter: "blur(40px)" }} />
@@ -28,11 +28,11 @@ export const DecisionEngine = ({ result }: { result: ImpactResult }) => {
           <Sparkles className="h-4 w-4" />
           <p className="text-[10px] font-semibold uppercase tracking-[0.22em]">Decision Engine</p>
         </div>
-        <h3 className="font-display text-2xl text-white lg:text-3xl">
+        <h3 className="font-display text-2xl text-foreground lg:text-3xl">
           Strategic responses for{" "}
           <span className="text-gradient-cyan">{result.region.shortName}</span>
         </h3>
-        <p className="mt-2 text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.55)" }}>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground/80">
           Auto-generated from risk score{" "}
           <span className="font-mono-num" style={{ color: "hsl(var(--primary))" }}>{result.riskScore.toFixed(0)}</span>{" "}
           and regional context.
@@ -46,8 +46,8 @@ export const DecisionEngine = ({ result }: { result: ImpactResult }) => {
             return (
               <div
                 key={i}
-                className="group rounded-2xl p-5 transition-all duration-300 hover:scale-[1.01] hover:bg-white/[0.06]"
-                style={{ background: "hsl(214 55% 11% / 0.65)", border: "1px solid hsl(214 30% 22% / 0.5)", backdropFilter: "blur(8px)" }}
+                className="group rounded-2xl p-5 transition-all duration-300 hover:scale-[1.01]"
+                style={{ background: "hsl(var(--muted)/0.3)", border: "1px solid hsl(var(--border)/0.5)", backdropFilter: "blur(8px)" }}
               >
                 <div className="mb-4 flex items-start justify-between">
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl transition-transform duration-300 group-hover:scale-110" style={{ background: "hsl(var(--primary) / 0.1)", color: "hsl(var(--primary))" }}>
@@ -57,8 +57,8 @@ export const DecisionEngine = ({ result }: { result: ImpactResult }) => {
                     {r.priority}
                   </span>
                 </div>
-                <p className="font-display text-base text-white leading-snug">{r.title}</p>
-                <p className="mt-2 text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.5)" }}>{r.detail}</p>
+                <p className="font-display text-base text-foreground leading-snug">{r.title}</p>
+                <p className="mt-2 text-xs leading-relaxed text-muted-foreground/70">{r.detail}</p>
               </div>
             );
           })}

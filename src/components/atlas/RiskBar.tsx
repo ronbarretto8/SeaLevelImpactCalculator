@@ -62,7 +62,7 @@ export const RiskBar = ({ result }: { result: ImpactResult }) => {
           {/* Track */}
           <div
             className="relative h-3 w-full overflow-hidden rounded-full"
-            style={{ background: "hsl(214 40% 14%)" }}
+            style={{ background: "hsl(var(--muted))" }}
           >
             {/* Background gradient track */}
             <div

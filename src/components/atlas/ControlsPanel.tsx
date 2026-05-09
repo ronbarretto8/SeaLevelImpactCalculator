@@ -13,7 +13,13 @@ export const ControlsPanel = ({ state, onChange }: ControlsPanelProps) => {
   const update = (patch: Partial<AtlasState>) => onChange({ ...state, ...patch });
 
   return (
-    <div className="premium-card p-6 lg:p-7">
+    <div className="premium-card p-6 lg:p-7 relative overflow-hidden">
+      {/* Subtle interior glow */}
+      <div 
+        className="absolute -top-24 -left-24 w-48 h-48 rounded-full blur-[50px] pointer-events-none" 
+        style={{ background: "hsl(var(--primary) / 0.15)" }}
+      />
+      
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
         <div>
