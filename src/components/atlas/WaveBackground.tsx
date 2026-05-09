@@ -8,26 +8,25 @@ interface WaveBackgroundProps {
 
 /**
  * Layered animated SVG ocean waves — adaptive palette.
+ * Using SOLID FILLS for Dark Mode to ensure 100% color accuracy and avoid SVG ID issues.
  */
 export const WaveBackground = memo(({ variant = "hero", className = "", isDark = true }: WaveBackgroundProps) => {
-  // Drastically reduced opacity for Dark Mode to ensure it blends perfectly
-  const baseOpacity = isDark ? 0.4 : 0.6;
-  const opacity = variant === "hero" ? 1 : variant === "section" ? baseOpacity : baseOpacity * 0.8;
+  // Ultra-subtle base opacity for dark theme
+  const opacity = isDark ? (variant === "hero" ? 0.6 : 0.4) : (variant === "hero" ? 1 : 0.6);
   
-  // ULTRA-DARK palette to ensure zero 'light blue' feel in Dark Mode
-  const colors = {
-    sky: isDark ? ["#01040a", "#000000"] : ["hsl(205, 50%, 85%)", "hsl(210, 60%, 75%)"],
-    back: isDark ? ["#020B16", "#01040a"] : ["hsl(205, 60%, 80%)", "hsl(210, 65%, 70%)"],
-    azure: isDark ? ["#031526", "#020B16"] : ["hsl(200, 70%, 75%)", "hsl(205, 75%, 65%)"],
-    mid: isDark ? ["#06243A", "#031526"] : ["hsl(205, 70%, 70%)", "hsl(210, 75%, 60%)"],
-    front: isDark ? ["#0A3A52", "#06243A"] : ["hsl(210, 65%, 65%)", "hsl(214, 70%, 55%)"],
-    navy: isDark ? ["#01040a", "#000000"] : ["hsl(214, 70%, 60%)", "hsl(216, 75%, 50%)"],
-    foam: isDark ? ["#01040a", "#01040a"] : ["hsl(188, 80%, 90%)", "hsl(188, 80%, 90%)"],
+  // DARK THEME: Using solid colors from the requested palette with varying opacities
+  // LIGHT THEME: Keeping the original gradients
+  const darkColors = {
+    sky: "#020B16",
+    back: "#031526",
+    azure: "#06243A",
+    mid: "#0A3A52",
+    front: "#0D4B68",
+    navy: "#01040a"
   };
 
   const idSuffix = `${variant}-${isDark ? "dark" : "light"}`;
-  const waveHeight = variant === "footer" ? "h-[200px]" : "h-[400px]";
-  const smWaveHeight = variant === "footer" ? "sm:h-[240px]" : "sm:h-[460px]";
+  const waveHeight = variant === "footer" ? "h-[160px]" : "h-[400px]";
 
   return (
     <div
@@ -35,115 +34,108 @@ export const WaveBackground = memo(({ variant = "hero", className = "", isDark =
       className={`pointer-events-none absolute inset-x-0 bottom-0 overflow-hidden ${className}`}
       style={{ opacity }}
     >
-      <div className={`relative ${waveHeight} w-full ${smWaveHeight}`}>
-
+      <div className={`relative ${waveHeight} w-full`}>
+        
         {/* Layer 1 — deepest back */}
-        <svg
-          className="absolute bottom-0 left-0 h-[80%] w-[200%] animate-wave-slow"
-          viewBox="0 0 2880 320"
-          preserveAspectRatio="none"
-        >
-          <defs>
-            <linearGradient id={`wv-sky-${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor={colors.sky[0]} stopOpacity={isDark ? "0.4" : "0.3"} />
-              <stop offset="100%" stopColor={colors.sky[1]} stopOpacity={isDark ? "0.7" : "0.6"} />
-            </linearGradient>
-          </defs>
-          <path fill={`url(#wv-sky-${idSuffix})`}
-            d="M0,170 C200,110 400,230 600,170 C800,110 1000,230 1200,170 C1400,110 1600,230 1800,170 C2000,110 2200,230 2400,170 C2600,110 2800,230 2880,170 L2880,320 L0,320 Z"
-          />
+        <svg className="absolute bottom-0 left-0 h-[100%] w-[200%] animate-wave-slow" viewBox="0 0 2880 320" preserveAspectRatio="none">
+          {isDark ? (
+            <path fill={darkColors.sky} fillOpacity="0.4" d="M0,170 C200,110 400,230 600,170 C800,110 1000,230 1200,170 C1400,110 1600,230 1800,170 C2000,110 2200,230 2400,170 C2600,110 2800,230 2880,170 L2880,320 L0,320 Z" />
+          ) : (
+            <>
+              <defs>
+                <linearGradient id={`wv-sky-${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stopColor="hsl(205, 50%, 85%)" stopOpacity="0.3" />
+                  <stop offset="100%" stopColor="hsl(210, 60%, 75%)" stopOpacity="0.6" />
+                </linearGradient>
+              </defs>
+              <path fill={`url(#wv-sky-${idSuffix})`} d="M0,170 C200,110 400,230 600,170 C800,110 1000,230 1200,170 C1400,110 1600,230 1800,170 C2000,110 2200,230 2400,170 C2600,110 2800,230 2880,170 L2880,320 L0,320 Z" />
+            </>
+          )}
         </svg>
 
         {/* Layer 2 — mid-back */}
-        <svg
-          className="absolute bottom-0 left-0 h-[70%] w-[200%] animate-wave-slow"
-          viewBox="0 0 2880 280"
-          preserveAspectRatio="none"
-        >
-          <defs>
-            <linearGradient id={`wv-back-${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor={colors.back[0]} stopOpacity={isDark ? "0.5" : "0.55"} />
-              <stop offset="100%" stopColor={colors.back[1]} stopOpacity={isDark ? "0.8" : "0.85"} />
-            </linearGradient>
-          </defs>
-          <path fill={`url(#wv-back-${idSuffix})`}
-            d="M0,140 C240,80 480,200 720,140 C960,80 1200,200 1440,140 C1680,80 1920,200 2160,140 C2400,80 2640,200 2880,140 L2880,280 L0,280 Z"
-          />
+        <svg className="absolute bottom-0 left-0 h-[85%] w-[200%] animate-wave-slow" viewBox="0 0 2880 280" preserveAspectRatio="none">
+          {isDark ? (
+            <path fill={darkColors.back} fillOpacity="0.6" d="M0,140 C240,80 480,200 720,140 C960,80 1200,200 1440,140 C1680,80 1920,200 2160,140 C2400,80 2640,200 2880,140 L2880,280 L0,280 Z" />
+          ) : (
+            <>
+              <defs>
+                <linearGradient id={`wv-back-${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stopColor="hsl(205, 60%, 80%)" stopOpacity="0.55" />
+                  <stop offset="100%" stopColor="hsl(210, 65%, 70%)" stopOpacity="0.85" />
+                </linearGradient>
+              </defs>
+              <path fill={`url(#wv-back-${idSuffix})`} d="M0,140 C240,80 480,200 720,140 C960,80 1200,200 1440,140 C1680,80 1920,200 2160,140 C2400,80 2640,200 2880,140 L2880,280 L0,280 Z" />
+            </>
+          )}
         </svg>
 
         {/* Layer 3 — azure mid */}
-        <svg
-          className="absolute bottom-0 left-0 h-[60%] w-[200%] animate-wave"
-          viewBox="0 0 2880 240"
-          preserveAspectRatio="none"
-        >
-          <defs>
-            <linearGradient id={`wv-azure-${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor={colors.azure[0]} stopOpacity={isDark ? "0.6" : "0.6"} />
-              <stop offset="100%" stopColor={colors.azure[1]} stopOpacity={isDark ? "0.9" : "0.9"} />
-            </linearGradient>
-          </defs>
-          <path fill={`url(#wv-azure-${idSuffix})`}
-            d="M0,130 C220,70 440,190 660,130 C880,70 1100,190 1320,130 C1540,70 1760,190 1980,130 C2200,70 2420,190 2640,130 C2750,110 2880,150 2880,150 L2880,240 L0,240 Z"
-          />
+        <svg className="absolute bottom-0 left-0 h-[70%] w-[200%] animate-wave" viewBox="0 0 2880 240" preserveAspectRatio="none">
+          {isDark ? (
+            <path fill={darkColors.azure} fillOpacity="0.7" d="M0,130 C220,70 440,190 660,130 C880,70 1100,190 1320,130 C1540,70 1760,190 1980,130 C2200,70 2420,190 2640,130 C2750,110 2880,150 2880,150 L2880,240 L0,240 Z" />
+          ) : (
+            <>
+              <defs>
+                <linearGradient id={`wv-azure-${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stopColor="hsl(200, 70%, 75%)" stopOpacity="0.6" />
+                  <stop offset="100%" stopColor="hsl(205, 75%, 65%)" stopOpacity="0.9" />
+                </linearGradient>
+              </defs>
+              <path fill={`url(#wv-azure-${idSuffix})`} d="M0,130 C220,70 440,190 660,130 C880,70 1100,190 1320,130 C1540,70 1760,190 1980,130 C2200,70 2420,190 2640,130 C2750,110 2880,150 2880,150 L2880,240 L0,240 Z" />
+            </>
+          )}
         </svg>
 
         {/* Layer 4 — ocean blue */}
-        <svg
-          className="absolute bottom-0 left-0 h-[50%] w-[200%] animate-wave-rev"
-          viewBox="0 0 2880 200"
-          preserveAspectRatio="none"
-        >
-          <defs>
-            <linearGradient id={`wv-mid-${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor={colors.mid[0]} stopOpacity={isDark ? "0.7" : "0.75"} />
-              <stop offset="100%" stopColor={colors.mid[1]} stopOpacity="1" />
-            </linearGradient>
-          </defs>
-          <path fill={`url(#wv-mid-${idSuffix})`}
-            d="M0,120 C300,60 600,180 900,120 C1200,60 1500,180 1800,120 C2100,60 2400,180 2700,120 C2790,100 2880,140 2880,140 L2880,200 L0,200 Z"
-          />
+        <svg className="absolute bottom-0 left-0 h-[55%] w-[200%] animate-wave-rev" viewBox="0 0 2880 200" preserveAspectRatio="none">
+          {isDark ? (
+            <path fill={darkColors.mid} fillOpacity="0.8" d="M0,120 C300,60 600,180 900,120 C1200,60 1500,180 1800,120 C2100,60 2400,180 2700,120 C2790,100 2880,140 2880,140 L2880,200 L0,200 Z" />
+          ) : (
+            <>
+              <defs>
+                <linearGradient id={`wv-mid-${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stopColor="hsl(205, 70%, 70%)" stopOpacity="0.75" />
+                  <stop offset="100%" stopColor="hsl(210, 75%, 60%)" stopOpacity="1" />
+                </linearGradient>
+              </defs>
+              <path fill={`url(#wv-mid-${idSuffix})`} d="M0,120 C300,60 600,180 900,120 C1200,60 1500,180 1800,120 C2100,60 2400,180 2700,120 C2790,100 2880,140 2880,140 L2880,200 L0,200 Z" />
+            </>
+          )}
         </svg>
 
         {/* Layer 5 — deepest front */}
-        <svg
-          className="absolute bottom-0 left-0 h-[40%] w-[200%] animate-wave"
-          viewBox="0 0 2880 150"
-          preserveAspectRatio="none"
-        >
-          <defs>
-            <linearGradient id={`wv-front-${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor={colors.front[0]} stopOpacity={isDark ? "0.8" : "0.95"} />
-              <stop offset="100%" stopColor={colors.front[1]} stopOpacity="1" />
-            </linearGradient>
-            <linearGradient id={`wv-foam-${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor={colors.foam[0]} stopOpacity={isDark ? "0.05" : "0.15"} />
-              <stop offset="100%" stopColor={colors.foam[1]} stopOpacity="0" />
-            </linearGradient>
-          </defs>
-          <path fill={`url(#wv-front-${idSuffix})`}
-            d="M0,90 C240,40 480,140 720,90 C960,40 1200,140 1440,90 C1680,40 1920,140 2160,90 C2400,40 2640,140 2880,90 L2880,150 L0,150 Z"
-          />
-          <path fill={`url(#wv-foam-${idSuffix})`}
-            d="M0,90 C240,40 480,140 720,90 C960,40 1200,140 1440,90 C1680,40 1920,140 2160,90 C2400,40 2640,140 2880,90 L2880,97 C2640,147 2400,47 2160,97 C1920,147 1680,47 1440,97 C1200,147 960,47 720,97 C480,147 240,47 0,97 Z"
-          />
+        <svg className="absolute bottom-0 left-0 h-[40%] w-[200%] animate-wave" viewBox="0 0 2880 150" preserveAspectRatio="none">
+          {isDark ? (
+            <path fill={darkColors.front} fillOpacity="0.9" d="M0,90 C240,40 480,140 720,90 C960,40 1200,140 1440,90 C1680,40 1920,140 2160,90 C2400,40 2640,140 2880,90 L2880,150 L0,150 Z" />
+          ) : (
+            <>
+              <defs>
+                <linearGradient id={`wv-front-${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stopColor="hsl(210, 65%, 65%)" stopOpacity="0.95" />
+                  <stop offset="100%" stopColor="hsl(214, 70%, 55%)" stopOpacity="1" />
+                </linearGradient>
+              </defs>
+              <path fill={`url(#wv-front-${idSuffix})`} d="M0,90 C240,40 480,140 720,90 C960,40 1200,140 1440,90 C1680,40 1920,140 2160,90 C2400,40 2640,140 2880,90 L2880,150 L0,150 Z" />
+            </>
+          )}
         </svg>
 
         {/* Layer 6 — tiny crest wave */}
-        <svg
-          className="absolute bottom-0 left-0 h-[20%] w-[200%] animate-wave-rev"
-          viewBox="0 0 2880 80"
-          preserveAspectRatio="none"
-        >
-          <defs>
-            <linearGradient id={`wv-navy-${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor={colors.navy[0]} stopOpacity={isDark ? "0.9" : "0.98"} />
-              <stop offset="100%" stopColor={colors.navy[1]} stopOpacity="1" />
-            </linearGradient>
-          </defs>
-          <path fill={`url(#wv-navy-${idSuffix})`}
-            d="M0,40 C180,15 360,65 540,40 C720,15 900,65 1080,40 C1260,15 1440,65 1620,40 C1800,15 1980,65 2160,40 C2340,15 2520,65 2700,40 C2790,28 2880,52 2880,52 L2880,80 L0,80 Z"
-          />
+        <svg className="absolute bottom-0 left-0 h-[20%] w-[200%] animate-wave-rev" viewBox="0 0 2880 80" preserveAspectRatio="none">
+          {isDark ? (
+            <path fill={darkColors.navy} fillOpacity="1" d="M0,40 C180,15 360,65 540,40 C720,15 900,65 1080,40 C1260,15 1440,65 1620,40 C1800,15 1980,65 2160,40 C2340,15 2520,65 2700,40 C2790,28 2880,52 2880,52 L2880,80 L0,80 Z" />
+          ) : (
+            <>
+              <defs>
+                <linearGradient id={`wv-navy-${idSuffix}`} x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stopColor="hsl(214, 70%, 60%)" stopOpacity="0.98" />
+                  <stop offset="100%" stopColor="hsl(216, 75%, 50%)" stopOpacity="1" />
+                </linearGradient>
+              </defs>
+              <path fill={`url(#wv-navy-${idSuffix})`} d="M0,40 C180,15 360,65 540,40 C720,15 900,65 1080,40 C1260,15 1440,65 1620,40 C1800,15 1980,65 2160,40 C2340,15 2520,65 2700,40 C2790,28 2880,52 2880,52 L2880,80 L0,80 Z" />
+            </>
+          )}
         </svg>
 
       </div>
