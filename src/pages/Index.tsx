@@ -283,9 +283,12 @@ const Index = () => {
         </div>
 
         {/* Crossfaded waves for zero-lag transition */}
-        <div className="absolute inset-0 z-0 pointer-events-none">
-          <WaveBackground variant="section" className="transition-opacity duration-500 ease-in-out" style={{ opacity: isDark ? 0.5 : 0 }} isDark={true} />
-          <WaveBackground variant="section" className="transition-opacity duration-500 ease-in-out" style={{ opacity: isDark ? 0 : 0.5 }} isDark={false} />
+        <div 
+          className="absolute inset-0 z-0 pointer-events-none"
+          style={{ maskImage: "linear-gradient(to top, black 40%, transparent 100%)", WebkitMaskImage: "linear-gradient(to top, black 40%, transparent 100%)" }}
+        >
+          <WaveBackground variant="section" className="transition-opacity duration-500 ease-in-out" style={{ opacity: isDark ? 0.4 : 0 }} isDark={true} />
+          <WaveBackground variant="section" className="transition-opacity duration-500 ease-in-out" style={{ opacity: isDark ? 0 : 0.6 }} isDark={false} />
         </div>
       </section>
 
@@ -355,8 +358,11 @@ const Index = () => {
         </div>
 
         {/* Crossfaded waves for zero-lag transition */}
-        <div className="absolute inset-x-0 bottom-0 z-0 pointer-events-none">
-          <WaveBackground variant="footer" className="transition-opacity duration-500 ease-in-out" style={{ opacity: isDark ? 0.6 : 0 }} isDark={true} />
+        <div 
+          className="absolute inset-x-0 bottom-0 z-0 pointer-events-none"
+          style={{ maskImage: "linear-gradient(to top, black 50%, transparent 100%)", WebkitMaskImage: "linear-gradient(to top, black 50%, transparent 100%)" }}
+        >
+          <WaveBackground variant="footer" className="transition-opacity duration-500 ease-in-out" style={{ opacity: isDark ? 0.45 : 0 }} isDark={true} />
           <WaveBackground variant="footer" className="transition-opacity duration-500 ease-in-out" style={{ opacity: isDark ? 0 : 0.6 }} isDark={false} />
         </div>
 
