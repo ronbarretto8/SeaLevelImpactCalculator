@@ -47,63 +47,33 @@ const WAVE_PATHS = {
 };
 
 
-/** 25 Layers ordered back (deepest) → front */
+/** 7 Entangled Layers ordered back (deepest) → front */
 const DARK_LAYERS = [
-  { path: WAVE_PATHS.layer1, viewBox: "0 0 5760 240", fill: "#010205", fillOpacity: 1, height: 190, duration: 60, reverse: false, blur: 12, opacity: 0.08, verticalOffset: 0, stroke: "transparent", strokeWidth: 0, strokeOpacity: 0 },
-  { path: WAVE_PATHS.layer2, viewBox: "0 0 5580 234", fill: "#010509", fillOpacity: 1, height: 185, duration: 58, reverse: true, blur: 12, opacity: 0.11, verticalOffset: 2, stroke: "transparent", strokeWidth: 0, strokeOpacity: 0 },
-  { path: WAVE_PATHS.layer3, viewBox: "0 0 5400 228", fill: "#02080d", fillOpacity: 1, height: 179, duration: 56, reverse: false, blur: 11, opacity: 0.14, verticalOffset: 4, stroke: "transparent", strokeWidth: 0, strokeOpacity: 0 },
-  { path: WAVE_PATHS.layer4, viewBox: "0 0 5220 222", fill: "#020b12", fillOpacity: 1, height: 174, duration: 54, reverse: true, blur: 11, opacity: 0.16, verticalOffset: 6, stroke: "transparent", strokeWidth: 0, strokeOpacity: 0 },
-  { path: WAVE_PATHS.layer5, viewBox: "0 0 5040 216", fill: "#030e16", fillOpacity: 1, height: 168, duration: 52, reverse: false, blur: 10, opacity: 0.19, verticalOffset: 8, stroke: "transparent", strokeWidth: 0, strokeOpacity: 0 },
-  { path: WAVE_PATHS.layer6, viewBox: "0 0 4860 208", fill: "#03111a", fillOpacity: 1, height: 163, duration: 50, reverse: true, blur: 10, opacity: 0.22, verticalOffset: 10, stroke: "transparent", strokeWidth: 0, strokeOpacity: 0 },
-  { path: WAVE_PATHS.layer7, viewBox: "0 0 4680 202", fill: "#04151e", fillOpacity: 1, height: 158, duration: 48, reverse: false, blur: 9, opacity: 0.25, verticalOffset: 13, stroke: "transparent", strokeWidth: 0, strokeOpacity: 0 },
-  { path: WAVE_PATHS.layer8, viewBox: "0 0 4500 196", fill: "#041822", fillOpacity: 1, height: 152, duration: 45, reverse: true, blur: 9, opacity: 0.28, verticalOffset: 15, stroke: "transparent", strokeWidth: 0, strokeOpacity: 0 },
-  { path: WAVE_PATHS.layer9, viewBox: "0 0 4320 190", fill: "#051b26", fillOpacity: 1, height: 147, duration: 43, reverse: false, blur: 8, opacity: 0.30, verticalOffset: 17, stroke: "transparent", strokeWidth: 0, strokeOpacity: 0 },
-  { path: WAVE_PATHS.layer10, viewBox: "0 0 4140 184", fill: "#051e2b", fillOpacity: 1, height: 141, duration: 41, reverse: true, blur: 8, opacity: 0.33, verticalOffset: 19, stroke: "transparent", strokeWidth: 0, strokeOpacity: 0 },
-  { path: WAVE_PATHS.layer11, viewBox: "0 0 3960 178", fill: "#06212f", fillOpacity: 1, height: 136, duration: 39, reverse: false, blur: 7, opacity: 0.36, verticalOffset: 21, stroke: "transparent", strokeWidth: 0, strokeOpacity: 0 },
-  { path: WAVE_PATHS.layer12, viewBox: "0 0 3780 172", fill: "#062433", fillOpacity: 1, height: 130, duration: 37, reverse: true, blur: 7, opacity: 0.39, verticalOffset: 23, stroke: "transparent", strokeWidth: 0, strokeOpacity: 0 },
-  { path: WAVE_PATHS.layer13, viewBox: "0 0 3600 166", fill: "#072737", fillOpacity: 1, height: 125, duration: 35, reverse: false, blur: 6, opacity: 0.42, verticalOffset: 25, stroke: "transparent", strokeWidth: 0, strokeOpacity: 0 },
-  { path: WAVE_PATHS.layer14, viewBox: "0 0 3420 158", fill: "#072a3b", fillOpacity: 1, height: 120, duration: 33, reverse: true, blur: 6, opacity: 0.44, verticalOffset: 27, stroke: "transparent", strokeWidth: 0, strokeOpacity: 0 },
-  { path: WAVE_PATHS.layer15, viewBox: "0 0 3240 152", fill: "#072d3f", fillOpacity: 1, height: 114, duration: 31, reverse: false, blur: 5, opacity: 0.47, verticalOffset: 29, stroke: "transparent", strokeWidth: 0, strokeOpacity: 0 },
-  { path: WAVE_PATHS.layer16, viewBox: "0 0 3060 146", fill: "#083044", fillOpacity: 1, height: 109, duration: 29, reverse: true, blur: 5, opacity: 0.50, verticalOffset: 31, stroke: "transparent", strokeWidth: 0, strokeOpacity: 0 },
-  { path: WAVE_PATHS.layer17, viewBox: "0 0 2880 140", fill: "#083348", fillOpacity: 1, height: 103, duration: 27, reverse: false, blur: 4, opacity: 0.53, verticalOffset: 33, stroke: "transparent", strokeWidth: 0, strokeOpacity: 0 },
-  { path: WAVE_PATHS.layer18, viewBox: "0 0 2700 134", fill: "#09364c", fillOpacity: 1, height: 98, duration: 25, reverse: true, blur: 4, opacity: 0.55, verticalOffset: 35, stroke: "transparent", strokeWidth: 0, strokeOpacity: 0 },
-  { path: WAVE_PATHS.layer19, viewBox: "0 0 2520 128", fill: "#093a50", fillOpacity: 1, height: 93, duration: 23, reverse: false, blur: 3, opacity: 0.58, verticalOffset: 38, stroke: "transparent", strokeWidth: 0, strokeOpacity: 0 },
-  { path: WAVE_PATHS.layer20, viewBox: "0 0 2340 122", fill: "#0a3d54", fillOpacity: 1, height: 87, duration: 20, reverse: true, blur: 3, opacity: 0.61, verticalOffset: 40, stroke: "transparent", strokeWidth: 0, strokeOpacity: 0 },
-  { path: WAVE_PATHS.layer21, viewBox: "0 0 2160 116", fill: "#0a4058", fillOpacity: 1, height: 82, duration: 18, reverse: false, blur: 2, opacity: 0.64, verticalOffset: 42, stroke: "transparent", strokeWidth: 0, strokeOpacity: 0 },
-  { path: WAVE_PATHS.layer22, viewBox: "0 0 1980 108", fill: "#0b435d", fillOpacity: 1, height: 76, duration: 16, reverse: true, blur: 2, opacity: 0.67, verticalOffset: 44, stroke: "transparent", strokeWidth: 0, strokeOpacity: 0 },
-  { path: WAVE_PATHS.layer23, viewBox: "0 0 1800 102", fill: "#0b4661", fillOpacity: 1, height: 71, duration: 14, reverse: false, blur: 1, opacity: 0.69, verticalOffset: 46, stroke: "transparent", strokeWidth: 0, strokeOpacity: 0 },
-  { path: WAVE_PATHS.layer24, viewBox: "0 0 1620 96", fill: "#0c4965", fillOpacity: 1, height: 65, duration: 12, reverse: true, blur: 1, opacity: 0.72, verticalOffset: 48, stroke: "transparent", strokeWidth: 0, strokeOpacity: 0 },
-  { path: WAVE_PATHS.layer25, viewBox: "0 0 1440 90", fill: "url(#crest-gradient)", fillOpacity: 0.9, height: 60, duration: 10, reverse: false, blur: 0, opacity: 0.75, verticalOffset: 50, stroke: "#38bdf8", strokeWidth: 1.5, strokeOpacity: 0.8 },
+  // Deepest background wave (slow, long, anchors the base)
+  { path: WAVE_PATHS.layer1, viewBox: "0 0 5760 240", fill: "hsl(202, 60%, 18%)", fillOpacity: 0.8, height: 170, duration: 35, reverse: false, blur: 0, opacity: 1, verticalOffset: 0, stroke: "none", strokeWidth: 0, strokeOpacity: 0 },
+  // Second wave (moves opposite, tall, slightly transparent to show intersections)
+  { path: WAVE_PATHS.layer5, viewBox: "0 0 5040 216", fill: "hsl(202, 65%, 22%)", fillOpacity: 0.75, height: 155, duration: 28, reverse: true, blur: 0, opacity: 1, verticalOffset: 5, stroke: "none", strokeWidth: 0, strokeOpacity: 0 },
+  // Third wave (moves forward, shorter wavelength, high overlap)
+  { path: WAVE_PATHS.layer12, viewBox: "0 0 3780 172", fill: "hsl(202, 70%, 26%)", fillOpacity: 0.75, height: 165, duration: 22, reverse: false, blur: 0, opacity: 1, verticalOffset: -10, stroke: "none", strokeWidth: 0, strokeOpacity: 0 },
+  // Fourth wave (moves opposite, medium height, creates criss-cross)
+  { path: WAVE_PATHS.layer17, viewBox: "0 0 2880 140", fill: "hsl(202, 75%, 30%)", fillOpacity: 0.75, height: 140, duration: 18, reverse: true, blur: 0, opacity: 1, verticalOffset: 15, stroke: "none", strokeWidth: 0, strokeOpacity: 0 },
+  // Fifth wave (moves forward, quite tall but fast)
+  { path: WAVE_PATHS.layer22, viewBox: "0 0 1980 108", fill: "hsl(202, 80%, 35%)", fillOpacity: 0.75, height: 170, duration: 14, reverse: false, blur: 0, opacity: 1, verticalOffset: 0, stroke: "none", strokeWidth: 0, strokeOpacity: 0 },
+  // Sixth wave (deep rich oceanic blue)
+  { path: WAVE_PATHS.layer25, viewBox: "0 0 1440 90", fill: "hsl(202, 85%, 40%)", fillOpacity: 0.8, height: 160, duration: 10, reverse: true, blur: 0, opacity: 1, verticalOffset: 10, stroke: "rgba(17,82,120,0.5)", strokeWidth: 1, strokeOpacity: 1 },
+  // Seventh wave (Front-most solid rich navy to complete the look)
+  { path: WAVE_PATHS.layer8, viewBox: "0 0 4500 196", fill: "hsl(205, 90%, 10%)", fillOpacity: 0.95, height: 130, duration: 8, reverse: false, blur: 0, opacity: 1, verticalOffset: -10, stroke: "none", strokeWidth: 0, strokeOpacity: 0 },
 ];
 
-
-/** Light-mode layers — cooler steel blues fading upward */
+/** Light-mode layers — cooler steel blues with reduced opacity to emphasize entanglement */
 const LIGHT_LAYERS = [
-  { ...DARK_LAYERS[0], fill: "hsl(215 40% 95%)", opacity: 0.06, stroke: "hsl(215 40% 70%)", strokeWidth: 1.5, strokeOpacity: 0.5 },
-  { ...DARK_LAYERS[1], fill: "hsl(214 42% 93%)", opacity: 0.04, stroke: "hsl(214 42% 68%)", strokeWidth: 1.5, strokeOpacity: 0.5 },
-  { ...DARK_LAYERS[2], fill: "hsl(213 43% 91%)", opacity: 0.09, stroke: "hsl(213 43% 66%)", strokeWidth: 1.5, strokeOpacity: 0.5 },
-  { ...DARK_LAYERS[3], fill: "hsl(213 45% 89%)", opacity: 0.07, stroke: "hsl(213 45% 64%)", strokeWidth: 1.5, strokeOpacity: 0.5 },
-  { ...DARK_LAYERS[4], fill: "hsl(212 47% 87%)", opacity: 0.12, stroke: "hsl(212 47% 62%)", strokeWidth: 1.5, strokeOpacity: 0.5 },
-  { ...DARK_LAYERS[5], fill: "hsl(211 48% 85%)", opacity: 0.10, stroke: "hsl(211 48% 60%)", strokeWidth: 1.5, strokeOpacity: 0.5 },
-  { ...DARK_LAYERS[6], fill: "hsl(210 50% 83%)", opacity: 0.15, stroke: "hsl(210 50% 58%)", strokeWidth: 1.5, strokeOpacity: 0.5 },
-  { ...DARK_LAYERS[7], fill: "hsl(209 52% 80%)", opacity: 0.13, stroke: "hsl(209 52% 55%)", strokeWidth: 1.5, strokeOpacity: 0.5 },
-  { ...DARK_LAYERS[8], fill: "hsl(208 53% 78%)", opacity: 0.19, stroke: "hsl(208 53% 53%)", strokeWidth: 1.5, strokeOpacity: 0.5 },
-  { ...DARK_LAYERS[9], fill: "hsl(208 55% 76%)", opacity: 0.16, stroke: "hsl(208 55% 51%)", strokeWidth: 1.5, strokeOpacity: 0.5 },
-  { ...DARK_LAYERS[10], fill: "hsl(207 57% 74%)", opacity: 0.22, stroke: "hsl(207 57% 49%)", strokeWidth: 1.5, strokeOpacity: 0.5 },
-  { ...DARK_LAYERS[11], fill: "hsl(206 58% 72%)", opacity: 0.19, stroke: "hsl(206 58% 47%)", strokeWidth: 1.5, strokeOpacity: 0.5 },
-  { ...DARK_LAYERS[12], fill: "hsl(205 60% 70%)", opacity: 0.25, stroke: "hsl(205 60% 45%)", strokeWidth: 1.5, strokeOpacity: 0.5 },
-  { ...DARK_LAYERS[13], fill: "hsl(204 62% 68%)", opacity: 0.23, stroke: "hsl(204 62% 43%)", strokeWidth: 1.5, strokeOpacity: 0.5 },
-  { ...DARK_LAYERS[14], fill: "hsl(203 63% 66%)", opacity: 0.28, stroke: "hsl(203 63% 41%)", strokeWidth: 1.5, strokeOpacity: 0.5 },
-  { ...DARK_LAYERS[15], fill: "hsl(203 65% 64%)", opacity: 0.26, stroke: "hsl(203 65% 39%)", strokeWidth: 1.5, strokeOpacity: 0.5 },
-  { ...DARK_LAYERS[16], fill: "hsl(202 67% 62%)", opacity: 0.31, stroke: "hsl(202 67% 37%)", strokeWidth: 1.5, strokeOpacity: 0.5 },
-  { ...DARK_LAYERS[17], fill: "hsl(201 68% 60%)", opacity: 0.29, stroke: "hsl(201 68% 35%)", strokeWidth: 1.5, strokeOpacity: 0.5 },
-  { ...DARK_LAYERS[18], fill: "hsl(200 70% 58%)", opacity: 0.35, stroke: "hsl(200 70% 33%)", strokeWidth: 1.5, strokeOpacity: 0.5 },
-  { ...DARK_LAYERS[19], fill: "hsl(199 72% 55%)", opacity: 0.32, stroke: "hsl(199 72% 30%)", strokeWidth: 1.5, strokeOpacity: 0.5 },
-  { ...DARK_LAYERS[20], fill: "hsl(198 73% 53%)", opacity: 0.38, stroke: "hsl(198 73% 28%)", strokeWidth: 1.5, strokeOpacity: 0.5 },
-  { ...DARK_LAYERS[21], fill: "hsl(198 75% 51%)", opacity: 0.35, stroke: "hsl(198 75% 26%)", strokeWidth: 1.5, strokeOpacity: 0.5 },
-  { ...DARK_LAYERS[22], fill: "hsl(197 77% 49%)", opacity: 0.41, stroke: "hsl(197 77% 24%)", strokeWidth: 1.5, strokeOpacity: 0.5 },
-  { ...DARK_LAYERS[23], fill: "hsl(196 78% 47%)", opacity: 0.38, stroke: "hsl(196 78% 22%)", strokeWidth: 1.5, strokeOpacity: 0.5 },
-  { ...DARK_LAYERS[24], fill: "url(#crest-gradient)", opacity: 0.44, stroke: "hsl(195 80% 20%)", strokeWidth: 1.5, strokeOpacity: 0.5 },
+  { ...DARK_LAYERS[0], fill: "hsl(210 45% 88%)", fillOpacity: 0.6, stroke: "none", strokeWidth: 0 },
+  { ...DARK_LAYERS[1], fill: "hsl(208 50% 82%)", fillOpacity: 0.5, stroke: "none", strokeWidth: 0 },
+  { ...DARK_LAYERS[2], fill: "hsl(206 55% 75%)", fillOpacity: 0.6, stroke: "none", strokeWidth: 0 },
+  { ...DARK_LAYERS[3], fill: "hsl(204 60% 68%)", fillOpacity: 0.5, stroke: "none", strokeWidth: 0 },
+  { ...DARK_LAYERS[4], fill: "hsl(202 65% 60%)", fillOpacity: 0.65, stroke: "none", strokeWidth: 0 },
+  { ...DARK_LAYERS[5], fill: "url(#crest-gradient)", fillOpacity: 0.8, stroke: "hsl(200 70% 50%)", strokeWidth: 1, strokeOpacity: 0.4 },
+  { ...DARK_LAYERS[6], fill: "hsl(200 65% 45%)", fillOpacity: 0.95, stroke: "none", strokeWidth: 0 },
 ];
 
 
@@ -111,20 +81,20 @@ export const WaveBackground = memo(
   ({ variant = "hero", className = "", isDark = true, style }: WaveBackgroundProps) => {
     const layers = isDark ? DARK_LAYERS : LIGHT_LAYERS;
 
-    // Container heights increased to accommodate 25 massive layers
+    // Container heights adjusted for 6 distinct layers
     const containerH =
-      variant === "footer" ? 320
-      : variant === "hero"  ? 220
-      :                       160; // section
+      variant === "footer" ? 300
+      : variant === "hero"  ? 240
+      :                       200; // section
 
-    // Ambient glow — only on dark mode, footer / hero
+    // Soft elegant ambient light — strictly limit to dark mode (hero/footer) to prevent the "grey block" overlay haze
     const showGlow = isDark && variant !== "section";
 
     // gradient-mask: waves dissolve up into the page background
     const maskGradient =
       variant === "footer"
         ? "linear-gradient(to top, black 80%, transparent 100%)"
-        : "linear-gradient(to top, black 65%, transparent 100%)";
+        : "linear-gradient(to top, black 70%, transparent 100%)";
 
     return (
       <div
@@ -140,27 +110,27 @@ export const WaveBackground = memo(
         <svg width="0" height="0" className="absolute">
           <defs>
             <linearGradient id="crest-gradient" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor={isDark ? "#38bdf8" : "#0284c7"} stopOpacity="1" style={{ transition: "stop-color 0.5s ease" }} />
-              <stop offset="100%" stopColor={isDark ? "#0f4c75" : "#38bdf8"} stopOpacity={isDark ? 0.1 : 0.2} style={{ transition: "stop-color 0.5s ease, stop-opacity 0.5s ease" }} />
+              <stop offset="0%" stopColor={isDark ? "#0ea5e9" : "#3b82f6"} stopOpacity={isDark ? 0.9 : 0.8} style={{ transition: "all 0.5s ease" }} />
+              <stop offset="100%" stopColor={isDark ? "#082f49" : "#93c5fd"} stopOpacity={isDark ? 0.4 : 0.6} style={{ transition: "all 0.5s ease" }} />
             </linearGradient>
           </defs>
         </svg>
 
-        {/* Ambient cyan glow — cinematic depth bloom */}
+        {/* Soft elegant ambient light — subtle cinematic bloom */}
         {showGlow && (
           <div
             className="absolute inset-x-0 bottom-0 z-0 transition-all duration-500 ease-in-out"
             style={{
-              height: "90%",
+              height: "100%",
               background: isDark
-                ? "radial-gradient(ellipse 70% 60% at 50% 100%, rgba(56,189,248,0.25) 0%, transparent 80%)"
-                : "radial-gradient(ellipse 70% 60% at 50% 100%, rgba(14,116,180,0.18) 0%, transparent 80%)",
+                ? "radial-gradient(ellipse 80% 60% at 50% 100%, rgba(14,165,233,0.15) 0%, transparent 80%)"
+                : "radial-gradient(ellipse 80% 60% at 50% 100%, rgba(59,130,246,0.08) 0%, transparent 80%)",
               pointerEvents: "none",
             }}
           />
         )}
 
-        {/* 25 depth layers */}
+        {/* 6 Distinct Depth Layers */}
         {layers.map((layer, i) => {
           const animName = layer.reverse ? "wave-flow-rev-cin" : "wave-flow-cin";
           // SVG width is 2× the viewBox horizontal so it can slide -50% seamlessly
@@ -169,7 +139,7 @@ export const WaveBackground = memo(
           return (
             <div
               key={i}
-              className="absolute inset-x-0 bottom-0"
+              className={`absolute inset-x-0 bottom-0`}
               style={{
                 height: layer.height + layer.verticalOffset,
                 bottom: layer.verticalOffset,

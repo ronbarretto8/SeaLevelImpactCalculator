@@ -5,7 +5,9 @@ import { REGIONS } from "@/data/regions";
 import { AtlasState, calculateAllRegions, fmt } from "@/utils/calculateImpact";
 
 const RISK_COLOR = (label: string) =>
-  label === "High"      ? "hsl(4, 90%, 60%)"
+  label === "Extreme" ? "hsl(4, 90%, 70%)"
+  : label === "Severe" ? "hsl(4, 90%, 60%)"
+  : label === "Significant" ? "hsl(38, 100%, 55%)"
   : label === "Moderate" ? "hsl(38, 100%, 55%)"
   : "hsl(158, 85%, 42%)";
 
@@ -107,7 +109,7 @@ export const CoastalMap = ({ state, onSelect, isDark = true }: CoastalMapProps) 
       >
         {/* Darkening layer to replace TileLayer opacity changes */}
         <div className="absolute inset-0 bg-black/40" />
-        <div className="absolute inset-0 mix-blend-screen opacity-60">
+        <div className="hidden md:block absolute inset-0 mix-blend-screen opacity-60">
           <div className="absolute inset-0 bg-ocean-fog" />
           <div className="absolute inset-0 bg-contour-lines opacity-40" />
         </div>
@@ -123,7 +125,12 @@ export const CoastalMap = ({ state, onSelect, isDark = true }: CoastalMapProps) 
         >
           <p className="text-[10px] font-semibold uppercase tracking-[0.2em] mb-2.5" style={{ color: "hsl(var(--primary))" }}>Risk Legend</p>
           <div className="space-y-1.5 text-xs">
-            {[{ color: "hsl(158,85%,42%)", label: "Low · 0–30" }, { color: "hsl(38,100%,55%)", label: "Moderate · 30–70" }, { color: "hsl(4,90%,60%)", label: "High · 70–100" }].map((d) => (
+            {[
+              { color: "hsl(158, 85%, 42%)", label: "Minimal · 0–20" },
+              { color: "hsl(38, 100%, 55%)", label: "Moderate/Significant · 21–60" },
+              { color: "hsl(4, 90%, 60%)", label: "Severe · 61–80" },
+              { color: "hsl(4, 90%, 70%)", label: "Extreme · 81–100" }
+            ].map((d) => (
               <div key={d.label} className="flex items-center gap-2.5">
                 <span className="inline-block h-2.5 w-2.5 rounded-full shrink-0" style={{ background: d.color, boxShadow: `0 0 6px ${d.color}` }} />
                 <span style={{ color: overlaySub }}>{d.label}</span>

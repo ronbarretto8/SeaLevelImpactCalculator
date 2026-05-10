@@ -2,13 +2,23 @@ import { ImpactResult, fmt } from "@/utils/calculateImpact";
 import { ShieldAlert, ShieldCheck, ShieldHalf } from "lucide-react";
 
 export const RiskBar = ({ result }: { result: ImpactResult }) => {
-  const isHigh = result.riskLabel === "High";
-  const isMod  = result.riskLabel === "Moderate";
+  const isExtreme = result.riskLabel === "Extreme";
+  const isSevere = result.riskLabel === "Severe";
+  const isSignificant = result.riskLabel === "Significant";
+  const isModerate = result.riskLabel === "Moderate";
+  const isMinimal = result.riskLabel === "Minimal";
 
-  const tone = isHigh
-    ? { color: "hsl(4 90% 60%)",   glow: "hsl(4 90% 60% / 0.3)",   bgColor: "hsl(4 90% 60% / 0.08)",   text: "hsl(4 90% 70%)",   border: "hsl(4 90% 60% / 0.25)",   icon: <ShieldAlert className="h-4 w-4" /> }
-    : isMod
+
+  const tone = isExtreme
+    ? { color: "hsl(4 90% 70%)",   glow: "hsl(4 90% 70% / 0.3)", bgColor: "hsl(4 90% 70% / 0.08)", text: "hsl(4 90% 80%)", border: "hsl(4 90% 70% / 0.25)", icon: <ShieldAlert className="h-4 w-4" /> }
+    : isSevere
+    ? { color: "hsl(4 90% 60%)",   glow: "hsl(4 90% 60% / 0.3)", bgColor: "hsl(4 90% 60% / 0.08)", text: "hsl(4 90% 70%)", border: "hsl(4 90% 60% / 0.25)", icon: <ShieldAlert className="h-4 w-4" /> }
+    : isSignificant
     ? { color: "hsl(38 100% 55%)", glow: "hsl(38 100% 55% / 0.3)", bgColor: "hsl(38 100% 55% / 0.08)", text: "hsl(38 100% 65%)", border: "hsl(38 100% 55% / 0.25)", icon: <ShieldHalf className="h-4 w-4" /> }
+    : isModerate
+    ? { color: "hsl(38 100% 55%)",   glow: "hsl(38 100% 55% / 0.3)", bgColor: "hsl(38 100% 55% / 0.08)", text: "hsl(38 100% 65%)", border: "hsl(38 100% 55% / 0.25)", icon: <ShieldHalf className="h-4 w-4" /> }
+    : isMinimal
+    ? { color: "hsl(158 85% 42%)", glow: "hsl(158 85% 42% / 0.3)", bgColor: "hsl(158 85% 42% / 0.08)", text: "hsl(158 85% 52%)", border: "hsl(158 85% 42% / 0.25)", icon: <ShieldCheck className="h-4 w-4" /> }
     : { color: "hsl(158 85% 42%)", glow: "hsl(158 85% 42% / 0.3)", bgColor: "hsl(158 85% 42% / 0.08)", text: "hsl(158 85% 52%)", border: "hsl(158 85% 42% / 0.25)", icon: <ShieldCheck className="h-4 w-4" /> };
 
   return (

@@ -92,7 +92,8 @@ export const HeroBackground = ({ imageUrl, videoUrl }: HeroBackgroundProps) => {
             opacity: activeVideo === 1 ? 1 : 0,
             zIndex: activeVideo === 1 ? 2 : 1,
             transition: "opacity 1500ms ease-in-out",
-            willChange: "opacity"
+            willChange: "opacity",
+            transform: "translateZ(0)",
           }}
         />
       )}
@@ -111,7 +112,8 @@ export const HeroBackground = ({ imageUrl, videoUrl }: HeroBackgroundProps) => {
             opacity: activeVideo === 2 ? 1 : 0,
             zIndex: activeVideo === 2 ? 2 : 1,
             transition: "opacity 1500ms ease-in-out",
-            willChange: "opacity"
+            willChange: "opacity",
+            transform: "translateZ(0)",
           }}
         />
       )}
@@ -120,7 +122,7 @@ export const HeroBackground = ({ imageUrl, videoUrl }: HeroBackgroundProps) => {
       
       {/* 1. Vertical Dark Gradient (Atmospheric, not flat black) */}
       <div
-        className="absolute inset-0 z-[10] pointer-events-none mix-blend-multiply"
+        className="absolute inset-0 z-[10] pointer-events-none"
         style={{
           background: `linear-gradient(to bottom, 
             rgba(6, 12, 26, 0.3) 0%, 
@@ -153,9 +155,10 @@ export const HeroBackground = ({ imageUrl, videoUrl }: HeroBackgroundProps) => {
               left: ray.left,
               width: ray.width,
               background: `linear-gradient(180deg, rgba(140, 230, 255, 0.05) 0%, transparent 100%)`,
-              transform: `rotate(${ray.rot})`,
+              transform: `rotate(${ray.rot}) translateZ(0)`,
               transformOrigin: "top center",
               animation: `ray-sway ${ray.dur} ${ray.delay} ease-in-out infinite`,
+              willChange: "transform",
             }}
           />
         ))}

@@ -42,19 +42,6 @@ const Index = () => {
   const [state, setState] = useState<AtlasState>(DEFAULT_STATE);
   const result = useMemo(() => calculateImpact(state), [state]);
 
-  /* Parallax and Cursor Tracking */
-  const [mouse, setMouse] = useState({ x: 0, y: 0 });
-  const handleMouseMove = useCallback((e: MouseEvent) => {
-    const cx = window.innerWidth / 2;
-    const cy = window.innerHeight / 2;
-    setMouse({ x: e.clientX - cx, y: e.clientY - cy });
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [handleMouseMove]);
-
   useScrollReveal();
 
   useEffect(() => {
@@ -77,7 +64,7 @@ const Index = () => {
           HERO — full-viewport, image background
           ════════════════════════════════════════ */}
       <section id="overview" className="relative flex min-h-screen items-center justify-center overflow-hidden">
-        <HeroBackground imageUrl={heroOcean} videoUrl={heroVideo} parallaxX={mouse.x} parallaxY={mouse.y} />
+        <HeroBackground imageUrl={heroOcean} videoUrl={heroVideo} />
 
         <div className="section-padding relative z-10 mx-auto w-full max-w-[1520px] pb-28 pt-24 text-center">
           <div className="mx-auto max-w-4xl animate-fade-up">
@@ -284,7 +271,7 @@ const Index = () => {
 
         {/* Crossfaded waves for zero-lag transition */}
         <div 
-          className="absolute inset-0 z-5 pointer-events-none"
+          className="absolute inset-0 z-0 pointer-events-none"
           style={{ maskImage: "linear-gradient(to top, black 50%, transparent 100%)", WebkitMaskImage: "linear-gradient(to top, black 50%, transparent 100%)" }}
         >
           <WaveBackground variant="section" isDark={isDark} />
@@ -302,7 +289,7 @@ const Index = () => {
       >
         {/* Sci-fi Animated Background Elements for Dark Mode only */}
         <div 
-          className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-500 ease-in-out"
+          className="hidden md:block absolute inset-0 z-0 pointer-events-none mix-blend-screen transition-opacity duration-500 ease-in-out"
           style={{ opacity: isDark ? 0.5 : 0 }}
         >
           <div className="absolute inset-0 bg-ocean-fog" />

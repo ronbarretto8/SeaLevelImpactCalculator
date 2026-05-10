@@ -55,31 +55,62 @@ export function calculateImpact(state: AtlasState, regionOverride?: Region): Imp
   const population = (areaKm2 * stats.density * state.popDensity) / 1000; // in thousands
   const economic = areaKm2 * stats.gdp * state.infraSensitivity; // in millions
 
-  // To make risk relative, we must calculate the stats for ALL regions at this state
-  const allStats = REGIONS.map(r => {
+  // Compute fixed worst-case maximums for absolute normalization
+  const absoluteMaxSeaLevel = 3.0 * 1.5; // 4.5 meters
+  const absoluteMaxArea = Math.max(...REGIONS.map(r => {
     const s = REGION_STATS[r.id] || REGION_STATS.mumbai;
-    const sl = state.seaLevel * scenarioMultiplier;
-    const area = s.area * (sl / s.elevation);
-    const pop = (area * s.density * state.popDensity) / 1000;
-    const econ = area * s.gdp * state.infraSensitivity;
-    return { area, pop, econ };
-  });
+    return s.area * (absoluteMaxSeaLevel / s.elevation);
+  }));
+  const absoluteMaxPop = Math.max(...REGIONS.map(r => {
+    const s = REGION_STATS[r.id] || REGION_STATS.mumbai;
+    const area = s.area * (absoluteMaxSeaLevel / s.elevation);
+    return (area * s.density * 2.0) / 1000;
+  }));
+  const absoluteMaxEcon = Math.max(...REGIONS.map(r => {
+    const s = REGION_STATS[r.id] || REGION_STATS.mumbai;
+    const area = s.area * (absoluteMaxSeaLevel / s.elevation);
+    return area * s.gdp * 2.0;
+  }));
+  const absoluteMaxStorm = 1.5;
+  const absoluteMaxEnv = Math.max(...REGIONS.map(r => {
+    const s = REGION_STATS[r.id] || REGION_STATS.mumbai;
+    return 1 / (s.elevation + 0.1);
+  }));
 
-  const maxArea = Math.max(...allStats.map(r => r.area), 0.001);
-  const maxPop = Math.max(...allStats.map(r => r.pop), 0.001);
-  const maxEcon = Math.max(...allStats.map(r => r.econ), 0.001);
 
-  const riskScore = Math.min(100, Math.max(0, (
-    (areaKm2 / maxArea) +
-    (population / maxPop) +
-    (economic / maxEcon)
-  ) / 3 * (1 + (state.popDensity - 1) * 0.3 + (state.infraSensitivity - 1) * 0.3) * 100));
+  // Weighted components (percentages sum to 100)
+  const weights = {
+    seaLevel: 0.30,
+    pop: 0.20,
+    infra: 0.20,
+    storm: 0.15,
+    econ: 0.10,
+    env: 0.05,
+  };
+
+  const slrFactor = seaLevelRise / absoluteMaxSeaLevel;
+
+  const seaLevelScore = slrFactor * weights.seaLevel * 100;
+  const popScore = (population / absoluteMaxPop) * weights.pop * 100;
+  const infraScore = (state.infraSensitivity / 2.0) * slrFactor * weights.infra * 100; // scale by SLR
+  const stormScore = (scenarioMultiplier / absoluteMaxStorm) * slrFactor * weights.storm * 100; // scale by SLR
+  const econScore = (economic / absoluteMaxEcon) * weights.econ * 100;
+  const envScore = ((1 / (stats.elevation + 0.1)) / absoluteMaxEnv) * slrFactor * weights.env * 100; // scale by SLR
+
+  const rawScore = seaLevelScore + popScore + infraScore + stormScore + econScore + envScore;
+  const riskScore = Math.min(100, Math.max(0, Math.round(rawScore)));
+
+
 
   const areaPct = (areaKm2 / region.baseArea) * 100;
 
+  // Determine risk label based on new thresholds
   let riskLabel: ImpactResult["riskLabel"] = "Low";
-  if (riskScore >= 70) riskLabel = "High";
-  else if (riskScore >= 30) riskLabel = "Moderate";
+  if (riskScore >= 81) riskLabel = "Extreme";
+  else if (riskScore >= 61) riskLabel = "Severe";
+  else if (riskScore >= 41) riskLabel = "Significant";
+  else if (riskScore >= 21) riskLabel = "Moderate";
+  else riskLabel = "Minimal";
 
   return {
     region,
